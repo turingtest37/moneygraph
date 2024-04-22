@@ -1,0 +1,345 @@
+PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX skos: <http://www.w3.org/2004/02/skos#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX xyz: <http://sparql.xyz/facade-x/data/>
+PREFIX fx: <http://sparql.xyz/facade-x/ns/>
+
+CONSTRUCT
+{
+
+# Transaction Date,Settlement Date,Action,Symbol,Description,Quantity,Price,Gross Amount,Commission,Net Amount,Currency,Account #,Activity Type,Account Type
+# 2014-03-03 12:00:00 AM,2014-03-03 12:00:00 AM,FXT,,CONVERSION - CAD/USD,0.00000,0.00000000,0.00,0.00,885.00,USD,51590610,FX conversion,Individual RRSP
+# 2014-03-03 12:00:00 AM,2014-03-06 12:00:00 AM,Buy,OPXA,OPEXA THERAPEUTICS INC COM WE ACTED AS AGENT,500.00000,1.76000000,-880.00,-5.00,-885.00,USD,51590610,Trades,Individual RRSP
+# 2015-03-16 12:00:00 AM,2015-03-16 12:00:00 AM,DIS,P040749,RTS OPEXA THERAPEUTICS INC EXP PENDING CONTRA CUSIP RTS DIST ON 500 SHS REC 03/13/15 PAY 03/13/15,500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Dividends,Individual RRSP
+# 2015-04-24 12:00:00 AM,2015-04-24 12:00:00 AM,RTS,P040749,RTS OPEXA THERAPEUTICS INC CONTRA CUSIP EXP 04/08/2015 RIGHTS EXPIRED BOOK VALUE $ .00,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
+# 2015-09-29 12:00:00 AM,2015-09-29 12:00:00 AM,REV,P032174,OPEXA THERAPEUTICS INC COM REVERSE SPLIT 1:8 INTO 68372T301,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
+
+# [] <urn:txdate> ?TransactionDate ;
+#     <urn:txdt> ?__transaction_date ;
+#     <urn:settledt> ?__settlement_date .
+
+
+    ?__activity a gist:Event .
+    ?__activity skos:prefLabel ?__activity_label .
+    ?__activity gist:description ?Description .
+    ?__activity qt:transactionDate ?__transaction_date .
+    ?__activity qt:settlementDate ?__settlement_date .
+    ?__activity gist:isCharacterizedAs ?__event_type .
+
+# Security account is linked to Security
+    ?__security_account gist:isAffectedBy ?__activity .
+    
+# Dividend case
+    ?__activity gist:hasMagnitude ?__dividend_magn .
+    ?__dividend_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
+    .
+
+# Purchase Case
+    ?__activity gist:hasMagnitude ?__purchase_qty_magn .
+    ?__purchase_qty_magn a gist:Magnitude ;
+        gist:numericValue ?__event_qty ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__purchase_price_magn .
+    ?__purchase_price_magn a gist:Magnitude;
+        gist:numericValue ?__event_price ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__purchase_gross_amt_magn .
+    ?__purchase_gross_amt_magn a gist:Magnitude ;
+        gist:numericValue ?__gross_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securitySharePurchaseGrossAmount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__purchase_commission_magn .
+    ?__purchase_commission_magn a gist:Magnitude ;
+        gist:numericValue ?__commission_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityTransactionCommission ;
+    .
+    
+    ?__activity gist:hasMagnitude ?__purchase_net_amt_magn .
+    ?__purchase_net_amt_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securitySharePurchaseNetAmount ;
+    .
+
+# Sale Case
+
+    ?__activity gist:hasMagnitude ?__sale_qty_magn .
+    ?__sale_qty_magn a gist:Magnitude ;
+        gist:numericValue ?__event_qty ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__sale_price_magn .
+    ?__sale_price_magn a gist:Magnitude;
+        gist:numericValue ?__event_price ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__sale_gross_amt_magn .
+    ?__sale_gross_amt_magn a gist:Magnitude ;
+        gist:numericValue ?__gross_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareSaleGrossAmount ;
+    .
+
+    ?__activity gist:hasMagnitude ?__sale_commission_magn .
+    ?__sale_commission_magn a gist:Magnitude ;
+        gist:numericValue ?__commission_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityTransactionCommission ;
+    .
+    
+    ?__activity gist:hasMagnitude ?__sale_net_amt_magn .
+    ?__sale_net_amt_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareSaleNetAmount ;
+    .
+
+# Dividend Case
+    ?__activity gist:hasMagnitude ?__dividend_magn .
+    ?__dividend_magn  a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
+    .
+
+# Interest Case
+    ?__activity gist:hasMagnitude ?__interest_magn.
+    ?__interest_magn  a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_debtInterestAmount ;
+    .
+
+# Deposit Case
+    ?__activity gist:hasMagnitude ?__deposit_magn .
+    ?__deposit_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_depositAmount ;
+    .
+
+# Post-merger deposit case 
+    ?__activity gist:hasMagnitude ?__merger_deposit_magn.
+    ?__merger_deposit_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_depositAmount ;
+    .
+
+# Foreign currency exchanged
+    ?__activity gist:hasMagnitude ?__fxt_magn .
+    ?__fxt_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_foreignCurrencyExchangeAmount ;
+
+}
+
+#### Fields
+
+# Transaction Date
+# ,Settlement Date
+# ,Trade Date
+# ,Action
+# ,Symbol
+# ,Description
+# ,Quantity
+# ,Price
+# ,Gross Amount
+# ,Commission
+# ,Net Amount
+# ,Currency
+# ,Account #
+# ,Activity Type
+# ,Account Type
+
+
+WHERE
+
+{
+   SERVICE <x-sparql-anything:> {
+
+        BIND(IRI(CONCAT("file://",?_loc)) AS ?__location)
+
+        fx:properties
+            fx:location ?__location ;    
+            fx:csv.headers true ;
+            fx:blank-nodes false ;
+            fx:csv.null-string "" ;
+            fx:root ?__location ;
+        .
+
+        ?__csvline xyz:Transaction%20Date ?TransactionDate .
+        ?__csvline xyz:Settlement%20Date ?SettlementDate .
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/Trade%20Date> ?TradeDate }
+        OPTIONAL { ?__csvline xyz:Action ?Action }
+        ?__csvline xyz:Symbol ?EquitySymbol .
+        ?__csvline xyz:Description ?Description .
+        ?__csvline xyz:Quantity ?Quantity .
+        ?__csvline xyz:Price ?Price .
+        ?__csvline <http://sparql.xyz/facade-x/data/Gross%20Amount> ?GrossAmount .
+        ?__csvline xyz:Commission ?Commission .
+        ?__csvline <http://sparql.xyz/facade-x/data/Net%20Amount> ?NetAmount .
+        ?__csvline xyz:Currency ?Currency .
+        ?__csvline <http://sparql.xyz/facade-x/data/Account%20%23> ?AccountNumber .
+        ?__csvline <http://sparql.xyz/facade-x/data/Activity%20Type> ?ActivityType .
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/Account%20Type> ?AccountType }
+
+    }
+
+# Equity Symbol
+    BIND(IF(STRSTARTS(?EquitySymbol,"."),CONCAT(STRAFTER(?EquitySymbol,"."),".TO"),IF(REGEX(?EquitySymbol,"\\.[0-9]{2}$"),STRBEFORE(?EquitySymbol,"."),?EquitySymbol)) AS ?__symbol_str)
+    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str))) AS ?__eq_symbol)
+
+# # Asset Type
+#     BIND(IF(REGEX(?EquitySymbol,"^[A-Z0-9]{7}") && ?Action="INT" ,"DI",
+#         IF(REGEX(?EquitySymbol,"^[A-Z0-9]{7}"),"ETF",?dis))) AS ?Asset_Class)
+
+# Account Number
+    BIND(ENCODE_FOR_URI(LCASE(STR(?AccountNumber))) AS ?__acct_key)
+
+# Transaction Date - arghhhhhh (looks like "6/13/23 00:00" in the data)
+    BIND(REPLACE(?TransactionDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__tx_dt_str)
+    BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
+
+# Settlement Date
+    BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
+    BIND(STRDT(?__settle_dt_str, xsd:dateTime) AS ?__settlement_date)
+
+# Action
+BIND(
+    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemitted,
+    IF(UCASE(?Action)='BUY',qtx:_FinancialBusinessEventType_purchase,
+    IF(UCASE(?Action)='SELL',qtx:_FinancialBusinessEventType_sale,
+    IF(UCASE(?Action)='INT',qtx:_FinancialBusinessEventType_interestRemitted,
+    IF(UCASE(?Action)='CON',qtx:_FinancialBusinessEventType_deposit,
+    IF(UCASE(?Action)='MGR',qtx:_FinancialBusinessEventType_deposit,
+    IF(UCASE(?Action)='FTX',qtx:_FinancialBusinessEventType_exchangeCurrency,
+    IF(UCASE(?Action)='LQD',qtx:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='LIQ',qtx:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='TFI',qtx:_FinancialBusinessEventType_financialTransfer,
+    ?unbound)))))))))) AS ?__event_type)
+
+# Activity
+    BIND(IRI(CONCAT(STR(qt3:),'_Event_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(LCASE(?ActivityType)),'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?Price)))) AS ?__activity)
+# Activity Label
+    BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
+
+# Marketable Security
+    BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
+
+# Security Account
+    BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
+
+# Quantity
+    BIND(ABS(xsd:decimal(?Quantity)) AS ?__event_qty)
+# Price
+    BIND(ABS(xsd:decimal(?Price)) AS ?__event_price)
+# Gross Amount
+    BIND(ABS(xsd:decimal(?GrossAmount)) AS ?__gross_amount)
+# Commission
+    BIND(ABS(xsd:decimal(?Commission)) AS ?__commission_amount)
+# Net Amount 
+    BIND(ABS(xsd:decimal(?NetAmount)) AS ?__net_amount)
+
+### Dividends
+# Only net amount counts
+BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemitted, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_dividend_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    ?unbound) AS ?__dividend_magn)
+
+#### Buy
+# Need all of Quantity,Price,Gross Amt,Commission,Net Amt
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseQuantity_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_qty)))),
+    ?unbound) AS ?__purchase_qty_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchasePrice_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_price)))),
+    ?unbound) AS ?__purchase_price_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseGrossAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__gross_amount)))),
+    ?unbound) AS ?__purchase_gross_amt_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__commission_amount)))),
+    ?unbound) AS ?__purchase_commission_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))),
+    ?unbound) AS ?__purchase_net_amt_magn)
+
+### Sell
+# Need all of Quantity,Price,Gross Amt,Commission,Net Amt
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_saleQuantity_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_qty)))),
+    ?unbound) AS ?__sale_qty_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_salePrice_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_price)))),
+    ?unbound) AS ?__sale_price_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_saleGrossAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__gross_amount)))),
+    ?unbound) AS ?__sale_gross_amt_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__commission_amount)))),
+    ?unbound) AS ?__sale_commission_magn)
+
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))),
+    ?unbound) AS ?__sale_net_amt_magn)
+
+### Interest
+# Only net amount counts
+BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemitted, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_interestReceived_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    ?unbound) AS ?__interest_magn)
+
+### Deposits
+# Only net amount counts
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_deposit, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_deposit_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    ?unbound) AS ?__deposit_magn)
+
+### Contributions
+# same as deposits for now
+
+### Mergers and acquisitions
+# Only net amount counts
+BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetMerger && xsd:decimal(?Quantity) < 0, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_depositFromMerger_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    ?unbound) AS ?__merger_deposit_magn)
+
+# Currency exchanged
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_exchangeCurrency, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    ?unbound) AS ?__fxt_magn)
+
+
+# Currency - CAD or USD
+    BIND(IF(?Currency="CAD", qtx:_CADollar_, IF(?Currency="USD", gist:_USDollar_, ?unbound)) AS ?__event_currency)
+
+
+}

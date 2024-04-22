@@ -1,0 +1,584 @@
+@prefix : <http://ontologies.beesondouglas.com/o/questrade#> .
+@prefix qt: <https://ontologies.beesondouglas.com/questrade/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qtx: <https://taxonomies.beesondouglas.com/questrade/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix gist: <https://w3id.org/semanticarts/ns/ontology/gist/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://ontologies.beesondouglas.com/o/questrade> .
+
+<http://ontologies.beesondouglas.com/o/questrade> rdf:type owl:Ontology ;
+                                                   owl:versionIRI <http://ontologies.beesondouglas.com/o/questrade_1.0.0> ;
+                                                   owl:imports <https://w3id.org/semanticarts/ontology/gistCore12.0.1> ,
+                                                               <https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0> ;
+                                                   rdfs:comment "Ontology for a personal investment portfolio supporting stocks, bonds, etfs, and mutual funds." .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.w3.org/2004/02/skos/core#editorialNote
+<http://www.w3.org/2004/02/skos/core#editorialNote> rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/conversionFactor
+gist:conversionFactor rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/hasBaseUnit
+gist:hasBaseUnit rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/hasDenominator
+gist:hasDenominator rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/hasNumerator
+gist:hasNumerator rdf:type owl:AnnotationProperty .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/unitSymbol
+gist:unitSymbol rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://ontologies.beesondouglas.com/questrade/hasInterestPaymentTerms
+qt:hasInterestPaymentTerms rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf gist:conformsTo ;
+                           rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/hasInterestPaymentTerms" ;
+                           <http://www.w3.org/2004/02/skos/core#prefLabel> "has interest payment terms" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/hasRepaymentTerms
+qt:hasRepaymentTerms rdf:type owl:ObjectProperty ;
+                     rdfs:subPropertyOf gist:conformsTo ;
+                     rdfs:seeAlso "fibo-sec-dbt-dbti:hasRepaymentTerms"^^xsd:anyURI ;
+                     <http://www.w3.org/2004/02/skos/core#definition> "Relates the subject to a specification of loan repayment conditions." ;
+                     <http://www.w3.org/2004/02/skos/core#prefLabel> "has repayment terms" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/hasInterestRate
+qtx:hasInterestRate rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf gist:hasMagnitude ;
+                    rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/hasInterestRate" ;
+                    <http://www.w3.org/2004/02/skos/core#prefLabel> "has interest rate" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  https://ontologies.beesondouglas.com/questrade/assessmentDate
+qt:assessmentDate rdf:type owl:DatatypeProperty ;
+                  rdfs:subPropertyOf gist:endDate ;
+                  rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Date on which the value of an investment is reported or assessed." ;
+                  <http://www.w3.org/2004/02/skos/core#prefLabel> "assessment date" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/plannedOccursDate
+qt:plannedOccursDate rdf:type owl:DatatypeProperty ;
+                     rdfs:subPropertyOf gist:atDate ;
+                     <http://www.w3.org/2004/02/skos/core#definition> "The date on which something is planned or expected to occur." ;
+                     <http://www.w3.org/2004/02/skos/core#prefLabel> "planned occurs date" .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/atDate
+gist:atDate rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://ontologies.beesondouglas.com/questrade/Bond
+qt:Bond rdf:type owl:Class ;
+        owl:equivalentClass [ owl:intersectionOf ( gist:FinancialInstrument
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty qt:hasInterestPaymentTerms ;
+                                                     owl:someValuesFrom qt:CouponPaymentTerms
+                                                   ]
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty gist:isCategorizedBy ;
+                                                     owl:hasValue qtx:_MarketableSecurityType_bond
+                                                   ]
+                                                 ) ;
+                              rdf:type owl:Class
+                            ] .
+
+
+###  https://ontologies.beesondouglas.com/questrade/BondCoupon
+qt:BondCoupon rdf:type owl:Class ;
+              rdfs:subClassOf gist:Percentage ;
+              rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondCoupon" ,
+                           "https://www.investopedia.com/terms/c/coupon.asp" ;
+              <http://www.w3.org/2004/02/skos/core#definition> "The annual interest rate on a debt instrument making periodic interest payments to the instrument holder." ;
+              <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Coupon" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/CommonStock
+qt:CommonStock rdf:type owl:Class ;
+               owl:equivalentClass [ owl:intersectionOf ( qt:MarketableSecurity
+                                                          [ rdf:type owl:Restriction ;
+                                                            owl:onProperty gist:isCategorizedBy ;
+                                                            owl:hasValue qtx:_MarketableSecurityType_common_stock
+                                                          ]
+                                                        ) ;
+                                     rdf:type owl:Class
+                                   ] ;
+               rdfs:subClassOf qt:MarketableSecurity ;
+               <http://www.w3.org/2004/02/skos/core#definition> "A general class of securities conferring partial ownership of a corporation to the shareholder." ;
+               <http://www.w3.org/2004/02/skos/core#prefLabel> "Common Stock" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/CouponPayment
+qt:CouponPayment rdf:type owl:Class ;
+                 owl:equivalentClass [ owl:intersectionOf ( gist:Event
+                                                            [ rdf:type owl:Restriction ;
+                                                              owl:onProperty gist:isCategorizedBy ;
+                                                              owl:hasValue qtx:_FinancialBusinessEventType_interestRemittance
+                                                            ]
+                                                          ) ;
+                                       rdf:type owl:Class
+                                     ] ;
+                 rdfs:subClassOf gist:RemittanceEvent ;
+                 rdfs:seeAlso "fibo-sec-dbt-bnd:CouponPayment"^^xsd:anyURI ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "Receipt of a bond interest payment, usually on a fixed schedule." ;
+                 <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/CouponPaymentSchedule
+qt:CouponPaymentSchedule rdf:type owl:Class ;
+                         owl:equivalentClass [ rdf:type owl:Restriction ;
+                                               owl:onProperty gist:hasMember ;
+                                               owl:someValuesFrom qt:CouponPayment
+                                             ] ;
+                         rdfs:subClassOf gist:Collection ;
+                         <http://www.w3.org/2004/02/skos/core#definition> "A series of payments of bond coupons, either planned or past." .
+
+
+###  https://ontologies.beesondouglas.com/questrade/CouponPaymentTerms
+qt:CouponPaymentTerms rdf:type owl:Class ;
+                      rdfs:subClassOf gist:Specification ;
+                      rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/CouponPaymentTerms"^^xsd:anyURI ;
+                      <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment Terms" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/ExchangeTradedFund
+qt:ExchangeTradedFund rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( qt:MarketableSecurity
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty gist:isCategorizedBy ;
+                                                                   owl:hasValue qtx:_MarketableSecurityType_exchange_traded_fund
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf qt:MarketableSecurity ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "A basket security whose value is adjusted continously to track that of a larger index of stocks but which, unlike mutual funds, is traded on a public exchange." .
+
+
+###  https://ontologies.beesondouglas.com/questrade/FixedInterestRate
+qt:FixedInterestRate rdf:type owl:Class ;
+                     rdfs:subClassOf gist:Percentage ,
+                                     gist:ReferenceValue ;
+                     <http://www.w3.org/2004/02/skos/core#prefLabel> "Fixed Interest Rate" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/InvestmentPortfolio
+qt:InvestmentPortfolio rdf:type owl:Class ;
+                       owl:equivalentClass [ owl:intersectionOf ( gist:Collection
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty gist:hasMember ;
+                                                                    owl:someValuesFrom gist:FinancialInstrument
+                                                                  ]
+                                                                ) ;
+                                             rdf:type owl:Class
+                                           ] ;
+                       rdfs:subClassOf gist:Collection ;
+                       <http://www.w3.org/2004/02/skos/core#definition> "A collection of investment accounts that each track an investment asset." ;
+                       <http://www.w3.org/2004/02/skos/core#prefLabel> "Investment Portfolio" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/MarketableSecurity
+qt:MarketableSecurity rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( gist:FinancialInstrument
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty gist:isCategorizedBy ;
+                                                                   owl:someValuesFrom qt:MarketableSecurityType
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty gist:isIdentifiedBy ;
+                                                                   owl:someValuesFrom qt:MarketableSecurityIdentifierType
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf gist:FinancialInstrument ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "An instrument of debt or equity, or options to buy and sell, that may be sold on a market." ;
+                      <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/MarketableSecurityIdentifier
+qt:MarketableSecurityIdentifier rdf:type owl:Class ;
+                                owl:equivalentClass [ owl:intersectionOf ( gist:ID
+                                                                           [ rdf:type owl:Restriction ;
+                                                                             owl:onProperty gist:isCategorizedBy ;
+                                                                             owl:someValuesFrom qt:MarketableSecurityIdentifierType
+                                                                           ]
+                                                                         ) ;
+                                                      rdf:type owl:Class
+                                                    ] ;
+                                <http://www.w3.org/2004/02/skos/core#definition> "An identifier for marketable securities, e.g. CUSIP" ;
+                                <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security Identifier" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/MarketableSecurityIdentifierType
+qt:MarketableSecurityIdentifierType rdf:type owl:Class ;
+                                    rdfs:subClassOf gist:Category ;
+                                    <http://www.w3.org/2004/02/skos/core#definition> "Kinds of IDs used in financial markets, e.g. CUSIP for bonds, exchange symbol for stocks, etc." ;
+                                    <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security Identifier Type" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/MarketableSecurityType
+qt:MarketableSecurityType rdf:type owl:Class ;
+                          rdfs:subClassOf gist:Behavior ;
+                          <http://www.w3.org/2004/02/skos/core#definition> "Kinds of securities include stocks, bonds, etf." ;
+                          <http://www.w3.org/2004/02/skos/core#editorialNote> "Cash is a represented as an instance of Financial Instrument, not Marketable Security, as cash is not \"marketable\" per se." ;
+                          <http://www.w3.org/2004/02/skos/core#prefLabel> "Financial Instrument Type" .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/CurrencyPerDurationUnit
+gist:CurrencyPerDurationUnit rdf:type owl:Class .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/FinancialBusinessEventType
+gist:FinancialBusinessEventType rdf:type owl:Class .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/FinancialInstrument
+gist:FinancialInstrument rdf:type owl:Class ;
+                         <http://www.w3.org/2004/02/skos/core#prefLabel> "Financial Instrument" .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/Percentage
+gist:Percentage rdf:type owl:Class .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/RemittanceEvent
+gist:RemittanceEvent rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  https://ontologies.beesondouglas.com/questrade/_365_day_year
+qt:_365_day_year rdf:type owl:NamedIndividual ,
+                          gist:DurationUnit ;
+                 gist:hasBaseUnit gist:_day ;
+                 <http://www.w3.org/2004/02/skos/core#definition> "One year defined as exactly 365 24-hour days (not 365.25)." ;
+                 <http://www.w3.org/2004/02/skos/core#prefLabel> "365-day year" ;
+                 gist:conversionFactor 365 ;
+                 gist:unitSymbol "yr" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_CurrencyPerDurationUnit_CADPerDay
+qt:_CurrencyPerDurationUnit_CADPerDay rdf:type owl:NamedIndividual ,
+                                               gist:CurrencyPerDurationUnit ;
+                                      gist:hasDenominator gist:_one_day ;
+                                      gist:hasNumerator qtx:_CADollar_ ;
+                                      <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_CurrencyPerDurationUnit_CADPerYear
+qt:_CurrencyPerDurationUnit_CADPerYear rdf:type owl:NamedIndividual ,
+                                                gist:CurrencyPerDurationUnit ;
+                                       gist:hasDenominator qt:_365_day_year ;
+                                       gist:hasNumerator qtx:_CADollar_ ;
+                                       <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_RatioUnit_annualInterestRate
+qt:_RatioUnit_annualInterestRate rdf:type owl:NamedIndividual ,
+                                          gist:RatioUnit ;
+                                 gist:hasDenominator qt:_CurrencyPerDurationUnit_CADPerYear ;
+                                 gist:hasNumerator qt:_CurrencyPerDurationUnit_CADPerYear ;
+                                 <http://www.w3.org/2004/02/skos/core#definition> """interest rate = 1 - (principal amount + interest amount for the time period) / principal amount)
+
+interest amount for one period = interest rate for one period * principal amount""" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_RatioUnit_dailyInterestRate
+qt:_RatioUnit_dailyInterestRate rdf:type owl:NamedIndividual ,
+                                         gist:RatioUnit ;
+                                gist:hasDenominator qt:_CurrencyPerDurationUnit_CADPerDay ;
+                                gist:hasNumerator qt:_CurrencyPerDurationUnit_CADPerDay ;
+                                <http://www.w3.org/2004/02/skos/core#definition> """interest rate = 1 - (principal amount + interest amount for the time period) / principal amount)
+
+interest amount for one period = interest rate for one period * principal amount""" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_RatioUnit_monetaryPerMonetary
+qt:_RatioUnit_monetaryPerMonetary rdf:type owl:NamedIndividual ,
+                                           gist:CoherentRatioUnit ;
+                                  gist:hasDenominator gist:_USDollar ;
+                                  gist:hasNumerator gist:_USDollar ;
+                                  <http://www.w3.org/2004/02/skos/core#definition> "Amount of money per amount of money, as a percentage." ;
+                                  gist:conversionFactor 0.01 .
+
+
+###  https://ontologies.beesondouglas.com/questrade/_RatioUnit_totalInvestmentReturnRate
+qt:_RatioUnit_totalInvestmentReturnRate rdf:type owl:NamedIndividual ,
+                                                 gist:RatioUnit ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Percentage return on an investment from purchase to today." ;
+                                        <http://www.w3.org/2004/02/skos/core#prefLabel> "total investment return rate" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_annualInterestRate
+qtx:_Aspect_annualInterestRate rdf:type owl:NamedIndividual ,
+                                        gist:Aspect ;
+                               rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                               <http://www.w3.org/2004/02/skos/core#definition> "Amount of interest as a percentage value for one year. There is no specific or particular meaning of \"year\" implied here." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_debtInterestAmount
+qtx:_Aspect_debtInterestAmount rdf:type owl:NamedIndividual ,
+                                        gist:Aspect ;
+                               rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                               <http://www.w3.org/2004/02/skos/core#definition> "Interest received or paid for a debt (e.g. bond)." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_debtPrincipalAmount
+qtx:_Aspect_debtPrincipalAmount rdf:type owl:NamedIndividual ,
+                                         gist:Aspect ;
+                                rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                <http://www.w3.org/2004/02/skos/core#definition> "The amount of money representing the principal of a debt, e.g. a bond face value." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_debtPrincipalRepaymentAmount
+qtx:_Aspect_debtPrincipalRepaymentAmount rdf:type owl:NamedIndividual ,
+                                                  gist:Aspect ;
+                                         rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                         <http://www.w3.org/2004/02/skos/core#definition> "Amount repaid on the principal of a debt." ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "debt principal repayment amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_depositAmount
+qtx:_Aspect_depositAmount rdf:type owl:NamedIndividual ,
+                                   gist:Aspect ;
+                          rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                          <http://www.w3.org/2004/02/skos/core#definition> "An amount of money deposited to an account." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityPositionCostAmount
+qtx:_Aspect_securityPositionCostAmount rdf:type owl:NamedIndividual ,
+                                                gist:Aspect ;
+                                       rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                       <http://www.w3.org/2004/02/skos/core#definition> "Price paid for all shares, including fees, of a security." ;
+                                       <http://www.w3.org/2004/02/skos/core#prefLabel> "security position cost amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityPositionPercentPortfolio
+qtx:_Aspect_securityPositionPercentPortfolio rdf:type owl:NamedIndividual ,
+                                                      gist:Aspect ;
+                                             rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                             <http://www.w3.org/2004/02/skos/core#definition> "The value of a security position as a percentage of the total portfolio's value." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityPositionProfitAmount
+qtx:_Aspect_securityPositionProfitAmount rdf:type owl:NamedIndividual ,
+                                                  gist:Aspect ;
+                                         rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                         <http://www.w3.org/2004/02/skos/core#definition> "Value of the current security position less its initial cost." ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "security position profit amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityPositionReturnRatio
+qtx:_Aspect_securityPositionReturnRatio rdf:type owl:NamedIndividual ,
+                                                 gist:Aspect ;
+                                        rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Value of an security position divided by its cost." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityPositionValueAmount
+qtx:_Aspect_securityPositionValueAmount rdf:type owl:NamedIndividual ,
+                                                 gist:Aspect ;
+                                        rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Assessed value of a position in a security." ;
+                                        <http://www.w3.org/2004/02/skos/core#prefLabel> "security position value amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityShareAmount
+qtx:_Aspect_securityShareAmount rdf:type owl:NamedIndividual ,
+                                         gist:Aspect ;
+                                rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                <http://www.w3.org/2004/02/skos/core#definition> "The number (may be fractional) of shares in a security, owned, sold, referred to, etc." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityShareDividendAmount
+qtx:_Aspect_securityShareDividendAmount rdf:type owl:NamedIndividual ,
+                                                 gist:Aspect ;
+                                        rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Monetary amount of a dividend paid on shares of common stock or an ETF." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securitySharePurchaseGrossAmount
+qtx:_Aspect_securitySharePurchaseGrossAmount rdf:type owl:NamedIndividual ,
+                                                      gist:Aspect ;
+                                             <http://www.w3.org/2004/02/skos/core#definition> <http://ontologies.beesondouglas.com/o/questrade> ,
+                                                                                              "Share unit price multiplied by number of shares purchased." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securitySharePurchaseNetAmount
+qtx:_Aspect_securitySharePurchaseNetAmount rdf:type owl:NamedIndividual ,
+                                                    gist:Aspect ;
+                                           rdfs:seeAlso <http://ontologies.beesondouglas.com/o/questrade> ;
+                                           <http://www.w3.org/2004/02/skos/core#definition> "Share unit price multiplied by number of shares purchased, plus commission fees." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityShareUnitPriceAmount
+qtx:_Aspect_securityShareUnitPriceAmount rdf:type owl:NamedIndividual ,
+                                                  gist:Aspect ;
+                                         rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                         <http://www.w3.org/2004/02/skos/core#definition> "Price paid for one share of a security." ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "security share unit price amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTransactionCommission
+qtx:_Aspect_securityTransactionCommission rdf:type owl:NamedIndividual ,
+                                                   gist:Aspect ;
+                                          rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                          <http://www.w3.org/2004/02/skos/core#definition> "Fee assessed for security transactions such as buying, selling, or transferring." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_CADollar_
+qtx:_CADollar_ rdf:type owl:NamedIndividual ,
+                        gist:CurrencyUnit ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
+               <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
+               gist:unitSymbol "CAD" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_assetMerger
+qtx:_FinancialBusinessEventType_assetMerger rdf:type owl:NamedIndividual ,
+                                                     gist:FinancialBusinessEventType ;
+                                            rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                            <http://www.w3.org/2004/02/skos/core#definition> "Asset mergers may result in shares of one asset being replaced by shares of another asset." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_debtPrincipalRepayment
+qtx:_FinancialBusinessEventType_debtPrincipalRepayment rdf:type owl:NamedIndividual ,
+                                                                gist:FinancialBusinessEventType ;
+                                                       rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                                       <http://www.w3.org/2004/02/skos/core#definition> "Some or part of the principal of a debt is repaid." ;
+                                                       <http://www.w3.org/2004/02/skos/core#example> "Repayment in full of a bond at maturity would be represented by this event type." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_dividendRemittance
+qtx:_FinancialBusinessEventType_dividendRemittance rdf:type owl:NamedIndividual ,
+                                                            gist:FinancialBusinessEventType ;
+                                                   rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                                   <http://www.w3.org/2004/02/skos/core#definition> "The remittance of money from an asset dividend, e.g. a stock dividend." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_exchangeCurrency
+qtx:_FinancialBusinessEventType_exchangeCurrency rdf:type owl:NamedIndividual ,
+                                                          gist:FinancialBusinessEventType ;
+                                                 rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                                 <http://www.w3.org/2004/02/skos/core#definition> "Changing US dollars into Canadian dollars, for example." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_interestRemittance
+qtx:_FinancialBusinessEventType_interestRemittance rdf:type owl:NamedIndividual ,
+                                                            gist:FinancialBusinessEventType ;
+                                                   rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                                   <http://www.w3.org/2004/02/skos/core#definition> "The receipt of interest money from a loan or security." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialInstrument_cash
+qtx:_FinancialInstrument_cash rdf:type owl:NamedIndividual ,
+                                       gist:FinancialInstrument ;
+                              gist:isCategorizedBy qtx:_MarketableSecurityType_cash ;
+                              <http://www.w3.org/2004/02/skos/core#prefLabel> "cash" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityIdentifierType_cusip
+qtx:_MarketableSecurityIdentifierType_cusip rdf:type owl:NamedIndividual ,
+                                                     qt:MarketableSecurityIdentifierType ;
+                                            rdfs:seeAlso "https://en.wikipedia.org/wiki/CUSIP"^^xsd:anyURI ;
+                                            <http://www.w3.org/2004/02/skos/core#definition> "A CUSIP (/ˈkjuːsɪp/) is a nine-character numeric or alphanumeric code (e.g. 037833100 for Apple) that uniquely identifies a North American financial security for the purposes of facilitating clearing and settlement of trades. (Wikipedia)" ;
+                                            <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security ID Type: CUSIP" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityIdentifierType_qtBondId
+qtx:_MarketableSecurityIdentifierType_qtBondId rdf:type owl:NamedIndividual ,
+                                                        qt:MarketableSecurityIdentifierType ;
+                                               <http://www.w3.org/2004/02/skos/core#definition> "ID used by Questrade to identify bonds." ;
+                                               <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security ID Type: QT Bond ID" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityIdentifierType_tickerSymbol
+qtx:_MarketableSecurityIdentifierType_tickerSymbol rdf:type owl:NamedIndividual ,
+                                                            qt:MarketableSecurityIdentifierType ;
+                                                   <http://www.w3.org/2004/02/skos/core#prefLabel> "Marketable Security ID Type : ticker symbol" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityType_bond
+qtx:_MarketableSecurityType_bond rdf:type owl:NamedIndividual ,
+                                          qt:MarketableSecurityType .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityType_cash
+qtx:_MarketableSecurityType_cash rdf:type owl:NamedIndividual .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityType_common_stock
+qtx:_MarketableSecurityType_common_stock rdf:type owl:NamedIndividual ,
+                                                  qt:MarketableSecurityType .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityType_exchange_traded_fund
+qtx:_MarketableSecurityType_exchange_traded_fund rdf:type owl:NamedIndividual ,
+                                                          qt:MarketableSecurityType .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/_one_day
+gist:_one_day rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/_one_millisecond
+gist:_one_millisecond rdf:type owl:NamedIndividual .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/_one_minute
+gist:_one_minute rdf:type owl:NamedIndividual .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( qtx:_CADollar_
+                        gist:_USDollar
+                        gist:_kelvin
+                        gist:_kilogram
+                        gist:_meter
+                        gist:_millisecond
+                        gist:_minute
+                        gist:_mole
+                        gist:_one_day
+                        gist:_one_millisecond
+                        gist:_one_minute
+                        gist:_second
+                      )
+] .
+
+
+###  Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi

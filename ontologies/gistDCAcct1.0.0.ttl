@@ -1,0 +1,805 @@
+@prefix gist: <https://w3id.org/semanticarts/ns/ontology/gist/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+gist:AllocationEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_allocation ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An event that triggers the allocation of expenses."^^xsd:string ;
+    skos:prefLabel "Allocation Event"^^xsd:string ;
+    skos:scopeNote "This is typically a recurring process."^^xsd:string .
+
+gist:BudgetTransaction a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialTransaction [ a owl:Restriction ;
+                        owl:onProperty gist:hasGoal ;
+                        owl:someValuesFrom gist:Intention ] [ a owl:Restriction ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:someValuesFrom gist:DegreeOfCommitment ] ) ] ;
+    skos:definition "The atomic unit of a budget. Each transaction is one internal commitment, which may be delegated."^^xsd:string ;
+    skos:prefLabel "Budget Transaction"^^xsd:string .
+
+gist:CommitmentTransaction a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:hasMagnitude ;
+                        owl:someValuesFrom gist:Monetary ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:AccountingPolicy ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( gist:PurchaseEvent gist:SalesEvent ) ] ] [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:isAffectedBy ] ;
+                        owl:someValuesFrom gist:Balance ] ) ] ;
+    skos:definition "Changes the balance of a commitment, whether it be for ourselves or others."^^xsd:string ;
+    skos:prefLabel "Commitment Transaction"^^xsd:string .
+
+gist:DueInAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:CounterpartyAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasDeliveryObligation ;
+                        owl:someValuesFrom gist:NotUs ] ) ] ;
+    skos:definition "An account that comes into existence when we commit to purchase something that isn't delivered immediately."^^xsd:string ;
+    skos:prefLabel "Due In Account"^^xsd:string .
+
+gist:DueOutAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:CounterpartyAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasDeliveryObligation ;
+                        owl:someValuesFrom gist:Us ] ) ] ;
+    skos:altLabel "Obligation To Deliver Account"^^xsd:string ;
+    skos:definition "An account that comes into existence when we commit to providing a product or service at some point in the future."^^xsd:string ;
+    skos:prefLabel "Due Out Account"^^xsd:string .
+
+gist:FinancialBalance a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Monetary ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Monetary [ a owl:Restriction ;
+                        owl:onProperty gist:endDate ;
+                        owl:someValuesFrom xsd:dateTime ] ) ] ;
+    skos:definition "Any of several specially named financial balances, each having its own significance."^^xsd:string ;
+    skos:example """Major balance types:
+Order to Cash:
+- Obligation to Deliver
+- Delivered
+- Right to Receive Payment
+- Invoiced
+- Payment Received
+- Deposited
+Procure to Pay:
+- Obligation to Pay
+- Right to Receive
+- Received
+- Billed
+- Paid
+Make:
+- Plan to Make
+- Resource Consumed
+- Completed
+Resource Consumption:
+- Resource Available
+- Resource Consumed"""^^xsd:string ;
+    skos:prefLabel "Financial Balance"^^xsd:string ;
+    skos:scopeNote "These balances are affected by financial transactions. Each financial transaction affects a balance, resulting in an updated balance."^^xsd:string .
+
+gist:FineOrFeeEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_fine_or_fee ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A financial penalty where there is no a priori agreement therefore no obligations to track."^^xsd:string ;
+    skos:prefLabel "Fine or Fee Event"^^xsd:string .
+
+gist:FulfillmentTransaction a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:hasMagnitude ;
+                        owl:someValuesFrom gist:Monetary ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:AccountingPolicy ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( gist:FinancialTransferEvent gist:PaymentEvent gist:ReceiptAcknowledgement gist:ReceiptEvent gist:RemittanceEvent ) ] ] [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:isAffectedBy ] ;
+                        owl:someValuesFrom gist:Balance ] ) ] ;
+    skos:definition "A transaction that fulfills payment or delivery obligations."^^xsd:string ;
+    skos:prefLabel "Fulfillment Transaction"^^xsd:string .
+
+gist:IncomeStatement a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "A financial report dealing with money coming into an account or fund over a period of time."^^xsd:string ;
+    skos:prefLabel "Income Statement"^^xsd:string ;
+    skos:scopeNote "While some of the other flow statements can be derived from the event type, the income statement cannot. It is the event plus the context plus the accounting policy that determines which transactions hit the income statement."^^xsd:string .
+
+gist:InvestmentAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:AssetsHeldAwayAccount ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:AssetsHeldAwayAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasPositionIn ;
+                        owl:someValuesFrom gist:FinancialInstrument ] ) ] ;
+    skos:definition "An account where stocks and other investments are held."^^xsd:string ;
+    skos:prefLabel "Investment Account"^^xsd:string ;
+    skos:scopeNote "Each position might be an account, and what we traditionally call an investment account might just be the collection of them."^^xsd:string .
+
+gist:MakeToOrder a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessProcess [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessProcessType_make_to_order ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An FBP that runs from production order, through resource consumption to finished goods."^^xsd:string ;
+    skos:editorialNote "Is this needed?"^^xsd:string ;
+    skos:prefLabel "Make to Order"^^xsd:string .
+
+gist:NonTemporalResourceAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:ResourceAccount ;
+    skos:definition "An account tracking a resource that can be consumed all at once."^^xsd:string ;
+    skos:prefLabel "Non-temporal Resource Account"^^xsd:string ;
+    skos:scopeNote "A non-temporal resource may be, but does not have to be, consumed all at once. If you have 100 pounds of chocolate, you can use them all up all at once, in a large batch of cookies. You could also dole them out a pound a week in the cafeteria, but it is the potential to acquire and consume them instantaneously that defines them."^^xsd:string,
+        "The primary types of non-temporal resources are inventory and cash.  Work in process (WIP) inventory is a special kind of inventory.  We can apply resources to WIP, either temporally (labor and equipment) or non-temporally (raw materials) but its nature as inventory means that it can be consumed instantly.  On the other hand, if the work in process is building equipment or real estate for internal use, it can, on completion, be considered a temporal resource."^^xsd:string,
+        "The temporalness of a resource is independent of whether you own it or not.  If you rent a piece of equipment, you should treat it as a temporal resource for the period of your rental.  From the standpoint of consuming resources, it doesn't matter whether you own it or not."^^xsd:string .
+
+gist:ObligationToPay a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:CounterpartyAccount ;
+    skos:editorialNote "Could use help with making a definition for this."^^xsd:string,
+        "Should there also be a gist:ObligationToDelivery. There currently isn't one."^^xsd:string ;
+    skos:prefLabel "Obligation to Pay"^^xsd:string .
+
+gist:ObligationTransaction a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:hasMagnitude ;
+                        owl:someValuesFrom gist:Monetary ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:AccountingPolicy ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( gist:BillEvent gist:DeliveryEvent gist:InvoiceEvent gist:ShipmentNotification ) ] ] [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:isAffectedBy ] ;
+                        owl:someValuesFrom gist:Balance ] ) ] ;
+    skos:definition "A transaction that changes the balance of at least one obligation. This could be financial or delivery, customer or supplier."^^xsd:string ;
+    skos:prefLabel "Obligation Transaction"^^xsd:string .
+
+gist:OrderToCash a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessProcess [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessProcessType_order_to_cash ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An FBP that runs at least from sales order to delivery, invoicing and remittance."^^xsd:string ;
+    skos:editorialNote "Is this needed?"^^xsd:string ;
+    skos:prefLabel "Order to Cash"^^xsd:string .
+
+gist:PayeeAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:CounterpartyAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasPayee ;
+                        owl:someValuesFrom gist:NotUs ] ) ] ;
+    skos:altLabel "Account Payable"^^xsd:string,
+        "Payable Account"^^xsd:string ;
+    skos:definition "An account that comes into existence when another party grants us credit; that is, allows us to pay later for some current commitment."^^xsd:string ;
+    skos:prefLabel "Payee Account"^^xsd:string .
+
+gist:PayorAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:CounterpartyAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasPayor ;
+                        owl:someValuesFrom gist:NotUs ] ) ] ;
+    skos:altLabel "Account Receivable"^^xsd:string,
+        "Financial Receivable Account"^^xsd:string ;
+    skos:definition "An account that comes into existence when we agree to accept payment at some later time, granting another party \"credit\"."^^xsd:string ;
+    skos:prefLabel "Payor Account"^^xsd:string .
+
+gist:ProcureToPay a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessProcess [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessProcessType_procure_to_pay ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An FBP that runs at least from purchase order committment, through receipt, billing and payment."^^xsd:string ;
+    skos:editorialNote "Is this needed?"^^xsd:string ;
+    skos:prefLabel "Procure to Pay"^^xsd:string .
+
+gist:ProductLine a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "A way of categorizing product offerings and product specifications for the purpose of financial reporting."^^xsd:string ;
+    skos:prefLabel "Product Line"^^xsd:string .
+
+gist:ProductionOrder a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Commitment [ a owl:Restriction ;
+                        owl:hasValue gist:_Commitment_production_order ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An internal document stating materials/goods to be produced and the timeframe to produce them within."^^xsd:string ;
+    skos:prefLabel "Production Order"^^xsd:string .
+
+gist:PurchaseOrder a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Commitment [ a owl:Restriction ;
+                        owl:hasValue gist:_Commitment_purchase_order ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A buyer's commitment to make a purchase at a set price. Becomes a contract once the seller accepts."^^xsd:string ;
+    skos:prefLabel "Purchase Order"^^xsd:string .
+
+gist:ResourceConsumptionEvent rdfs:subClassOf gist:FinancialBusinessEvent .
+
+gist:ResourceRenewalEvent rdfs:subClassOf gist:FinancialBusinessEvent .
+
+gist:ResourceReservationEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_resource_reservation ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The holding/allocating some resource toward the achievement of some future objective."^^xsd:string ;
+    skos:example "Hiring a person to get x hours of labor; the putting aside of chocolate for a future batch of chocolate chip cookie dough."^^xsd:string ;
+    skos:prefLabel "Resource Reservation Event"^^xsd:string ;
+    skos:scopeNote "The target of the resource consumption is either a goal (expense category) or some form of work in progress (such as a production work order, or a construction project, or a consulting project)."^^xsd:string .
+
+gist:ResourceSchedulingEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_resource_scheduling ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The allocation of some resource to be used at a planned time toward the achievement of some objective."^^xsd:string ;
+    skos:example "A time card entry; the addition of chocolate to the chocolate chip cookie dough."^^xsd:string ;
+    skos:prefLabel "Resource Scheduling Event"^^xsd:string ;
+    skos:scopeNote "The target of the resource consumption is either a goal (expense category) or some form of work in progress (such as a production work order, or a construction project, or a consulting project)."^^xsd:string .
+
+gist:RevaluationEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_revaluation ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The adjustment of the valuation of an asset."^^xsd:string ;
+    skos:example "Write off, Mark to Market"^^xsd:string ;
+    skos:prefLabel "Revaluation Event"^^xsd:string .
+
+gist:RightToReceivePayment a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:CounterpartyAccount ;
+    skos:editorialNote "Could use help with making a definition for this."^^xsd:string ;
+    skos:prefLabel "Right to Receive Payment"^^xsd:string .
+
+gist:SalesOrder a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Commitment [ a owl:Restriction ;
+                        owl:hasValue gist:_Commitment_sales_order ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A seller's internal documentation of a buyer's order."^^xsd:string ;
+    skos:prefLabel "Sales Order"^^xsd:string .
+
+gist:SupplierType a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "A way of categorizing suppliers for the purpose of financial reporting."^^xsd:string ;
+    skos:example "Wages, subcontractor, raw material supplier, professional services supplier."^^xsd:string ;
+    skos:prefLabel "Supplier Type"^^xsd:string ;
+    skos:scopeNote "These distinctions often cause expenses to land in different lines on the income statement."^^xsd:string .
+
+gist:_AccountingScope_direct a gist:AccountingScope ;
+    skos:definition "Expenses related to providing goods or services."^^xsd:string ;
+    skos:example "Goods, materials, labor for production"^^xsd:string ;
+    skos:prefLabel "Direct"^^xsd:string .
+
+gist:_AccountingScope_indirect a gist:AccountingScope ;
+    skos:definition "Expenses related to running a company."^^xsd:string ;
+    skos:example "Rent, utilities"^^xsd:string ;
+    skos:prefLabel "Indirect"^^xsd:string .
+
+gist:_AccountingScope_non_operational a gist:AccountingScope ;
+    skos:definition "Expenses not related to core operations."^^xsd:string ;
+    skos:prefLabel "Non-Operational"^^xsd:string .
+
+gist:_FinancialBusinessEventType_resource_renewal a gist:FinancialBusinessEventType ;
+    skos:definition "The acknowledgement (typically recurring) that a resource is available for some period of time."^^xsd:string ;
+    skos:prefLabel "Resource Renewal"^^xsd:string .
+
+gist:_IncomeStatementSection_accrual a gist:IncomeStatementSection ;
+    skos:definition "Money that accumulates over time."^^xsd:string ;
+    skos:prefLabel "Accrual"^^xsd:string .
+
+gist:_IncomeStatementSection_budget a gist:IncomeStatementSection ;
+    skos:definition "Money or other resources set aside for a specific task or goal."^^xsd:string ;
+    skos:prefLabel "Budget"^^xsd:string .
+
+gist:_IncomeStatementSection_cash a gist:IncomeStatementSection ;
+    skos:definition "Liquid assets."^^xsd:string ;
+    skos:prefLabel "Cash"^^xsd:string .
+
+gist:_IncomeStatementSection_commit a gist:IncomeStatementSection ;
+    skos:definition "Revenue expected - such as from a recurring monthly subscription - but not necessarily received."^^xsd:string ;
+    skos:editorialNote "Double-check definition to ensure it is correct for this context."^^xsd:string ;
+    skos:prefLabel "Commit"^^xsd:string .
+
+gist:committedBalance a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "An account balance that represent sums that have been committed."^^xsd:string ;
+    skos:prefLabel "Committed Balance"^^xsd:string ;
+    skos:scopeNote """Typically in the form of a purchase order or a sales order. Hiring and borrowing also lead to commitments.
+
+Note that a purchase order gives rise to two commitments, the commitment to pay and the commitment to delivery. The sales order does the same two commitments, but with the roles and direction reversed."""^^xsd:string .
+
+gist:fulfilledBalance a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "The is the balance of transactions that have fulfilled the related commitments and obligations."^^xsd:string ;
+    skos:example "In the case of an obligation to pay, the fulfillment is the payment. In the case of an obligation to deliver, the fulfillment is the delivery."^^xsd:string ;
+    skos:prefLabel "Fulfilled Balance"^^xsd:string .
+
+gist:hasBeneficialOwner a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates an asset to its beneficial owner."^^xsd:string ;
+    skos:prefLabel "has beneficial owner"^^xsd:string ;
+    skos:scopeNote "With everyday objects this is immediate. Some long term assets, such as trusts or the residual interest in a property, may be encumbered in the short term, but have interest in the long term. From a practical perspective, owning shares in a company short of controlling interest provide a beneficial ownership with no possession or control."^^xsd:string .
+
+gist:hasBudget a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates a task or goal to the funds and resources set aside for it."^^xsd:string ;
+    skos:prefLabel "has budget"^^xsd:string .
+
+gist:hasBudgetTransaction a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:hasMember ;
+    skos:definition "Links a particular budget (we call it the budget statement) with the budget transactions and predictions that make it up."^^xsd:string ;
+    skos:prefLabel "has budget transaction"^^xsd:string .
+
+gist:hasCurrentBalance a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:hasMagnitude ;
+    skos:definition "Points to the most recent balance on an account."^^xsd:string ;
+    skos:prefLabel "has current balance"^^xsd:string .
+
+gist:hasObligatedBalance a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates the amount of a resource that is outstanding (committed but not delivered/fulfilled) to its transaction."^^xsd:string ;
+    skos:example "Receiving a bill, preparing an invoice, delivering a good or service, or being notified that a shipment is on its way. Also the recording of resource consumption is an obligation."^^xsd:string ;
+    skos:prefLabel "has obligated balance"^^xsd:string ;
+    skos:scopeNote "Receiving a bill creates an obligation for cash-to-be-paid. This is then fulfilled when the bill is paid."^^xsd:string .
+
+gist:hasRecognizedFinancialActivity a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:range gist:FinancialTransaction ;
+    rdfs:subPropertyOf gist:hasMember ;
+    skos:definition "The result of the accounting policy applied to business events and financial transactions. Being \"recognized\" means that this transaction will be reflected in the income statement."^^xsd:string ;
+    skos:prefLabel "has recognized financial activity"^^xsd:string ;
+    skos:scopeNote "In accrual circumstances, an invoice might be sufficient to consider a transaction to be reflected in the income statement."^^xsd:string,
+        "While some of the other flow statements can be derived from the event type, the income statement cannot. It is the event plus the context plus the accounting policy that determines which transactions hit the income statement."^^xsd:string .
+
+gist:hasScope a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:range gist:AccountingScope ;
+    skos:definition "Relates a business event to its intent."^^xsd:string ;
+    skos:prefLabel "has scope"^^xsd:string ;
+    skos:scopeNote "Each financial event and transaction must be within some scope for the enterprise in order for the accouting policy to work."^^xsd:string .
+
+gist:isControlledBy a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates an owned object to the entity that has control over decisions related to it."^^xsd:string ;
+    skos:example "A trustee has control of the assets in a trust without owning them; similarly for a managed investment account. This is the essence of usufructous ownership rights that you would get through, e.g., a lease, where you have control over the leased property through the course of the lease, without having the ultimate beneficial ownership."^^xsd:string ;
+    skos:prefLabel "is controlled by"^^xsd:string .
+
+gist:isEncumberedBy a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates an asset or property to a claim a third party (not the owner) has on it."^^xsd:string ;
+    skos:example "A mortgage is an encumbrance on a home. Other examples include liens and pledges."^^xsd:string ;
+    skos:prefLabel "is encumbered by"^^xsd:string ;
+    skos:scopeNote "The enjoyment of beneficial ownership of an asset may be restricted by other parties' interests."^^xsd:string .
+
+gist:isRecognizedOn a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Relates an accounting policy to the part of the income statement where the event will be recognized."^^xsd:string ;
+    skos:prefLabel "is recognized on"^^xsd:string .
+
+gist:isRenewedBy a owl:ObjectProperty ;
+    rdfs:domain gist:TemporalResourceAccount ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:range gist:Balance ;
+    skos:definition "Relates a temporal resource to the purchase or renewal of that resource."^^xsd:string ;
+    skos:example "The renewal of a lease (that is, purchasing the space for another month). The renewal of a car rental."^^xsd:string ;
+    skos:prefLabel "is renewed by"^^xsd:string .
+
+gist:isSuppliedBy a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "The third party that has or will supply a product or a service. In the future, this will be mediated by a due-in account."^^xsd:string ;
+    skos:prefLabel "is supplied by"^^xsd:string .
+
+gist:isSuppliedTo a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "The counter party to whom we will be, or have, delivered a product or service."^^xsd:string ;
+    skos:prefLabel "is supplied to"^^xsd:string .
+
+gist:postingDate a owl:DatatypeProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:atDate ;
+    skos:definition "The dateTime of when an Event or Transaction was entered into the database."^^xsd:string ;
+    skos:editorialNote "duplicate of gist:isRecordedAt?"^^xsd:string ;
+    skos:prefLabel "posting dateTime"^^xsd:string .
+
+gist:startDate a owl:DatatypeProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:atDate ;
+    skos:definition "The date something started, with precison of one day and ambiguous as to planned vs. actual. For use with accounting."^^xsd:string ;
+    skos:prefLabel "start date"^^xsd:string .
+
+gist:BillEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_bill ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The receipt of a bill from a payee."^^xsd:string ;
+    skos:prefLabel "Bill Event"^^xsd:string .
+
+gist:DeliveryEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_delivery ;
+                        owl:onProperty gist:isCategorizedBy ] [ a owl:Restriction ;
+                        owl:onProperty gist:goesToAgent ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( gist:Organization gist:Person ) ] ] ) ] ;
+    skos:definition "Delivery of a product or service to a customer."^^xsd:string ;
+    skos:prefLabel "Delivery Event"^^xsd:string .
+
+gist:FinancialInstrument a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:seeAlso <https://www.iasplus.com/en/standards/ias/ias32> ;
+    rdfs:subClassOf gist:Specification ;
+    skos:definition "'A contract that gives rise to a financial asset of one entity and a financial liability or equity instrument of another entity.'"^^xsd:string ;
+    skos:prefLabel "Financial Instrument"^^xsd:string .
+
+gist:FinancialTransferEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_financial_transfer ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A transfer event that moves money from one account to another without changing ownership."^^xsd:string ;
+    skos:prefLabel "Financial Transfer Event"^^xsd:string ;
+    skos:scopeNote "If a transfer involves change of ownership of the funds, that is instead a payment."^^xsd:string .
+
+gist:InvoiceEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_invoice ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An event that marks the creation and communication of an invoice to a payor."^^xsd:string ;
+    skos:prefLabel "Invoice Event"^^xsd:string .
+
+gist:PurchaseEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_purchase ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A commitment to buy something."^^xsd:string ;
+    skos:prefLabel "Purchase Event"^^xsd:string .
+
+gist:ReceiptAcknowledgement a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_receipt_acknowledgement ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The acknowlegement from a customer that the goods or services were received and they were satisfactory (having gone through whatever quality control process they employ)."^^xsd:string ;
+    skos:prefLabel "Receipt Acknowledgement"^^xsd:string .
+
+gist:ReceiptEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_receipt ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "Receipt of a product or service from a supplier."^^xsd:string ;
+    skos:prefLabel "Receipt Event"^^xsd:string .
+
+gist:RemittanceEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_remittance ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "Transmission of payment, either by check, cash, or direct deposit."^^xsd:string ;
+    skos:prefLabel "Remittance Event"^^xsd:string .
+
+gist:SalesEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_sale ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The actual commitment on the part of a customer for a product or service."^^xsd:string ;
+    skos:prefLabel "Sales Event"^^xsd:string .
+
+gist:ShipmentNotification a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_shipment_notification ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "Notification from a supplier that goods have been shipped."^^xsd:string ;
+    skos:prefLabel "Shipment Notification"^^xsd:string .
+
+gist:TemporalResourceAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:ResourceAccount ;
+    skos:definition "A temporal resource is one that can only be consumed and replenished over time.  For instance, a laborer can only work at the rate of one hour per hour.  If they did no useful work all week, they can't suddenly apply all 40 hours they haven't used to a task late Friday afternoon. Equipment, real estate, and labor are the main temporal resources. Every morning your concrete truck replenishes itself and is ready to provide another days worth of use. A licensed (or capitalized) software product should be considered a temporal resource that is used over time."^^xsd:string ;
+    skos:prefLabel "Temporal Resource Account"^^xsd:string ;
+    skos:scopeNote "Goodwill is a form of temporal account, as the value is amortized over time, but really its mostly an accounting fiction, as there is no actual resource that can be applied to any goal."^^xsd:string,
+        "Note that while the temporal resource has a 'balance,' this is as of the end date of the last known transaction. When interrogated about its balance as of a particular point in time, the temporal resource account needs to calculate the balances based on the flows."^^xsd:string .
+
+gist:_Commitment_production_order a gist:Commitment ;
+    skos:definition "An internal document stating materials/goods to be produced and the timeframe to produce them within."^^xsd:string ;
+    skos:prefLabel "Production Order"^^xsd:string .
+
+gist:_Commitment_purchase_order a gist:Commitment ;
+    skos:definition "A buyer's commitment to make a purchase at a set price. Becomes a contract once the seller accepts."^^xsd:string ;
+    skos:prefLabel "Purchase Order"^^xsd:string .
+
+gist:_Commitment_sales_order a gist:Commitment ;
+    skos:definition "A seller's internal documentation of a buyer's order."^^xsd:string ;
+    skos:prefLabel "Sales Order"^^xsd:string .
+
+gist:_FinancialBusinessEventType_allocation a gist:FinancialBusinessEventType ;
+    skos:definition "The setting aside of a portion of a resource for a specific purpose."^^xsd:string ;
+    skos:prefLabel "Allocation"^^xsd:string .
+
+gist:_FinancialBusinessEventType_bill a gist:FinancialBusinessEventType ;
+    skos:definition "A record of goods sold or services rendered, with the cost."^^xsd:string ;
+    skos:editorialNote "Double-check this definition. What is the difference between 'invoice' and 'bill'?"^^xsd:string ;
+    skos:prefLabel "Bill"^^xsd:string .
+
+gist:_FinancialBusinessEventType_financial_transfer a gist:FinancialBusinessEventType ;
+    skos:definition "Movement of money between two accounts that are both owned by the same party."^^xsd:string ;
+    skos:prefLabel "Financial Transfer"^^xsd:string .
+
+gist:_FinancialBusinessEventType_fine_or_fee a gist:FinancialBusinessEventType ;
+    skos:definition "A financial penalty with no a priori agreement therefore no obligations to track."^^xsd:string ;
+    skos:prefLabel "Fine or Fee"^^xsd:string .
+
+gist:_FinancialBusinessEventType_invoice a gist:FinancialBusinessEventType ;
+    skos:definition "A communication to a customer of how much they owe for a product we have provided or service we have rendered."^^xsd:string ;
+    skos:editorialNote "Double-check this definition. What is the difference between 'invoice' and 'bill'?"^^xsd:string ;
+    skos:prefLabel "Invoice"^^xsd:string .
+
+gist:_FinancialBusinessEventType_purchase a gist:FinancialBusinessEventType ;
+    skos:definition "A commitment to buy something."^^xsd:string ;
+    skos:prefLabel "Purchase"^^xsd:string .
+
+gist:_FinancialBusinessEventType_receipt a gist:FinancialBusinessEventType ;
+    skos:definition "The acknowledgement that goods or services have been received."^^xsd:string ;
+    skos:prefLabel "Receipt"^^xsd:string ;
+    skos:scopeNote "This is distinct from the piece of paper we commonly call a receipt. The paper receipt often memorializes the receipt of a good or service, but occassionally it memorializes the receipt of money, or even just the execution of a sales order."^^xsd:string .
+
+gist:_FinancialBusinessEventType_receipt_acknowledgement a gist:FinancialBusinessEventType ;
+    skos:definition "Acknowlegement from a customer that a good has been received or a service has been rendered."^^xsd:string ;
+    skos:prefLabel "Receipt Acknowlegement"^^xsd:string .
+
+gist:_FinancialBusinessEventType_remittance a gist:FinancialBusinessEventType ;
+    skos:definition "Transfer of money out in return for goods or services."^^xsd:string ;
+    skos:prefLabel "Remittance"^^xsd:string .
+
+gist:_FinancialBusinessEventType_resource_reservation a gist:FinancialBusinessEventType ;
+    skos:definition "The putting aside of a resource to accomplish some task."^^xsd:string ;
+    skos:prefLabel "Resource Reservation"^^xsd:string .
+
+gist:_FinancialBusinessEventType_resource_scheduling a gist:FinancialBusinessEventType ;
+    skos:definition "The planned use of a resource to accomplish some task."^^xsd:string ;
+    skos:prefLabel "Resource Scheduling"^^xsd:string .
+
+gist:_FinancialBusinessEventType_revaluation a gist:FinancialBusinessEventType ;
+    skos:definition "The adjustment of the valuation of an asset."^^xsd:string ;
+    skos:prefLabel "Revaluation"^^xsd:string .
+
+gist:_FinancialBusinessEventType_sale a gist:FinancialBusinessEventType ;
+    skos:definition "Completion of a sales order."^^xsd:string ;
+    skos:prefLabel "Sale"^^xsd:string ;
+    skos:scopeNote "Distinct from \"all donuts 50% off\", which is an offer."^^xsd:string .
+
+gist:_FinancialBusinessEventType_shipment_notification a gist:FinancialBusinessEventType ;
+    skos:definition "Notification from a supplier that goods have been shipped."^^xsd:string ;
+    skos:prefLabel "Shipment Notification"^^xsd:string .
+
+gist:_FinancialBusinessProcessType_make_to_order a gist:FinancialBusinessProcessType ;
+    skos:definition "An FBP that runs from production order, through resource consumption to finished goods."^^xsd:string ;
+    skos:prefLabel "Make to Order"^^xsd:string .
+
+gist:_FinancialBusinessProcessType_order_to_cash a gist:FinancialBusinessProcessType ;
+    skos:definition "An FBP that runs at least from sales order to delivery, invoicing and remittance."^^xsd:string ;
+    skos:prefLabel "Order to Cash"^^xsd:string .
+
+gist:_FinancialBusinessProcessType_procure_to_pay a gist:FinancialBusinessProcessType ;
+    skos:definition "An FBP that runs at least from purchase order committment, through receipt, billing and payment."^^xsd:string ;
+    skos:prefLabel "Procure to Pay"^^xsd:string .
+
+gist:endDate a owl:DatatypeProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:atDate ;
+    skos:definition "The date something ended, with precison of one day and ambiguous as to planned vs. actual. For use with accounting."^^xsd:string ;
+    skos:prefLabel "end date"^^xsd:string .
+
+gist:hasPayee a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:hasParty ;
+    skos:definition "The counterparty that we paid or will pay for goods, services, or taxes."^^xsd:string ;
+    skos:prefLabel "has payee"^^xsd:string .
+
+gist:hasPayor a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:hasParty ;
+    skos:definition "The counterparty that paid or will pay us in return for goods, service, equity, etc."^^xsd:string ;
+    skos:prefLabel "has payor"^^xsd:string .
+
+gist:hasPositionIn a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Used with an investment account to subdivide the holding into the various financial assets being held."^^xsd:string ;
+    skos:prefLabel "has position in"^^xsd:string .
+
+gist:isPossessedBy a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "Having physical or the equivalent of physical possession, without necessarily having beneficial ownership or control (storing for someone else)."^^xsd:string ;
+    skos:prefLabel "is possessed by"^^xsd:string .
+
+gist:isTracking a owl:ObjectProperty ;
+    rdfs:domain gist:ResourceAccount ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    skos:definition "The relationship between a resource account and the resource it is tracking."^^xsd:string ;
+    skos:prefLabel "is tracking"^^xsd:string .
+
+gist:AssetsHeldAwayAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:CounterpartyAccount ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:CounterpartyAccount [ a owl:Restriction ;
+                        owl:onProperty gist:isPossessedBy ;
+                        owl:someValuesFrom gist:NotUs ] [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:owns ] ;
+                        owl:someValuesFrom gist:Us ] ) ] ;
+    skos:definition "An account tracking assests that the account holder owns but does not possess."^^xsd:string ;
+    skos:example "A bank account where the funds are held by the bank, or an investment account where the funds are held by a brokerage."^^xsd:string ;
+    skos:prefLabel "Assets Held Away Account"^^xsd:string .
+
+gist:FinancialTransaction a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:hasMagnitude ;
+                        owl:someValuesFrom gist:Monetary ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:AccountingPolicy ] [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:FinancialBusinessEvent ] [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:isAffectedBy ] ;
+                        owl:someValuesFrom gist:Balance ] ) ] ;
+    skos:definition "A transaction that has a monetary value and that participates in an auditable chain of updates to one or more account balances."^^xsd:string ;
+    skos:prefLabel "Financial Transaction"^^xsd:string ;
+    skos:scopeNote "If it is an instantaneous event, it will only have an end date. If it is a flow activity, it will have a start and end date."^^xsd:string .
+
+gist:hasDeliveryObligation a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subPropertyOf gist:hasParty ;
+    skos:definition "The party that has an outstanding commitment to deliver/fulfill a transaction."^^xsd:string ;
+    skos:prefLabel "has delivery obligation"^^xsd:string .
+
+gist:FinancialAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Account ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Account [ a owl:Class ;
+                        owl:unionOf ( gist:CounterpartyAccount gist:ResourceAccount ) ] [ a owl:Restriction ;
+                        owl:onProperty gist:hasMagnitude ;
+                        owl:someValuesFrom gist:Monetary ] ) ] ;
+    skos:definition "An account that tracks	a monetary resource."^^xsd:string ;
+    skos:prefLabel "Financial Account"^^xsd:string ;
+    skos:scopeNote "The base unit on the balance sheet in the data-centric accounting approach."^^xsd:string .
+
+gist:FinancialBusinessProcess a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:hasDirectPart ;
+                        owl:someValuesFrom gist:FinancialBusinessEvent ] [ a owl:Restriction ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:someValuesFrom gist:FinancialBusinessProcessType ] ) ] ;
+    skos:definition "A series of steps coordinated over time to achieve a business outcome."^^xsd:string ;
+    skos:example "A mortgage.  The entire transaction might take as long as 30 years to complete.  Each related detailed event (a mortgage bill, a payment, a late notice, a foreclosure warning etc) occurs in the context of the FBT, and as such, by capturing and organizing the FBP attributes you can drastically reduce data gathering effort downstream."^^xsd:string ;
+    skos:prefLabel "Financial Business Process"^^xsd:string ;
+    skos:scopeNote "The FBT is instantiated by a particular event.  For Procure-to-pay, that is a purchase order; for Order-to-cash, it's a sales order; for Make, it's a production order; for a mortgage, it is loan origination; for an insurance policy, it's underwriting. In some cases, it would make sense to initiate the FBT prior to a commitment. For instance, if you're pretty sure you are going to buy a major piece of equipment, you might start the FBT while you are still soliciting bids, but in most cases the PO is the logical place to start."^^xsd:string,
+        """The three most common types of FBPs are:
+- Procure-to-pay, which runs at least from purchase order committment, through receipt, billing and payment.
+- Order-to-cash, which runs at least from sales order to delivery, invoicing and remittance.
+- Make, which runs from production order, through resource consumption to finished goods."""^^xsd:string,
+        "This is not the template; members of this class are specific instances of long transactions. It would be a good practice to have a standard template for each type of FBT, and perhaps variations on product types within FBTs it is not strictly necessary.  The FBT can work without a template."^^xsd:string .
+
+gist:AccountingPolicy a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Intention [ a owl:Restriction ;
+                        owl:onProperty gist:hasDirectPart ;
+                        owl:someValuesFrom gist:FinancialBusinessEventType ] [ a owl:Restriction ;
+                        owl:onProperty gist:hasDirectPart ;
+                        owl:someValuesFrom gist:AccountingScope ] ) ] ;
+    skos:definition "A method to determine classification, valuation, and timing of a business event which generates a financial transaction."^^xsd:string ;
+    skos:prefLabel "Accounting Policy"^^xsd:string ;
+    skos:scopeNote """Best practice: this method will be machine-processable and therefore automatic.
+
+Better practice will use a very simple association to make this automatic assignment: for any given scope there should be only one event that recognizes the revenue or expense. For some events, there is also a method to determine cost."""^^xsd:string .
+
+gist:FinancialBusinessProcessType a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "Categorization types for Financial Business Processs."^^xsd:string ;
+    skos:example "Common examples include procure-to-pay, order-to-cash, and make. Others are mortgage, line of credit, infrastructure build, and acquistion/divestiture."^^xsd:string ;
+    skos:prefLabel "Financial Business Process Type"^^xsd:string .
+
+gist:IncomeStatementSection a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "A portion of an income statement describing transactions connected to one specific accounting policy."^^xsd:string ;
+    skos:prefLabel "Income Statement Section"^^xsd:string ;
+    skos:scopeNote "We are providing three levels of commitment that can be reported on the income statement, which we call sections. Each could be on their own page, but we think the more interesting one will be consolidated, where the sections are columns."^^xsd:string .
+
+gist:ResourceAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:FinancialAccount ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialAccount [ a owl:Restriction ;
+                        owl:onProperty gist:isTracking ;
+                        owl:someValuesFrom [ a owl:Class ;
+                                owl:unionOf ( gist:Building gist:Equipment gist:Person gist:ProductSpecification ) ] ] ) ] ;
+    skos:definition "A registry to track transactions involving a particular resource."^^xsd:string ;
+    skos:example "Financial resources, pieces of equipment."^^xsd:string ;
+    skos:prefLabel "Resource Account"^^xsd:string ;
+    skos:scopeNote "There is an account for every resource that the firm has control over and can deploy to satisfy their goals."^^xsd:string .
+
+gist:AccountingScope a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    rdfs:subClassOf gist:Intention ;
+    skos:definition "The accounting intent of a business event."^^xsd:string ;
+    skos:prefLabel "Accounting Scope"^^xsd:string ;
+    skos:scopeNote "Allows us to treat the event of purchasing chocolate differently if we are buying it for the purpose of making cookies (assuming we're in the cookie making business), versus expensing it on overhead in the cafeteria, or on the executive jet."^^xsd:string .
+
+gist:CounterpartyAccount a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialAccount [ a owl:Restriction ;
+                        owl:onProperty gist:hasParty ;
+                        owl:someValuesFrom gist:NotUs ] [ a owl:Restriction ;
+                        owl:onProperty gist:hasParty ;
+                        owl:someValuesFrom gist:Us ] ) ] ;
+    skos:definition "An account that keeps track of what is owed between two parties based on their commitments to one another and the fulfillment of those commitments."^^xsd:string ;
+    skos:prefLabel "Counterparty Account"^^xsd:string ;
+    skos:scopeNote "Every interaction with another entity that results in commitments between those parties (money or delivery of goods or services) requires setting up a counterparty account. The types of counterparty account differ in the nature of the commitment (financial or delivery) the direction of the commitment (owed by us, owed to us) and the relationship of possession to ownership."^^xsd:string .
+
+<https://w3id.org/semanticarts/ontology/gistDCAcct> a owl:Ontology ;
+    rdfs:comment "This is the DC for Data-Centric Accounting ontology."^^xsd:string ;
+    owl:imports <https://w3id.org/semanticarts/ontology/gistBusiness0.7.0> ;
+    owl:versionIRI <https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0> .
+

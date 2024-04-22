@@ -1,0 +1,386 @@
+@prefix gist: <https://w3id.org/semanticarts/ns/ontology/gist/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+gist:AccountingPeriod a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:FinancialPeriod ;
+    skos:definition "TBD"^^xsd:string ;
+    skos:prefLabel "Accounting Period"^^xsd:string .
+
+gist:Authorization a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Assignment [ a owl:Restriction ;
+                        owl:onProperty gist:isAssignmentOf ;
+                        owl:someValuesFrom gist:PermissionSet ] ) ] ;
+    skos:definition "The assignment of a set of permissions (which may include just one permission) to someone or something."^^xsd:string ;
+    skos:editorialNote "Should be promoted to gistCore."^^xsd:string ;
+    skos:example "An employee in HR is granted permission to access confidential employee data."^^xsd:string ;
+    skos:prefLabel "Authorization"^^xsd:string .
+
+gist:ConsumptionTarget a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "A target toward which resources are consumed."^^xsd:string ;
+    skos:editorialNote "Need named superclass."^^xsd:string ;
+    skos:prefLabel "Consumption Target"^^xsd:string ;
+    skos:scopeNote "Consumption targets can be things like projects or goals. It is an abstract superclass for things that can be charged against."^^xsd:string .
+
+gist:DataSet a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Collection ;
+    skos:definition "A collection of data."^^xsd:string ;
+    skos:editorialNote "Should be promoted to gistCore."^^xsd:string ;
+    skos:prefLabel "Data Set"^^xsd:string ;
+    skos:scopeNote "This will typically, but not always, be associated with a point in time or a time interval."^^xsd:string .
+
+gist:DeliveryEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:FinancialBusinessEvent ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_delivery ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "Delivery of a product or service to a customer."^^xsd:string ;
+    skos:prefLabel "Delivery Event"^^xsd:string .
+
+gist:DeliveryObligation a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Obligation ;
+    skos:definition "The contractual obligation of one party to deliver goods or services to another party."^^xsd:string ;
+    skos:example "A consulting firm has an obligation to deliver the services specified in an SOW; an HVAC supplier has an obligation to deliver an air-conditioning system bought by a contractor."^^xsd:string ;
+    skos:prefLabel "Delivery Obligation"^^xsd:string .
+
+gist:EntityActiveStatus a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "Indicates whether an entity is active or inactive."^^xsd:string ;
+    skos:prefLabel "Entity Active Status"^^xsd:string ;
+    skos:scopeNote "Can be applied to many types of entities, but primarily to customers, vendors, offers, specifications, and employees."^^xsd:string .
+
+gist:FiscalYear a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:FinancialPeriod ;
+    skos:definition "TBD"^^xsd:string ;
+    skos:prefLabel "Fiscal Year"^^xsd:string .
+
+gist:NotUs a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Organization [ a owl:Class ;
+                        owl:complementOf gist:Us ] ) ] ;
+    skos:definition "All parties that are not us; potential counterparties."^^xsd:string ;
+    skos:prefLabel "Not Us"^^xsd:string .
+
+gist:PaymentObligation a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Obligation ;
+    skos:definition "The contractual obligation of one party to pay for goods or services provided by another party."^^xsd:string ;
+    skos:example "A customer has an obligation to pay for an air-conditioning system delivered by an HVAC supplier."^^xsd:string ;
+    skos:prefLabel "Payment Obligation"^^xsd:string .
+
+gist:ResourceRenewalEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:ResourceEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_ResourceEventType_renewal ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An event that increases the amount of resource that is posessed."^^xsd:string ;
+    skos:example "Receipt of a shipment containing 100 widgets."^^xsd:string ;
+    skos:prefLabel "Resource Renewal Event"^^xsd:string ;
+    skos:scopeNote "In some cases this may be on a schedule and/or planned to happen in the future."^^xsd:string .
+
+gist:ResourceReservationEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:ResourceEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_ResourceEventType_reservation ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An event that records an amount of a resource being allocated for a particular purpose."^^xsd:string ;
+    skos:example "100 t-shirts are being reserved for an upcoming conference (and should not or cannot be used for other purposes)."^^xsd:string ;
+    skos:prefLabel "Resource Reservation Event"^^xsd:string .
+
+gist:ResourceSchedulingEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:ResourceEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_ResourceEventType_scheduling ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "An event that records the planned date/time of usage for an allocation of a resource."^^xsd:string ;
+    skos:example "10 hours of labor will go towards a project next Thursday."^^xsd:string ;
+    skos:prefLabel "Resource Scheduling Event"^^xsd:string .
+
+gist:StandardActivity a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Intention [ a owl:Restriction ;
+                        owl:onProperty gist:isBasedOn ;
+                        owl:someValuesFrom gist:UnitOfMeasure ] [ a owl:Restriction ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:someValuesFrom gist:Aspect ] ) ] ;
+    skos:definition "An activity that is performed in the same way each time, and therefore can be estimated given some estimating parameters."^^xsd:string ;
+    skos:editorialNote "A more specific predicate may be needed."^^xsd:string ;
+    skos:prefLabel "Standard Activity"^^xsd:string ;
+    skos:scopeNote "A widget may be made to the same specification each time and thus the amount of resources (including time and materials) may be able to be estimated from how many are being made."^^xsd:string,
+        "The best implementation of this defines standard activities whose effort is linearly related to a single input. For instance, it would be wise to split painting from trim painting because painting tends to vary by square footage and trim painting tends to vary by linear foot."^^xsd:string .
+
+gist:SubOrganization a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ owl:intersectionOf ( gist:Organization [ a owl:Restriction ;
+                        owl:onProperty [ owl:inverseOf gist:hasPart ] ;
+                        owl:someValuesFrom gist:Organization ] ) ] ;
+    skos:definition "An organization that is part of another organization."^^xsd:string ;
+    skos:example "A subsidiary, department, division, unit"^^xsd:string ;
+    skos:prefLabel "Suborganization"^^xsd:string .
+
+gist:appliesTo a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "TBD"^^xsd:string ;
+    skos:prefLabel "applies to"^^xsd:string .
+
+gist:atDate a owl:DatatypeProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:range xsd:dateTime ;
+    rdfs:subPropertyOf gist:atDateTime ;
+    skos:definition "The date something occurred, with precision of one day, and neutral as to start vs. end and planned vs. actual."^^xsd:string ;
+    skos:example "'2021-06-01T00:00:00-6:00'^^xsd:dateTime"^^xsd:string ;
+    skos:prefLabel "at date"^^xsd:string ;
+    skos:scopeNote "Used for things where the precision of a date is sufficient, such as publications. Recommended usage is to zero out the hours through microseconds to avoid spurious precision."^^xsd:string .
+
+gist:isConsumptionOf a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates a consumption event to the resource that is being consumed."^^xsd:string ;
+    skos:example "A time charge is the consumption of an employee's allotted time; baking a cake is the consumption of flour, sugar, and eggs; charging an electric car is the consumption of electricity."^^xsd:string ;
+    skos:prefLabel "is consumption of"^^xsd:string ;
+    gist:domainIncludes gist:Event ;
+    gist:rangeIncludes gist:Artifact,
+        gist:Organization,
+        gist:PhysicalIdentifiableItem,
+        gist:PhysicalSubstance .
+
+gist:isConsumptionToward a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates the consumption of a resource, such as the consumption of an employee represented in a time charge, against its consumption target."^^xsd:string ;
+    skos:example "A goal, product, project, etc."^^xsd:string ;
+    skos:prefLabel "is consumption toward"^^xsd:string ;
+    skos:scopeNote "The subject is typically a resource consumption event or subclass thereof."^^xsd:string ;
+    gist:domainIncludes gist:ResourceConsumptionEvent ;
+    gist:rangeIncludes gist:Function,
+        gist:Goal,
+        gist:Project,
+        gist:Task .
+
+gist:occursDuring a owl:ObjectProperty,
+        owl:TransitiveProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates a resource to another resource that contains it temporally."^^xsd:string ;
+    skos:example "A time charge occurs during a pay period."^^xsd:string ;
+    skos:prefLabel "occurs during"^^xsd:string ;
+    gist:domainIncludes gist:Event,
+        gist:TemporalRelation,
+        gist:TimeInterval ;
+    gist:rangeIncludes gist:Event,
+        gist:TemporalRelation,
+        gist:TimeInterval .
+
+gist:paysTo a owl:ObjectProperty ;
+    rdfs:domain gist:PaymentEvent ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates a payment event to a party or account to which the payment is made."^^xsd:string ;
+    skos:example "A direct deposit payroll payment event pays net pay into an employee's bank account; a remittance event pays money into the payor's account."^^xsd:string ;
+    skos:prefLabel "pays to"^^xsd:string ;
+    gist:rangeIncludes gist:Account,
+        gist:Organization,
+        gist:Person .
+
+gist:rollsUpTo a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "An associative relationship showing which numbers are used in calculating another number."^^xsd:string ;
+    skos:example "The relationship of accounts in a traditional chart of accounts; the parts used to calculate net pay from gross pay."^^xsd:string ;
+    skos:prefLabel "rolls up to"^^xsd:string ;
+    skos:scopeNote "While this typically implies an aggregation, it may not always be, and may not represent a statistical relationship; there may be multiple, or conditional, parts of the calculation."^^xsd:string .
+
+gist:BusinessEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:someValuesFrom gist:BusinessEventType ] ) ] ;
+    skos:definition "An event that an organization performs in the course of doing business."^^xsd:string ;
+    skos:example "Hiring an employee."^^xsd:string ;
+    skos:prefLabel "Business Event"^^xsd:string ;
+    skos:scopeNote "For an event that affects the financial books and records of a firm, use the subclass FinancialBusinessEvent."^^xsd:string .
+
+gist:PaymentEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:FinancialBusinessEvent ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:FinancialBusinessEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_FinancialBusinessEventType_payment ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "A payment to a payee."^^xsd:string ;
+    skos:prefLabel "Payment Event"^^xsd:string .
+
+gist:PermissionSet a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ owl:intersectionOf ( gist:Collection [ a owl:Restriction ;
+                        owl:onProperty gist:hasMember ;
+                        owl:someValuesFrom gist:Permission ] ) ] ;
+    skos:definition "A set of permissions that typically or often granted together."^^xsd:string ;
+    skos:example "A top secret security clearance includes permission to view certain documents, access certain drives, enter certain conference rooms, etc."^^xsd:string ;
+    skos:prefLabel "Permission Set"^^xsd:string ;
+    skos:scopeNote "Conceivably a permission could belong to more than one set, but this may not be common."^^xsd:string,
+        "May include a single member."^^xsd:string .
+
+gist:ResourceConsumptionEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:ResourceEvent [ a owl:Restriction ;
+                        owl:hasValue gist:_ResourceEventType_consumption ;
+                        owl:onProperty gist:isCategorizedBy ] ) ] ;
+    skos:definition "The use of some resource toward the achievement of some objective."^^xsd:string ;
+    skos:editorialNote "Restrictions should be revisited in the future once classes around resources and changes in amounts of resources are defined."^^xsd:string,
+        "There are no explicit restrictions requiring is consumption of/towards to allow for having objects that are part of the event (to allow multiple resources to be consumed with their respective amounts, which may use has part)."^^xsd:string ;
+    skos:example "A time card entry; the addition of chocolate to the chocolate chip cookie dough."^^xsd:string ;
+    skos:prefLabel "Resource Consumption Event"^^xsd:string ;
+    skos:scopeNote "The target of the resource consumption is either a goal (expense category) or some form of work in progress (such as a production work order, or a construction project, or a consulting project)."^^xsd:string .
+
+gist:Us a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Organization ;
+    skos:definition "Us (not USA) is the set of all entities we consider to be our company for the purpose of accounting."^^xsd:string ;
+    skos:example "If A owes B some money, and A is in the set of \"us,\" then this transaction is accounts payable. If B is in the set of \"us,\" then it is accounts receivable. If both are, it is an intra-company transaction. If neither, then it is just a statistic, or perhaps some competitive intelligence."^^xsd:string ;
+    skos:prefLabel "Us"^^xsd:string .
+
+gist:_FinancialBusinessEventType_delivery a gist:FinancialBusinessEventType ;
+    skos:definition "The conveyance of a product or service to a customer."^^xsd:string ;
+    skos:prefLabel "Delivery"^^xsd:string .
+
+gist:_FinancialBusinessEventType_payment a gist:FinancialBusinessEventType ;
+    skos:definition "The transfer of money from one party to another."^^xsd:string ;
+    skos:prefLabel "Payment"^^xsd:string .
+
+gist:_ResourceEventType_consumption a gist:ResourceEventType ;
+    skos:definition "Type of resource event denoting consumption of a resource."^^xsd:string ;
+    skos:prefLabel "Consumption Resource Event Type"^^xsd:string .
+
+gist:_ResourceEventType_renewal a gist:ResourceEventType ;
+    skos:definition "Type of resource event denoting renewal of a resource."^^xsd:string ;
+    skos:prefLabel "Renewal Resource Event Type"^^xsd:string .
+
+gist:_ResourceEventType_reservation a gist:ResourceEventType ;
+    skos:definition "Type of resource event denoting reservation of a resource."^^xsd:string ;
+    skos:prefLabel "Reservation Resource Event Type"^^xsd:string .
+
+gist:_ResourceEventType_scheduling a gist:ResourceEventType ;
+    skos:definition "Type of resource event denoting scheduling of a resource."^^xsd:string ;
+    skos:prefLabel "Scheduling Resource Event Type"^^xsd:string .
+
+gist:isAssignedBy a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates an assignment to the assigner."^^xsd:string ;
+    skos:example "An employee is assigned to a task by a supervisor."^^xsd:string ;
+    skos:prefLabel "is assigned by"^^xsd:string ;
+    skos:scopeNote "Due to the Open World Assumption, the assigner may not be known or asserted."^^xsd:string,
+        "The assigner is typically a person, organization, or software system."^^xsd:string,
+        "While typically this predicate will be used with gist:Assignment subjects, there may be other use cases and therefore a domain is not specified."^^xsd:string ;
+    gist:domainIncludes gist:Assignment ;
+    gist:rangeIncludes gist:Organization,
+        gist:Person .
+
+gist:isAssignmentTo a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates something (typically an assignment) to the thing the resource is assigned to, such as a project, position, organization, pay rate, or billing rate."^^xsd:string ;
+    skos:prefLabel "is assignment to"^^xsd:string ;
+    skos:scopeNote "While typically this predicate will be used with gist:Assignment subjects, there may be other use cases, and therefore a domain is not specified."^^xsd:string ;
+    gist:domainIncludes gist:Assignment .
+
+gist:BusinessEventType a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:Category ;
+    skos:definition "An open-ended taxonomy of business events that could be used in process work flows."^^xsd:string ;
+    skos:prefLabel "Business Event Type"^^xsd:string .
+
+gist:FinancialPeriod a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:TimeInterval ;
+    skos:definition "TBD"^^xsd:string ;
+    skos:prefLabel "Financial Period"^^xsd:string .
+
+gist:isAssignmentOf a owl:ObjectProperty ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    skos:definition "Relates an assignment to the resource it assigns."^^xsd:string ;
+    skos:example "Assignment of a person to a project."^^xsd:string ;
+    skos:prefLabel "is assignment of"^^xsd:string ;
+    skos:scopeNote "People, organizations, monetary amounts, equipment can all be assigned."^^xsd:string,
+        "While typically this predicate will be used with assignment subjects, there may be other use cases, and therefore a domain is not specified."^^xsd:string ;
+    gist:domainIncludes gist:Assignment ;
+    gist:rangeIncludes gist:Equipment,
+        gist:IntellectualProperty,
+        gist:Monetary,
+        gist:Organization,
+        gist:PayRate,
+        gist:Person .
+
+gist:FinancialBusinessEventType a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf gist:BusinessEventType ;
+    skos:definition "The types of business events that give rise (potentially) to financial transactions."^^xsd:string ;
+    skos:prefLabel "Financial Business Event Type"^^xsd:string ;
+    skos:scopeNote "We define a minimum set that can be extended."^^xsd:string .
+
+gist:Assignment a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:TemporalRelation [ a owl:Restriction ;
+                        owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onProperty gist:isAssignmentOf ] [ a owl:Restriction ;
+                        owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onProperty gist:isAssignmentTo ] [ a owl:Restriction ;
+                        owl:cardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onProperty gist:isAssignedBy ] ) ] ;
+    skos:definition "A temporal relationship between an assignee, the thing assigned, and the resource that made the assignment."^^xsd:string ;
+    skos:example "An employee is assigned to a task by a supervisor."^^xsd:string ;
+    skos:prefLabel "Assignment"^^xsd:string ;
+    skos:scopeNote "Based on the Open World Assumption, the assigner may not be asserted or known."^^xsd:string .
+
+gist:FinancialBusinessEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:BusinessEvent [ a owl:Restriction ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:someValuesFrom gist:FinancialBusinessEventType ] ) ] ;
+    skos:definition "An event that can affect the books and records of a firm. It can be planned or actual."^^xsd:string ;
+    skos:prefLabel "Financial Business Event"^^xsd:string ;
+    skos:scopeNote "There are a number of subclasses defined because each has a different set of required properties."^^xsd:string .
+
+gist:ResourceEvent a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( gist:Event [ a owl:Restriction ;
+                        owl:onClass gist:ResourceEventType ;
+                        owl:onProperty gist:isCategorizedBy ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ] ) ] ;
+    skos:definition "An event that changes the amount of a resource that is available to use."^^xsd:string ;
+    skos:prefLabel "Resource Event"^^xsd:string ;
+    skos:scopeNote "This may be as a result of change in total amount of a resource (such as buying, using, making, and selling if the resource is physical, or renting and using if the resource is time-based) or the amount that is committed (where the event does not affect the total amount but affects the usable amount; such as designating an amount of a material as only usable for a specific project)."^^xsd:string .
+
+gist:ResourceEventType a owl:Class ;
+    rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistBusiness> ;
+    rdfs:subClassOf [ a owl:Class ;
+            owl:intersectionOf ( gist:Category [ a owl:Restriction ;
+                        owl:allValuesFrom gist:ResourceEvent ;
+                        owl:onProperty [ owl:inverseOf gist:isCategorizedBy ] ] ) ],
+        gist:Category ;
+    skos:definition "The type of resource event."^^xsd:string ;
+    skos:prefLabel "Resource Event Type"^^xsd:string .
+
+<https://w3id.org/semanticarts/ontology/gistBusiness> a owl:Ontology ;
+    owl:imports <https://w3id.org/semanticarts/ontology/gistCore12.0.1> ;
+    owl:versionIRI <https://w3id.org/semanticarts/ontology/gistBusiness0.7.0> ;
+    skos:definition "gist extension ontology for common business concepts."^^xsd:string ;
+    skos:prefLabel "gist Business"^^xsd:string .
+

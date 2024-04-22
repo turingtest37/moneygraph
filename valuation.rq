@@ -1,0 +1,172 @@
+PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX skos: <http://www.w3.org/2004/02/skos#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX xyz: <http://sparql.xyz/facade-x/data/>
+PREFIX fx: <http://sparql.xyz/facade-x/ns/>
+
+CONSTRUCT
+
+{
+    ?__valuation a gist:RevaluationEvent ;
+        gist:isCategorizedBy gist:_FinancialBusinessEventType_revaluation ;
+        gist:atDateTime ?__valuation_datetime ;
+        gist:isAbout ?__security_account ;
+
+# Cost Basis        
+        gist:isCategorizedBy ?__cost_basis ;
+# Share Quantity
+        gist:hasMagnitude ?__share_quantity_magn ;
+# Daily Market Price
+        gist:hasMagnitude ?__daily_share_price_magn ;
+# Position Cost
+        gist:hasMagnitude ?__security_position_cost_magn ;
+# Position Value
+        gist:hasMagnitude ?__security_position_value_magn ;
+# Profit And Loss
+        gist:hasMagnitude ?__security_profit_loss_magn ;
+# % Return
+        gist:hasMagnitude ?__position_return_perc_magn ;
+# % of Portfolio
+        gist:hasMagnitude ?__position_port_perc_magn ;
+    .
+
+
+    ?__share_quantity_magn a gist:Magnitude ;
+        gist:numericValue ?__share_number ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareAmount ;
+    .
+
+    ?__daily_share_price_magn a gist:Monetary ;
+        gist:numericValue ?__share_current_price ;
+        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+    .
+
+    ?__security_position_cost_magn a gist:Monetary ;
+        gist:numericValue ?__security_position_cost ; 
+        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ;
+    .
+
+    ?__security_position_value_magn a gist:Monetary ;
+        gist:numericValue ?__position_current_value ;
+        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ;
+    .
+
+    ?__security_profit_loss_magn a gist:Monetary ;
+        gist:numericValue ?__position_p_l ;
+        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ;
+    .
+
+    ?__position_return_perc_magn a gist:Percentage ;
+        gist:numericValue ?__position_return_perc ;
+        gist:hasUnitOfMeasure qt:_RatioUnit_totalInvestmentReturnRate ;
+        gist:isCategorizedBy qtx:_Aspect_securityPositionReturnRatio ;
+    .
+
+    ?__position_port_perc_magn a gist:Percentage ;
+        gist:numericValue ?__position_port_perc ;
+        gist:hasUnitOfMeasure qt:_RatioUnit_monetaryPerMonetary ;
+        gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ;
+    .
+
+}
+WHERE 
+{
+    SERVICE <x-sparql-anything:> {
+        BIND(IRI(CONCAT("file://",?_loc)) AS ?__location)
+        BIND(REPLACE(?_loc,".*(\\d{4}[\\d-]+)\\.csv","$1") AS ?__dt_only)
+        BIND(STRDT(CONCAT(STR(?__dt_only),"T00:00:00"), xsd:dateTime) AS ?__valuation_datetime)
+
+        fx:properties
+            fx:location ?__location ;    
+            fx:csv.headers true ;
+            fx:blank-nodes false ;
+            fx:csv.null-string "" ;
+            fx:root ?__location ;
+        .
+
+        ?__csvline xyz:Equity%20Symbol ?Equity_Symbol .
+        ?__csvline xyz:Account%20Number ?Account_Number .
+        ?__csvline xyz:Currency ?Currency .
+        ?__csvline xyz:Cost%20Basis ?Cost_Basis . 
+        ?__csvline xyz:Asset%20Class ?Asset_Class .
+        ?__csvline xyz:Quantity ?Quantity .
+        ?__csvline xyz:Cost%20Per%20Share ?Cost_Per_Share .
+        ?__csvline xyz:Position%20Cost ?Position_Cost .
+        ?__csvline xyz:Market%20Price ?Market_Price .
+        ?__csvline xyz:Market%20Value ?Market_Value .
+        ?__csvline xyz:Profit%20And%20Loss ?Profit_And_Loss .
+        ?__csvline <http://sparql.xyz/facade-x/data/%25%20Return> ?perc_Return .
+        ?__csvline <http://sparql.xyz/facade-x/data/%25%20of%20Portfolio> ?perc_of_Portfolio .
+    }
+
+    BIND(REPLACE(STR(?__valuation_datetime), "\\W+", "-") AS ?__dt_clean)
+
+# Account
+    BIND(ENCODE_FOR_URI(LCASE(STR(?Account_Number))) AS ?__acct_key)
+
+# Security Symbol
+# Add .TO if it is a stock/ETF and currency is CAD
+    BIND(IF(UCASE(?Asset_Class) != 'DI' && STRSTARTS(?Currency,"CAD"),CONCAT(?EquitySymbol,".TO"),?Equity_Symbol) AS ?__symbol_str)
+    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str))) AS ?__eq_symbol)
+
+# Marketable Security
+    BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
+# Security Account
+    BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
+
+# Currency - CAD or USD
+    BIND(IF(?Currency="CAD", qtx:_CADollar_, IF(?Currency="USD", gist:_USDollar_, ?unbound)) AS ?__share_price_uom)
+
+# Cost Basis - looks like HMV and BK are most common values: HMV? Highest Market Value? Book?
+# TODO Define this in Protege
+    BIND(IRI(CONCAT(STR(qt3:), '_CostBasis_',ENCODE_FOR_URI(LCASE(?Cost_Basis)))) AS ?__cost_basis)
+
+# Quantity - Share Number
+    BIND(xsd:decimal(?Quantity) AS ?__share_number)
+# Quantity Magnitude
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_shareQty_',?__acct_key,'_',?__eq_symbol,'_',STR(?Quantity))) AS ?__share_quantity_magn)
+
+# Cost Per Share
+    BIND(xsd:decimal(?Cost_Per_Share) AS ?__share_average_cost)
+# Cost Magnitude
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_costPerShare_',?__acct_key,'_',?__eq_symbol,'_',STR(?Cost_Per_Share))) AS ?__share_average_magn)
+
+# Position Cost
+    BIND(xsd:decimal(?Position_Cost) AS ?__security_position_cost)
+# Position Cost Magnitude
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionCost_',?__acct_key,'_',?__eq_symbol,'_',STR(?Position_Cost))) AS ?__security_position_cost_magn)
+
+# Spot Valuation
+    BIND(IRI(CONCAT(STR(qt3:),'_Event_daily_market_closing_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__dt_clean)))) AS ?__valuation)
+
+# Market Price - Share current price
+    BIND(xsd:decimal(?Market_Price) AS ?__share_current_price)
+# Daily Share Price Magnitude
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_dailySecurityPrice_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Market_Price))) AS ?__daily_share_price_magn)
+
+# Market Value - Share position value
+    BIND(xsd:decimal(?Market_Value) AS ?__position_current_value)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionValue_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Market_Value))) AS ?__security_position_value_magn)
+
+# Profit And Loss
+    BIND(xsd:decimal(?Profit_And_Loss) AS ?__position_p_l)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionProfitLoss_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Profit_And_Loss))) AS ?__security_profit_loss_magn)
+
+# % Return
+    BIND(xsd:decimal(?perc_Return) AS ?__position_return_perc)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentReturn_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?perc_Return))) AS ?__position_return_perc_magn)
+
+# % of Portfolio
+    BIND(xsd:decimal(?perc_of_Portfolio) AS ?__position_port_perc)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentOfPortfolio_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?perc_of_Portfolio))) AS ?__position_port_perc_magn)
+
+#Equity Symbol	Equity Description	Due	Rate	Account Number	Currency	Cost Basis	Asset Class	Quantity	Cost Per Share	Position Cost	Market Price	Market Value	Profit And Loss	% Return	% of Portfolio
+}
