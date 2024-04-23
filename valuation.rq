@@ -13,6 +13,8 @@ CONSTRUCT
     ?__valuation a gist:RevaluationEvent ;
         gist:isCategorizedBy gist:_FinancialBusinessEventType_revaluation ;
         gist:atDateTime ?__valuation_datetime ;
+
+# TODO - Change this to someting like "isAssessmentOf" or "isEvaluationOf"
         gist:isAbout ?__security_account ;
 
 # Cost Basis        

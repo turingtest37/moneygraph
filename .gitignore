@@ -3,3 +3,4 @@ ontologies/fibo/**
 agraph/**
 resources/*.csv
 resources/*.xls*
+doc/*.pdf

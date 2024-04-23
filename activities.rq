@@ -225,7 +225,7 @@ WHERE
     BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
     BIND(STRDT(?__settle_dt_str, xsd:dateTime) AS ?__settlement_date)
 
-# Action
+# Action - default to Unknown if not yet modeled
 BIND(
     IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemitted,
     IF(UCASE(?Action)='BUY',qtx:_FinancialBusinessEventType_purchase,
@@ -237,10 +237,10 @@ BIND(
     IF(UCASE(?Action)='LQD',qtx:_FinancialBusinessEventType_financialTransfer,
     IF(UCASE(?Action)='LIQ',qtx:_FinancialBusinessEventType_financialTransfer,
     IF(UCASE(?Action)='TFI',qtx:_FinancialBusinessEventType_financialTransfer,
-    ?unbound)))))))))) AS ?__event_type)
+    qtx:_FinancialBusinessEventType_unknown)))))))))) AS ?__event_type)
 
 # Activity
-    BIND(IRI(CONCAT(STR(qt3:),'_Event_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(LCASE(?ActivityType)),'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?Price)))) AS ?__activity)
+    BIND(IRI(CONCAT(STR(qt3:),'_Event_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(LCASE(?Action)),'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?Price)))) AS ?__activity)
 # Activity Label
     BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
