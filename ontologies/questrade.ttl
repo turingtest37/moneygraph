@@ -7,7 +7,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix gist: <https://w3id.org/semanticarts/ns/ontology/gist/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://ontologies.beesondouglas.com/o/questrade> .
+@base <http://ontologies.beesondouglas.com/o/questrade#> .
 
 <http://ontologies.beesondouglas.com/o/questrade> rdf:type owl:Ontology ;
                                                    owl:versionIRI <http://ontologies.beesondouglas.com/o/questrade_1.0.0> ;
@@ -41,6 +41,15 @@ gist:hasNumerator rdf:type owl:AnnotationProperty .
 
 ###  https://w3id.org/semanticarts/ns/ontology/gist/unitSymbol
 gist:unitSymbol rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Datatypes
+#################################################################
+
+###  https://w3id.org/semanticarts/ns/ontology/fhir/aminoAcidSequence
+<https://w3id.org/semanticarts/ns/ontology/fhir/aminoAcidSequence> rdf:type rdfs:Datatype ;
+                                                                   <http://www.w3.org/2004/02/skos/core#prefLabel> "aminoAcidSequence" .
 
 
 #################################################################
@@ -81,6 +90,21 @@ qt:assessmentDate rdf:type owl:DatatypeProperty ;
                   <http://www.w3.org/2004/02/skos/core#prefLabel> "assessment date" .
 
 
+###  https://ontologies.beesondouglas.com/questrade/callable
+qt:callable rdf:type owl:DatatypeProperty ;
+            rdfs:domain qt:Bond ;
+            rdfs:range xsd:boolean ;
+            <http://www.w3.org/2004/02/skos/core#definition> "True if the subject (typically a bond) may be redeemed before its maturity date." ;
+            <http://www.w3.org/2004/02/skos/core#prefLabel> "callable" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/longDescription
+qt:longDescription rdf:type owl:DatatypeProperty ;
+                   rdfs:subPropertyOf gist:description ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "When there is more to say..." ;
+                   <http://www.w3.org/2004/02/skos/core#prefLabel> "longDescription" .
+
+
 ###  https://ontologies.beesondouglas.com/questrade/plannedOccursDate
 qt:plannedOccursDate rdf:type owl:DatatypeProperty ;
                      rdfs:subPropertyOf gist:atDate ;
@@ -119,6 +143,14 @@ qt:BondCoupon rdf:type owl:Class ;
                            "https://www.investopedia.com/terms/c/coupon.asp" ;
               <http://www.w3.org/2004/02/skos/core#definition> "The annual interest rate on a debt instrument making periodic interest payments to the instrument holder." ;
               <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Coupon" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/CashAccount
+qt:CashAccount rdf:type owl:Class ;
+               rdfs:subClassOf gist:AssetsHeldAwayAccount ;
+               owl:disjointWith gist:InvestmentAccount ;
+               <http://www.w3.org/2004/02/skos/core#definition> "Represents the cash balances, in different currencies, held by a third party on behalf of the owner." ;
+               <http://www.w3.org/2004/02/skos/core#prefLabel> "CashAccount" .
 
 
 ###  https://ontologies.beesondouglas.com/questrade/CommonStock
@@ -195,7 +227,7 @@ qt:InvestmentPortfolio rdf:type owl:Class ;
                        owl:equivalentClass [ owl:intersectionOf ( gist:Collection
                                                                   [ rdf:type owl:Restriction ;
                                                                     owl:onProperty gist:hasMember ;
-                                                                    owl:someValuesFrom gist:FinancialInstrument
+                                                                    owl:someValuesFrom gist:FinancialAccount
                                                                   ]
                                                                 ) ;
                                              rdf:type owl:Class
@@ -428,20 +460,6 @@ qtx:_Aspect_securityShareDividendAmount rdf:type owl:NamedIndividual ,
                                         <http://www.w3.org/2004/02/skos/core#definition> "Monetary amount of a dividend paid on shares of common stock or an ETF." .
 
 
-###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securitySharePurchaseGrossAmount
-qtx:_Aspect_securitySharePurchaseGrossAmount rdf:type owl:NamedIndividual ,
-                                                      gist:Aspect ;
-                                             <http://www.w3.org/2004/02/skos/core#definition> <http://ontologies.beesondouglas.com/o/questrade> ,
-                                                                                              "Share unit price multiplied by number of shares purchased." .
-
-
-###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securitySharePurchaseNetAmount
-qtx:_Aspect_securitySharePurchaseNetAmount rdf:type owl:NamedIndividual ,
-                                                    gist:Aspect ;
-                                           rdfs:seeAlso <http://ontologies.beesondouglas.com/o/questrade> ;
-                                           <http://www.w3.org/2004/02/skos/core#definition> "Share unit price multiplied by number of shares purchased, plus commission fees." .
-
-
 ###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityShareUnitPriceAmount
 qtx:_Aspect_securityShareUnitPriceAmount rdf:type owl:NamedIndividual ,
                                                   gist:Aspect ;
@@ -450,11 +468,37 @@ qtx:_Aspect_securityShareUnitPriceAmount rdf:type owl:NamedIndividual ,
                                          <http://www.w3.org/2004/02/skos/core#prefLabel> "security share unit price amount" .
 
 
-###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTransactionCommission
-qtx:_Aspect_securityTransactionCommission rdf:type owl:NamedIndividual ,
-                                                   gist:Aspect ;
-                                          rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
-                                          <http://www.w3.org/2004/02/skos/core#definition> "Fee assessed for security transactions such as buying, selling, or transferring." .
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTradeGrossAmount
+qtx:_Aspect_securityTradeGrossAmount rdf:type owl:NamedIndividual ,
+                                              gist:Aspect ;
+                                     <http://www.w3.org/2004/02/skos/core#definition> <http://ontologies.beesondouglas.com/o/questrade> ,
+                                                                                      "Share unit price multiplied by number of shares purchased or sold." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTradeInterestAmount
+qtx:_Aspect_securityTradeInterestAmount rdf:type owl:NamedIndividual ,
+                                                 gist:Aspect ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Accumulated bond (or other debt security) interest amount either paid or received at the time of the trade." ;
+                                        <http://www.w3.org/2004/02/skos/core#prefLabel> "security trade interest amount" .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTradeNetAmount
+qtx:_Aspect_securityTradeNetAmount rdf:type owl:NamedIndividual ,
+                                            gist:Aspect ;
+                                   rdfs:seeAlso <http://ontologies.beesondouglas.com/o/questrade> ;
+                                   <http://www.w3.org/2004/02/skos/core#definition> "Share unit price multiplied by number of shares purchased or sold, plus/minus commission fees." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_securityTradeTransactionCommission
+qtx:_Aspect_securityTradeTransactionCommission rdf:type owl:NamedIndividual ,
+                                                        gist:Aspect ;
+                                               rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                               <http://www.w3.org/2004/02/skos/core#definition> "Fee assessed for security transactions such as buying, selling, or transferring." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_Aspect_yieldToMaturity
+qtx:_Aspect_yieldToMaturity rdf:type owl:NamedIndividual ,
+                                     gist:Aspect .
 
 
 ###  https://taxonomies.beesondouglas.com/questrade/_CADollar_
@@ -478,6 +522,14 @@ qtx:_FinancialBusinessEventType_debtPrincipalRepayment rdf:type owl:NamedIndivid
                                                        rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
                                                        <http://www.w3.org/2004/02/skos/core#definition> "Some or part of the principal of a debt is repaid." ;
                                                        <http://www.w3.org/2004/02/skos/core#example> "Repayment in full of a bond at maturity would be represented by this event type." .
+
+
+###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_deposit
+qtx:_FinancialBusinessEventType_deposit rdf:type owl:NamedIndividual ,
+                                                 gist:FinancialBusinessEventType ;
+                                        rdfs:isDefinedBy <http://ontologies.beesondouglas.com/o/questrade> ;
+                                        <http://www.w3.org/2004/02/skos/core#definition> "Money is placed into an account." ;
+                                        <http://www.w3.org/2004/02/skos/core#prefLabel> "deposit" .
 
 
 ###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_dividendRemittance

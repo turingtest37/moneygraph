@@ -1,5 +1,5 @@
 PREFIX gist: <https://ontologies.semanticarts.com/gist/>
-PREFIX skos: <http://www.w3.org/2004/02/skos#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
@@ -10,13 +10,9 @@ PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 CONSTRUCT
 
 {
-    ?__valuation a gist:RevaluationEvent ;
+    ?__valuation a gist:Event, gist:RevaluationEvent ;
         gist:isCategorizedBy gist:_FinancialBusinessEventType_revaluation ;
         gist:atDateTime ?__valuation_datetime ;
-
-# TODO - Change this to someting like "isAssessmentOf" or "isEvaluationOf"
-        gist:isAbout ?__security_account ;
-
 # Cost Basis        
         gist:isCategorizedBy ?__cost_basis ;
 # Share Quantity
@@ -35,6 +31,8 @@ CONSTRUCT
         gist:hasMagnitude ?__position_port_perc_magn ;
     .
 
+# The account for each security is affected by the revaluation
+    ?__security_account gist:isAffectedBy ?__valuation .
 
     ?__share_quantity_magn a gist:Magnitude ;
         gist:numericValue ?__share_number ;
@@ -114,10 +112,16 @@ WHERE
 # Account
     BIND(ENCODE_FOR_URI(LCASE(STR(?Account_Number))) AS ?__acct_key)
 
-# Security Symbol
-# Add .TO if it is a stock/ETF and currency is CAD
-    BIND(IF(UCASE(?Asset_Class) != 'DI' && STRSTARTS(?Currency,"CAD"),CONCAT(?EquitySymbol,".TO"),?Equity_Symbol) AS ?__symbol_str)
-    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str))) AS ?__eq_symbol)
+# Security Symbol - remove leading ., or .zz if xxxxx.zz
+    BIND(STR(?Equity_Symbol) AS ?__equity_symbol_str)
+    BIND(IF(
+        # TODO convert to string
+        STRSTARTS(?__equity_symbol_str,"."), 
+        STRAFTER(?__equity_symbol_str,"."),
+        IF(CONTAINS(?__equity_symbol_str,"."),
+            STRBEFORE(?__equity_symbol_str,"."),
+            ?__equity_symbol_str)) AS ?__symbol_str_norm)
+    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str_norm))) AS ?__eq_symbol)
 
 # Marketable Security
     BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
@@ -133,9 +137,12 @@ WHERE
 
 # Quantity - Share Number
     BIND(xsd:decimal(?Quantity) AS ?__share_number)
+    
+    # TEST TO SEE WHETHER THIS BINDS
+    BIND(xsd:decimal(?Quantity) AS ?lot_stabilityz_test_DS_DP_value)
+
 # Quantity Magnitude
     BIND(IRI(CONCAT(STR(qt3:),'_Monetary_shareQty_',?__acct_key,'_',?__eq_symbol,'_',STR(?Quantity))) AS ?__share_quantity_magn)
-
 # Cost Per Share
     BIND(xsd:decimal(?Cost_Per_Share) AS ?__share_average_cost)
 # Cost Magnitude

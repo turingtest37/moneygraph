@@ -1,5 +1,5 @@
 #! /bin/sh
-FILE=$1
+FILE=`realpath $1`
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
@@ -9,8 +9,10 @@ QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
 
-CURRENT_GRAPH="${NAMED_GRAPH_BASE}"
-#
+CURRENT_GRAPH="${NAMED_GRAPH_BASE}latest"
+
+echo "Processing ${FILE} with ${QUERY}..."
+
 java -jar ~/dev/sparql-anything-0.8.2.jar -q "$QUERY" -f NT -o "$OUT" -v loc="$FILE"
 
 TODAY_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
@@ -21,3 +23,4 @@ curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRA
 
 curl -i -v -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
 
+echo "Done."

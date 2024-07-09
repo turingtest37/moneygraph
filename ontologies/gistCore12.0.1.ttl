@@ -1307,7 +1307,7 @@ gist:Intention
 		gist:PhysicalSubstance ,
 		gist:UnitOfMeasure
 		;
-	skos:definition 'Goal, desire, aspiration. This is the "teleologic" aspect of the system that indicates things are done with a purpose.'^^xsd:string ;
+	skos:definition "Goal, desire, aspiration. This is the 'teleologic' aspect of the system that indicates things are done with a purpose."^^xsd:string ;
 	skos:prefLabel "Intention"^^xsd:string ;
 	.
 
@@ -3055,7 +3055,7 @@ gist:comesFromAgent
 	] ;
 	skos:definition "The party that is the source of something (e.g. a message, shipment, etc.)"^^xsd:string ;
 	skos:prefLabel "comes from agent"^^xsd:string ;
-	skos:scopeNote 'This is not the inverse of gist:goesToAgent. A message can be to someone. If we made it the inverse the person would be "from" the message'^^xsd:string ;
+	skos:scopeNote "This is not the inverse of gist:goesToAgent. A message can be to someone. If we made it the inverse the person would be 'from' the message"^^xsd:string ;
 	.
 
 gist:comesFromPlace
@@ -3193,7 +3193,7 @@ gist:goesToAgent
 	] ;
 	skos:definition "The party that is the recipient of something (e.g. a message, shipment, etc.)"^^xsd:string ;
 	skos:prefLabel "goes to agent"^^xsd:string ;
-	skos:scopeNote 'This is not the inverse of gist:comesFromAgent. A message can be from someone. If we made it the inverse the person would be "to" the message'^^xsd:string ;
+	skos:scopeNote "This is not the inverse of gist:comesFromAgent. A message can be from someone. If we made it the inverse the person would be 'to' the message"^^xsd:string ;
 	.
 
 gist:goesToPlace
@@ -4089,7 +4089,7 @@ gist:unitSymbolHtml
 	rdfs:domain gist:UnitOfMeasure ;
 	rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistCore> ;
 	rdfs:range xsd:string ;
-	skos:definition 'The standard symbol for the unit in HTML format for  pretty printing, may use special characters.  E.g. to show square meter as  m? rather than m^2, the value of this property would be "m&sup2;" This is for when Unicode not supported and the display will be HTML format.'^^xsd:string ;
+	skos:definition "The standard symbol for the unit in HTML format for  pretty printing, may use special characters.  E.g. to show square meter as  m? rather than m^2, the value of this property would be 'm&sup2;'' This is for when Unicode not supported and the display will be HTML format."^^xsd:string ;
 	skos:prefLabel "unit symbol HTML"^^xsd:string ;
 	.
 

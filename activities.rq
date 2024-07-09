@@ -17,10 +17,30 @@ CONSTRUCT
 # 2015-04-24 12:00:00 AM,2015-04-24 12:00:00 AM,RTS,P040749,RTS OPEXA THERAPEUTICS INC CONTRA CUSIP EXP 04/08/2015 RIGHTS EXPIRED BOOK VALUE $ .00,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
 # 2015-09-29 12:00:00 AM,2015-09-29 12:00:00 AM,REV,P032174,OPEXA THERAPEUTICS INC COM REVERSE SPLIT 1:8 INTO 68372T301,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
 
-# [] <urn:txdate> ?TransactionDate ;
+#  [] <urn:grossamtrnd> ?__gross_amount_rnd ;
+#     <urn:grossamtrndmult100> ?__gross_amount_rnd_mult_100 ;
+#     <urn:grossamtrndmult1000> ?__gross_amount_rnd_mult_1000 ;
+#     <urn:qty_clean> ?__qty_clean ;
+#     <urn:grossamt_clean> ?__grossamt_clean ;
+#     .
+
 #     <urn:txdt> ?__transaction_date ;
 #     <urn:settledt> ?__settlement_date .
-
+ [] 
+ <urn:Quantity> ?Quantity ;
+ <urn:qtyclean> ?__qty_clean ;
+ <urn:qty> ?__qty_amount ;
+ <urn:price> ?__price_amount ;
+ <urn:gross> ?__gross_amount ;
+ <urn:commission> ?__commission_amount ;
+ <urn:net> ?__net_amount ;
+ <urn:discriminator> ?__discriminator ;
+<urn:symbol> ?__equity_symbol_str ;
+<urn:symbol_norm> ?__symbol_str_norm ;
+ <urn:nosymbol> ?__no_symbol ;
+ <urn:eq_symbol> ?__eq_symbol ;
+ .
+ 
 
     ?__activity a gist:Event .
     ?__activity skos:prefLabel ?__activity_label .
@@ -40,17 +60,18 @@ CONSTRUCT
         gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
     .
 
+
 # Purchase Case
     ?__activity gist:hasMagnitude ?__purchase_qty_magn .
     ?__purchase_qty_magn a gist:Magnitude ;
-        gist:numericValue ?__event_qty ;
+        gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_price_magn .
     ?__purchase_price_magn a gist:Magnitude;
-        gist:numericValue ?__event_price ;
+        gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
     .
@@ -59,35 +80,34 @@ CONSTRUCT
     ?__purchase_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securitySharePurchaseGrossAmount ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_commission_magn .
     ?__purchase_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTransactionCommission ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__purchase_net_amt_magn .
     ?__purchase_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securitySharePurchaseNetAmount ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # Sale Case
-
     ?__activity gist:hasMagnitude ?__sale_qty_magn .
     ?__sale_qty_magn a gist:Magnitude ;
-        gist:numericValue ?__event_qty ;
+        gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_price_magn .
     ?__sale_price_magn a gist:Magnitude;
-        gist:numericValue ?__event_price ;
+        gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
     .
@@ -96,21 +116,21 @@ CONSTRUCT
     ?__sale_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareSaleGrossAmount ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_commission_magn .
     ?__sale_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTransactionCommission ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__sale_net_amt_magn .
     ?__sale_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareSaleNetAmount ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # Dividend Case
@@ -152,6 +172,13 @@ CONSTRUCT
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_foreignCurrencyExchangeAmount ;
 
+# Debt (bond) Repayment
+    ?__activity gist:hasMagnitude ?__debt_repayment_magn .
+    ?__debt_repayment_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_debtPrincipalRepaymentAmount ;
+
 }
 
 #### Fields
@@ -192,7 +219,7 @@ WHERE
         ?__csvline xyz:Settlement%20Date ?SettlementDate .
         OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/Trade%20Date> ?TradeDate }
         OPTIONAL { ?__csvline xyz:Action ?Action }
-        ?__csvline xyz:Symbol ?EquitySymbol .
+        OPTIONAL { ?__csvline xyz:Symbol ?Equity_Symbol }
         ?__csvline xyz:Description ?Description .
         ?__csvline xyz:Quantity ?Quantity .
         ?__csvline xyz:Price ?Price .
@@ -206,20 +233,57 @@ WHERE
 
     }
 
-# Equity Symbol
-    BIND(IF(STRSTARTS(?EquitySymbol,"."),CONCAT(STRAFTER(?EquitySymbol,"."),".TO"),IF(REGEX(?EquitySymbol,"\\.[0-9]{2}$"),STRBEFORE(?EquitySymbol,"."),?EquitySymbol)) AS ?__symbol_str)
-    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str))) AS ?__eq_symbol)
+# Security Symbol - remove leading ., or .zz if xxxxx.zz
+    BIND(STR(?Equity_Symbol) AS ?__equity_symbol_str)
+    BIND(IF(
+        # TODO convert to string
+        STRSTARTS(?__equity_symbol_str,"."), 
+        STRAFTER(?__equity_symbol_str,"."),
+        IF(CONTAINS(?__equity_symbol_str,"."),
+            STRBEFORE(?__equity_symbol_str,"."),
+            ?__equity_symbol_str)) AS ?__symbol_str_norm)
 
-# # Asset Type
-#     BIND(IF(REGEX(?EquitySymbol,"^[A-Z0-9]{7}") && ?Action="INT" ,"DI",
-#         IF(REGEX(?EquitySymbol,"^[A-Z0-9]{7}"),"ETF",?dis))) AS ?Asset_Class)
+### Clean up the numbers
 
-# Account Number
-    BIND(ENCODE_FOR_URI(LCASE(STR(?AccountNumber))) AS ?__acct_key)
+# Quantity
+    BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean)
+    BIND(ABS(xsd:integer(round(STRDT(?__qty_clean, xsd:decimal)))) AS ?__qty_amount)
+# Price
+# Need at least 3 significant digits
+    BIND(REPLACE(REPLACE(STR(?Price),"[^0-9.]",""), "(\\.\\d{2,3})\\d*$", "$1") AS ?__price_clean)
+    BIND(ABS(xsd:decimal(?__price_clean)) AS ?__price_amount)
+
+# Gross Amount
+    BIND(REPLACE(REPLACE(STR(?GrossAmount),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__grossamt_clean)
+    BIND(ABS(xsd:decimal(?__grossamt_clean)) AS ?__gross_amount)
+
+# Commission
+    BIND(REPLACE(REPLACE(STR(?Commission),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__commamt_clean)
+    BIND(ABS(xsd:decimal(?__commamt_clean)) AS ?__commission_amount)
+# Net Amount 
+    BIND(REPLACE(REPLACE(STR(?NetAmount),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__netmamt_clean)
+    BIND(ABS(xsd:decimal(?__netmamt_clean)) AS ?__net_amount)
+
+# Discriminator - for use where no symbol exists in the data
+# Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
+    BIND(STR(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000) AS ?__discriminator)
 
 # Transaction Date - arghhhhhh (looks like "6/13/23 00:00" in the data)
     BIND(REPLACE(?TransactionDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__tx_dt_str)
     BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
+
+#  Local part of Security IRI = the equity symbol = where no ticker symbol exists
+    BIND(MD5(CONCAT(
+                STR(?__transaction_date),
+                ?__qty_clean,
+                ?__discriminator
+    )) AS ?__no_symbol)
+
+# Equity Symbol
+    BIND(COALESCE(UCASE(?__symbol_str_norm), ?__no_symbol) AS ?__eq_symbol)
+
+# Account Number
+    BIND(ENCODE_FOR_URI(LCASE(STR(?AccountNumber))) AS ?__acct_key)
 
 # Settlement Date
     BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
@@ -227,22 +291,18 @@ WHERE
 
 # Action - default to Unknown if not yet modeled
 BIND(
-    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemitted,
-    IF(UCASE(?Action)='BUY',qtx:_FinancialBusinessEventType_purchase,
-    IF(UCASE(?Action)='SELL',qtx:_FinancialBusinessEventType_sale,
-    IF(UCASE(?Action)='INT',qtx:_FinancialBusinessEventType_interestRemitted,
+    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemittance,
+    IF(UCASE(?Action)='BUY',gist:_FinancialBusinessEventType_purchase,
+    IF(UCASE(?Action)='SELL',gist:_FinancialBusinessEventType_sale,
+    IF(UCASE(?Action)='INT',qtx:_FinancialBusinessEventType_interestRemittance,
     IF(UCASE(?Action)='CON',qtx:_FinancialBusinessEventType_deposit,
     IF(UCASE(?Action)='MGR',qtx:_FinancialBusinessEventType_deposit,
     IF(UCASE(?Action)='FTX',qtx:_FinancialBusinessEventType_exchangeCurrency,
-    IF(UCASE(?Action)='LQD',qtx:_FinancialBusinessEventType_financialTransfer,
-    IF(UCASE(?Action)='LIQ',qtx:_FinancialBusinessEventType_financialTransfer,
-    IF(UCASE(?Action)='TFI',qtx:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='LQD',gist:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='LIQ',gist:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='TFI',gist:_FinancialBusinessEventType_financialTransfer,
+    IF(UCASE(?Action)='RED',gist:_FinancialBusinessEventType_debtPrincipalRepayment,
     qtx:_FinancialBusinessEventType_unknown)))))))))) AS ?__event_type)
-
-# Activity
-    BIND(IRI(CONCAT(STR(qt3:),'_Event_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(LCASE(?Action)),'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?Price)))) AS ?__activity)
-# Activity Label
-    BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
 # Marketable Security
     BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
@@ -250,77 +310,86 @@ BIND(
 # Security Account
     BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
 
-# Quantity
-    BIND(ABS(xsd:decimal(?Quantity)) AS ?__event_qty)
-# Price
-    BIND(ABS(xsd:decimal(?Price)) AS ?__event_price)
-# Gross Amount
-    BIND(ABS(xsd:decimal(?GrossAmount)) AS ?__gross_amount)
-# Commission
-    BIND(ABS(xsd:decimal(?Commission)) AS ?__commission_amount)
-# Net Amount 
-    BIND(ABS(xsd:decimal(?NetAmount)) AS ?__net_amount)
+# Transaction key = convenience binding for making new IRIs
+    BIND(CONCAT(
+        ?__acct_key,'_',
+        ?__eq_symbol,'_',
+        REPLACE(STR(?__transaction_date),"\\W+","-"),'_',
+        REPLACE(LCASE(?Action),"\\W+","-")
+        ) AS ?__tx_key)
+
+# Activity
+    BIND(IRI(CONCAT(
+        STR(qt3:),
+        '_Event_',
+        ?__tx_key,
+        '_',
+        ?__discriminator)) AS ?__activity)
+        # )) AS ?__activity)
+
+# Activity Label
+    BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
 ### Dividends
 # Only net amount counts
-BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemitted, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_dividend_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemittance, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_dividend_',?__tx_key,'_',?__netmamt_clean)), 
     ?unbound) AS ?__dividend_magn)
 
 #### Buy
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseQuantity_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_qty)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseQuantity_',?__tx_key,'_',?__qty_clean)),
     ?unbound) AS ?__purchase_qty_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchasePrice_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_price)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchasePrice_',?__tx_key,'_',?__price_clean)),
     ?unbound) AS ?__purchase_price_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseGrossAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__gross_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseGrossAmount_',?__tx_key,'_',?__grossamt_clean)),
     ?unbound) AS ?__purchase_gross_amt_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__commission_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
     ?unbound) AS ?__purchase_commission_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__tx_key,'_',?__netmamt_clean)),
     ?unbound) AS ?__purchase_net_amt_magn)
 
 ### Sell
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_saleQuantity_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_qty)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_saleQuantity_',?__tx_key,'_',?__qty_clean)),
     ?unbound) AS ?__sale_qty_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_salePrice_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__event_price)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_salePrice_',?__tx_key,'_',?__price_clean)),
     ?unbound) AS ?__sale_price_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_saleGrossAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__gross_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_saleGrossAmount_',?__tx_key,'_',?__grossamt_clean)),
     ?unbound) AS ?__sale_gross_amt_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__commission_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
     ?unbound) AS ?__sale_commission_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))),
+    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__tx_key,'_',?__netmamt_clean)),
     ?unbound) AS ?__sale_net_amt_magn)
 
 ### Interest
 # Only net amount counts
-BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemitted, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_interestReceived_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemittance, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_interestReceived_',?__tx_key,'_',?__netmamt_clean)), 
     ?unbound) AS ?__interest_magn)
 
 ### Deposits
 # Only net amount counts
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_deposit, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_deposit_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_deposit_',?__tx_key,'_',?__netmamt_clean)), 
     ?unbound) AS ?__deposit_magn)
 
 ### Contributions
@@ -329,13 +398,18 @@ BIND(IF(?__event_type = gist:_FinancialBusinessEventType_deposit,
 ### Mergers and acquisitions
 # Only net amount counts
 BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetMerger && xsd:decimal(?Quantity) < 0, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_depositFromMerger_',?__acct_key,'_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_depositFromMerger_',?__tx_key,'_',?__netmamt_clean)), 
     ?unbound) AS ?__merger_deposit_magn)
 
 # Currency exchanged
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_exchangeCurrency, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',ENCODE_FOR_URI(STR(?__net_amount)))), 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',?__netmamt_clean)), 
     ?unbound) AS ?__fxt_magn)
+
+# Debt Principal Repayment (i.e. 'redemption')
+BIND(IF(?__event_type = gist:_FinancialBusinessEventType_debt_principal_repayment, 
+    IRI(CONCAT(STR(qt3:),'_Magnitude_debtPrincipalRepayment_',?__tx_key,'_',?__netmamt_clean)), 
+    ?unbound) AS ?__debt_repayment_magn)
 
 
 # Currency - CAD or USD

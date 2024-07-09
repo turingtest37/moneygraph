@@ -1,0 +1,95 @@
+# baseURI: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/MetadataFIBO/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/BE/MetadataBE/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/BP/MetadataBP/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/CAE/MetadataCAE/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/DER/MetadataDER/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FBC/MetadataFBC/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FND/MetadataFND/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FND/Utilities/AnnotationVocabulary/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/IND/MetadataIND/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/LOAN/MetadataLOAN/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/MD/MetadataMD/
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/SEC/MetadataSEC/
+# imports: https://www.omg.org/spec/Commons/AnnotationVocabulary/
+
+@base <https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/MetadataFIBO/> .
+@prefix cmns-av: <https://www.omg.org/spec/Commons/AnnotationVocabulary/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix fibo-be-mod: <https://spec.edmcouncil.org/fibo/ontology/BE/MetadataBE/> .
+@prefix fibo-bp-mod: <https://spec.edmcouncil.org/fibo/ontology/BP/MetadataBP/> .
+@prefix fibo-cae-mod: <https://spec.edmcouncil.org/fibo/ontology/CAE/MetadataCAE/> .
+@prefix fibo-der-mod: <https://spec.edmcouncil.org/fibo/ontology/DER/MetadataDER/> .
+@prefix fibo-fbc-mod: <https://spec.edmcouncil.org/fibo/ontology/FBC/MetadataFBC/> .
+@prefix fibo-fnd-mod: <https://spec.edmcouncil.org/fibo/ontology/FND/MetadataFND/> .
+@prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/> .
+@prefix fibo-ind-mod: <https://spec.edmcouncil.org/fibo/ontology/IND/MetadataIND/> .
+@prefix fibo-loan-mod: <https://spec.edmcouncil.org/fibo/ontology/LOAN/MetadataLOAN/> .
+@prefix fibo-md-mod: <https://spec.edmcouncil.org/fibo/ontology/MD/MetadataMD/> .
+@prefix fibo-sec-mod: <https://spec.edmcouncil.org/fibo/ontology/SEC/MetadataSEC/> .
+@prefix fibo-spec: <https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/>
+	a owl:Ontology ;
+	rdfs:label "Metadata for the EDMC-FIBO Specification" ;
+	dcterms:abstract "This is the metadata ontology used to describe the FIBO Specification." ;
+	dcterms:issued "2018-03-31T18:00:00"^^xsd:dateTime ;
+	dcterms:license "https://opensource.org/licenses/MIT"^^xsd:anyURI ;
+	dcterms:modified "2023-02-13T18:00:00"^^xsd:dateTime ;
+	owl:imports
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/BE/MetadataBE/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/BP/MetadataBP/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/CAE/MetadataCAE/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/DER/MetadataDER/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FBC/MetadataFBC/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FND/MetadataFND/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/FND/Utilities/AnnotationVocabulary/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/IND/MetadataIND/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/LOAN/MetadataLOAN/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/MD/MetadataMD/> ,
+		<https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/SEC/MetadataSEC/> ,
+		<https://www.omg.org/spec/Commons/AnnotationVocabulary/>
+		;
+	owl:versionIRI <https://spec.edmcouncil.org/fibo/ontology/master/2023Q2/MetadataFIBO/> ;
+	cmns-av:copyright
+		"Copyright (c) 2013-2023 EDM Council, Inc." ,
+		"Copyright (c) 2013-2023 Object Management Group, Inc."
+		;
+	.
+
+fibo-spec:FIBOSpecification
+	a
+		owl:NamedIndividual ,
+		fibo-fnd-utl-av:Module
+		;
+	rdfs:label "Financial Industry Business Ontology" ;
+	dcterms:abstract """The Financial Industry Business Ontology (FIBO) is a collaborative effort among industry practitioners, semantic technology experts and information scientists to standardize the language used to precisely define the terms, conditions, and characteristics of financial instruments; the legal and relationship structure of business entities; the content and time dimensions of market data; and the legal obligations and process aspects of corporate actions.  The definitions and relationships that comprise the FIBO specification have been modularized into a number of domains, which in turn include a number of modules, each of which is further modularized into one or more constituent ontologies. 
+
+The FIBO ontologies are available as OWL 2 ontologies from the EDM Council site, and as UML models that are compliant with the Semantics for Information Modeling and Federation (SMIF) draft specification, and are linked at https://spec.edmcouncil.org/fibo/ontology/ .""" ;
+	dcterms:hasPart
+		fibo-be-mod:BEDomain ,
+		fibo-bp-mod:BPDomain ,
+		fibo-cae-mod:CAEDomain ,
+		fibo-der-mod:DERDomain ,
+		fibo-fbc-mod:FBCDomain ,
+		fibo-fnd-mod:FNDDomain ,
+		fibo-ind-mod:INDDomain ,
+		fibo-loan-mod:LOANDomain ,
+		fibo-md-mod:MDDomain ,
+		fibo-sec-mod:SECDomain
+		;
+	dcterms:issued "2018-03-31T18:00:00"^^xsd:dateTime ;
+	dcterms:license "https://opensource.org/licenses/MIT"^^xsd:anyURI ;
+	dcterms:modified "2023-02-13T18:00:00"^^xsd:dateTime ;
+	dcterms:title "Financial Industry Business Ontology (FIBO)" ;
+	rdfs:isDefinedBy <https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/> ;
+	rdfs:seeAlso "https://spec.edmcouncil.org/fibo/"^^xsd:anyURI ;
+	cmns-av:copyright
+		"Copyright (c) 2013-2023 EDM Council, Inc." ,
+		"Copyright (c) 2013-2023 Object Management Group, Inc."
+		;
+	.
+

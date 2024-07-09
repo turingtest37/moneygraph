@@ -1,5 +1,5 @@
 #! /bin/sh
-FILE=$1
+FILE=`realpath $1`
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
@@ -8,17 +8,32 @@ NAMEBASE=securities
 QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
-
-CURRENT_GRAPH="${NAMED_GRAPH_BASE}"
-
-echo "Processing ${FILE} with ${QUERY}" 
-java -jar ~/dev/sparql-anything-0.8.2.jar -q "$QUERY" -f NT -o "$OUT" -v loc="$FILE"
-
+CURRENT_GRAPH="${NAMED_GRAPH_BASE}latest"
 TODAY_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
-# echo $NAMED_GRAPH
-curl -i -v -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${TODAY_GRAPH}>" "$SERVER"
+OUTOPT="-o ${OUT}"
+FORMAT="NT"
 
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
+if test "$2" == "debug"
+then
+    echo "Debug mode. No data will be uploaded."
+    DEBUG=true
+    FORMAT="TTL"
+    OUTOPT=""
+fi
 
-curl -i -v -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
+echo "Processing ${FILE} with ${QUERY}..."
+java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}"
 
+if test "xDEBUG" == "x"
+then 
+echo "Uploading to ${TODAY_GRAPH}..."
+curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${TODAY_GRAPH}>" "$SERVER"
+
+echo "Clearing ${CURRENT_GRAPH}..."
+curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
+
+echo "Uploading to ${CURRENT_GRAPH}..."
+curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
+
+echo "Done."
+fi

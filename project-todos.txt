@@ -1,0 +1,7 @@
+Ingest all InvestmentSummary, PActivity, and Trade Confirmation
+
+
+Idea: use the weighted average of bond coupons over all interest payment events to establish a minmum re-investment return. Multiply that by some risk factor - say two - and use that boosted return value as the yield value for new bonds. These high-yield bonds may be rated at or near near junk status. Use the daily Questrade bond list as the source of current bond offerings. Write a Sparql query that finds replacement bonds in which to invest with the interest payment amounts. Allow a time window over which to collect interest payments before buying bonds. Set a minimum purchase amount option. Enforce that the requested purchase amount is a round multiple of 100. Possibly allow a different pricing strategies.
+
+Ensure Bond pricing is per unit (divide Price by 100)
+

@@ -5,6 +5,11 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+<https://w3id.org/semanticarts/ontology/gistDCAcct> a owl:Ontology ;
+    rdfs:comment "This is the DC for Data-Centric Accounting ontology."^^xsd:string ;
+    owl:imports <https://w3id.org/semanticarts/ontology/gistBusiness0.7.0> ;
+    owl:versionIRI <https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0> .
+
 gist:AllocationEvent a owl:Class ;
     rdfs:isDefinedBy <https://w3id.org/semanticarts/ontology/gistDCAcct> ;
     owl:equivalentClass [ a owl:Class ;
@@ -797,9 +802,3 @@ gist:CounterpartyAccount a owl:Class ;
     skos:definition "An account that keeps track of what is owed between two parties based on their commitments to one another and the fulfillment of those commitments."^^xsd:string ;
     skos:prefLabel "Counterparty Account"^^xsd:string ;
     skos:scopeNote "Every interaction with another entity that results in commitments between those parties (money or delivery of goods or services) requires setting up a counterparty account. The types of counterparty account differ in the nature of the commitment (financial or delivery) the direction of the commitment (owed by us, owed to us) and the relationship of possession to ownership."^^xsd:string .
-
-<https://w3id.org/semanticarts/ontology/gistDCAcct> a owl:Ontology ;
-    rdfs:comment "This is the DC for Data-Centric Accounting ontology."^^xsd:string ;
-    owl:imports <https://w3id.org/semanticarts/ontology/gistBusiness0.7.0> ;
-    owl:versionIRI <https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0> .
-

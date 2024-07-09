@@ -1,0 +1,2859 @@
+<?xml version="1.0"?>
+<Ontology xmlns="http://www.w3.org/2002/07/owl#"
+     xml:base="https://w3id.org/semanticarts/ontology/gistDCAcct"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     ontologyIRI="https://w3id.org/semanticarts/ontology/gistDCAcct"
+     versionIRI="https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0">
+    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+    <Prefix name="gist" IRI="https://w3id.org/semanticarts/ns/ontology/gist/"/>
+    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+    <Prefix name="skos" IRI="http://www.w3.org/2004/02/skos/core#"/>
+    <Import>https://w3id.org/semanticarts/ontology/gistBusiness0.7.0</Import>
+    <Annotation>
+        <AnnotationProperty abbreviatedIRI="rdfs:comment"/>
+        <Literal>This is the DC for Data-Centric Accounting ontology.</Literal>
+    </Annotation>
+    <Declaration>
+        <Class abbreviatedIRI="gist:AccountingPolicy"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:AllocationEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:AssetsHeldAwayAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:BillEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:BudgetTransaction"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:CommitmentTransaction"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:DeliveryEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:DueInAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:DueOutAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialBalance"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcess"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialInstrument"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialTransaction"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FinancialTransferEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FineOrFeeEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:FulfillmentTransaction"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:IncomeStatement"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:InvestmentAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:InvoiceEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:MakeToOrder"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:NonTemporalResourceAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ObligationToPay"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ObligationTransaction"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:OrderToCash"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:PayeeAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:PayorAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ProcureToPay"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ProductLine"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ProductionOrder"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:PurchaseEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:PurchaseOrder"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ReceiptAcknowledgement"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ReceiptEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:RemittanceEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ResourceReservationEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ResourceSchedulingEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:RevaluationEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:RightToReceivePayment"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:SalesEvent"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:SalesOrder"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:ShipmentNotification"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:SupplierType"/>
+    </Declaration>
+    <Declaration>
+        <Class abbreviatedIRI="gist:TemporalResourceAccount"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:committedBalance"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:fulfilledBalance"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasBeneficialOwner"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasBudget"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasBudgetTransaction"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasCurrentBalance"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasDeliveryObligation"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasObligatedBalance"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasPayee"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasPayor"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasPositionIn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasRecognizedFinancialActivity"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:hasScope"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isControlledBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isEncumberedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isPossessedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isRecognizedOn"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isRenewedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isSuppliedBy"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isSuppliedTo"/>
+    </Declaration>
+    <Declaration>
+        <ObjectProperty abbreviatedIRI="gist:isTracking"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="gist:endDate"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="gist:postingDate"/>
+    </Declaration>
+    <Declaration>
+        <DataProperty abbreviatedIRI="gist:startDate"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_scheduling"/>
+    </Declaration>
+    <Declaration>
+        <Class IRI="http://www.w3.org/ns/shacl#PrefixDeclaration"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_invoice"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_ResourceEventType_renewal"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_ResourceEventType_reservation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_ampere"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_kelvin"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_delivery"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_non_operational"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_procure_to_pay"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_renewal"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_reservation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_budget"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_revaluation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_financial_transfer"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_ResourceEventType_scheduling"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_bill"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_make_to_order"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_accrual"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_commit"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_direct"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_allocation"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_sale"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_meter"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_sales_order"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_indirect"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_USDollar"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="http://www.w3.org/ns/shacl#prefix"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_ResourceEventType_consumption"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_payment"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_percent"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt_acknowledgement"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_fine_or_fee"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_day"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_purchase"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_remittance"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="http://www.w3.org/ns/shacl#declare"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_production_order"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_candela"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_millisecond"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_shipment_notification"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_each"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_order_to_cash"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_cash"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_mole"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_second"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_bit"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty IRI="http://www.w3.org/ns/shacl#namespace"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_kilogram"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_purchase_order"/>
+    </Declaration>
+    <Declaration>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_minute"/>
+    </Declaration>
+    <Declaration>
+        <NamedIndividual abbreviatedIRI="gist:_PrefixDeclaration_gist"/>
+    </Declaration>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:AccountingPolicy"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Intention"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasDirectPart"/>
+                <Class abbreviatedIRI="gist:AccountingScope"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasDirectPart"/>
+                <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:AllocationEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_allocation"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:AssetsHeldAwayAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isPossessedBy"/>
+                <Class abbreviatedIRI="gist:NotUs"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectInverseOf>
+                    <ObjectProperty abbreviatedIRI="gist:owns"/>
+                </ObjectInverseOf>
+                <Class abbreviatedIRI="gist:Us"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:BillEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_bill"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:BudgetTransaction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialTransaction"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasGoal"/>
+                <Class abbreviatedIRI="gist:Intention"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <Class abbreviatedIRI="gist:DegreeOfCommitment"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:CommitmentTransaction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Event"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+                <Class abbreviatedIRI="gist:Monetary"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <Class abbreviatedIRI="gist:AccountingPolicy"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <ObjectUnionOf>
+                    <Class abbreviatedIRI="gist:PurchaseEvent"/>
+                    <Class abbreviatedIRI="gist:SalesEvent"/>
+                </ObjectUnionOf>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectInverseOf>
+                    <ObjectProperty abbreviatedIRI="gist:isAffectedBy"/>
+                </ObjectInverseOf>
+                <Class abbreviatedIRI="gist:Balance"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasParty"/>
+                <Class abbreviatedIRI="gist:NotUs"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasParty"/>
+                <Class abbreviatedIRI="gist:Us"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:DeliveryEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:goesToAgent"/>
+                <ObjectUnionOf>
+                    <Class abbreviatedIRI="gist:Organization"/>
+                    <Class abbreviatedIRI="gist:Person"/>
+                </ObjectUnionOf>
+            </ObjectSomeValuesFrom>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_delivery"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:DueInAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasDeliveryObligation"/>
+                <Class abbreviatedIRI="gist:NotUs"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:DueOutAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasDeliveryObligation"/>
+                <Class abbreviatedIRI="gist:Us"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FinancialAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Account"/>
+            <ObjectUnionOf>
+                <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+                <Class abbreviatedIRI="gist:ResourceAccount"/>
+            </ObjectUnionOf>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+                <Class abbreviatedIRI="gist:Monetary"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FinancialBalance"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Monetary"/>
+            <DataSomeValuesFrom>
+                <DataProperty abbreviatedIRI="gist:endDate"/>
+                <Datatype abbreviatedIRI="xsd:dateTime"/>
+            </DataSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcess"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Event"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasDirectPart"/>
+                <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FinancialTransaction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Event"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+                <Class abbreviatedIRI="gist:Monetary"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <Class abbreviatedIRI="gist:AccountingPolicy"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectInverseOf>
+                    <ObjectProperty abbreviatedIRI="gist:isAffectedBy"/>
+                </ObjectInverseOf>
+                <Class abbreviatedIRI="gist:Balance"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FinancialTransferEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_financial_transfer"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FineOrFeeEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_fine_or_fee"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:FulfillmentTransaction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Event"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+                <Class abbreviatedIRI="gist:Monetary"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <Class abbreviatedIRI="gist:AccountingPolicy"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <ObjectUnionOf>
+                    <Class abbreviatedIRI="gist:FinancialTransferEvent"/>
+                    <Class abbreviatedIRI="gist:PaymentEvent"/>
+                    <Class abbreviatedIRI="gist:ReceiptAcknowledgement"/>
+                    <Class abbreviatedIRI="gist:ReceiptEvent"/>
+                    <Class abbreviatedIRI="gist:RemittanceEvent"/>
+                </ObjectUnionOf>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectInverseOf>
+                    <ObjectProperty abbreviatedIRI="gist:isAffectedBy"/>
+                </ObjectInverseOf>
+                <Class abbreviatedIRI="gist:Balance"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:InvestmentAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:AssetsHeldAwayAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasPositionIn"/>
+                <Class abbreviatedIRI="gist:FinancialInstrument"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:InvoiceEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_invoice"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:MakeToOrder"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessProcess"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_make_to_order"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ObligationTransaction"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Event"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+                <Class abbreviatedIRI="gist:Monetary"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <Class abbreviatedIRI="gist:AccountingPolicy"/>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isBasedOn"/>
+                <ObjectUnionOf>
+                    <Class abbreviatedIRI="gist:BillEvent"/>
+                    <Class abbreviatedIRI="gist:DeliveryEvent"/>
+                    <Class abbreviatedIRI="gist:InvoiceEvent"/>
+                    <Class abbreviatedIRI="gist:ShipmentNotification"/>
+                </ObjectUnionOf>
+            </ObjectSomeValuesFrom>
+            <ObjectSomeValuesFrom>
+                <ObjectInverseOf>
+                    <ObjectProperty abbreviatedIRI="gist:isAffectedBy"/>
+                </ObjectInverseOf>
+                <Class abbreviatedIRI="gist:Balance"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:OrderToCash"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessProcess"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_order_to_cash"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:PayeeAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasPayee"/>
+                <Class abbreviatedIRI="gist:NotUs"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:PayorAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:hasPayor"/>
+                <Class abbreviatedIRI="gist:NotUs"/>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ProcureToPay"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessProcess"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_procure_to_pay"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ProductionOrder"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Commitment"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_Commitment_production_order"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:PurchaseEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_purchase"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:PurchaseOrder"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Commitment"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_Commitment_purchase_order"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ReceiptAcknowledgement"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt_acknowledgement"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ReceiptEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:RemittanceEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_remittance"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialAccount"/>
+            <ObjectSomeValuesFrom>
+                <ObjectProperty abbreviatedIRI="gist:isTracking"/>
+                <ObjectUnionOf>
+                    <Class abbreviatedIRI="gist:Building"/>
+                    <Class abbreviatedIRI="gist:Equipment"/>
+                    <Class abbreviatedIRI="gist:Person"/>
+                    <Class abbreviatedIRI="gist:ProductSpecification"/>
+                </ObjectUnionOf>
+            </ObjectSomeValuesFrom>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ResourceReservationEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_reservation"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ResourceSchedulingEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_scheduling"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:RevaluationEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_revaluation"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:SalesEvent"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_sale"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:SalesOrder"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:Commitment"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_Commitment_sales_order"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <EquivalentClasses>
+        <Class abbreviatedIRI="gist:ShipmentNotification"/>
+        <ObjectIntersectionOf>
+            <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+            <ObjectHasValue>
+                <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
+                <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_shipment_notification"/>
+            </ObjectHasValue>
+        </ObjectIntersectionOf>
+    </EquivalentClasses>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+        <Class abbreviatedIRI="gist:Intention"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:AssetsHeldAwayAccount"/>
+        <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:FinancialAccount"/>
+        <Class abbreviatedIRI="gist:Account"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:FinancialBalance"/>
+        <Class abbreviatedIRI="gist:Monetary"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+        <Class abbreviatedIRI="gist:Category"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:FinancialInstrument"/>
+        <Class abbreviatedIRI="gist:Specification"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+        <Class abbreviatedIRI="gist:Category"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:InvestmentAccount"/>
+        <Class abbreviatedIRI="gist:AssetsHeldAwayAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:NonTemporalResourceAccount"/>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:ObligationToPay"/>
+        <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:ProductLine"/>
+        <Class abbreviatedIRI="gist:Category"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+        <Class abbreviatedIRI="gist:FinancialAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:ResourceConsumptionEvent"/>
+        <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:ResourceRenewalEvent"/>
+        <Class abbreviatedIRI="gist:FinancialBusinessEvent"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:RightToReceivePayment"/>
+        <Class abbreviatedIRI="gist:CounterpartyAccount"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:SupplierType"/>
+        <Class abbreviatedIRI="gist:Category"/>
+    </SubClassOf>
+    <SubClassOf>
+        <Class abbreviatedIRI="gist:TemporalResourceAccount"/>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+    </SubClassOf>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_direct"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_indirect"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+        <NamedIndividual abbreviatedIRI="gist:_AccountingScope_non_operational"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:Commitment"/>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_production_order"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:Commitment"/>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_purchase_order"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:Commitment"/>
+        <NamedIndividual abbreviatedIRI="gist:_Commitment_sales_order"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_allocation"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_bill"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_financial_transfer"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_fine_or_fee"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_invoice"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_purchase"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_receipt_acknowledgement"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_remittance"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_renewal"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_reservation"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_resource_scheduling"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_revaluation"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_sale"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessEventType_shipment_notification"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_make_to_order"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_order_to_cash"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:FinancialBusinessProcessType"/>
+        <NamedIndividual abbreviatedIRI="gist:_FinancialBusinessProcessType_procure_to_pay"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_accrual"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_budget"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_cash"/>
+    </ClassAssertion>
+    <ClassAssertion>
+        <Class abbreviatedIRI="gist:IncomeStatementSection"/>
+        <NamedIndividual abbreviatedIRI="gist:_IncomeStatementSection_commit"/>
+    </ClassAssertion>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasBudgetTransaction"/>
+        <ObjectProperty abbreviatedIRI="gist:hasMember"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasCurrentBalance"/>
+        <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasDeliveryObligation"/>
+        <ObjectProperty abbreviatedIRI="gist:hasParty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasPayee"/>
+        <ObjectProperty abbreviatedIRI="gist:hasParty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasPayor"/>
+        <ObjectProperty abbreviatedIRI="gist:hasParty"/>
+    </SubObjectPropertyOf>
+    <SubObjectPropertyOf>
+        <ObjectProperty abbreviatedIRI="gist:hasRecognizedFinancialActivity"/>
+        <ObjectProperty abbreviatedIRI="gist:hasMember"/>
+    </SubObjectPropertyOf>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="gist:isRenewedBy"/>
+        <Class abbreviatedIRI="gist:TemporalResourceAccount"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyDomain>
+        <ObjectProperty abbreviatedIRI="gist:isTracking"/>
+        <Class abbreviatedIRI="gist:ResourceAccount"/>
+    </ObjectPropertyDomain>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="gist:hasRecognizedFinancialActivity"/>
+        <Class abbreviatedIRI="gist:FinancialTransaction"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="gist:hasScope"/>
+        <Class abbreviatedIRI="gist:AccountingScope"/>
+    </ObjectPropertyRange>
+    <ObjectPropertyRange>
+        <ObjectProperty abbreviatedIRI="gist:isRenewedBy"/>
+        <Class abbreviatedIRI="gist:Balance"/>
+    </ObjectPropertyRange>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="gist:endDate"/>
+        <DataProperty abbreviatedIRI="gist:atDate"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="gist:postingDate"/>
+        <DataProperty abbreviatedIRI="gist:atDate"/>
+    </SubDataPropertyOf>
+    <SubDataPropertyOf>
+        <DataProperty abbreviatedIRI="gist:startDate"/>
+        <DataProperty abbreviatedIRI="gist:atDate"/>
+    </SubDataPropertyOf>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:AccountingPolicy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:AccountingPolicy</AbbreviatedIRI>
+        <Literal>A method to determine classification, valuation, and timing of a business event which generates a financial transaction.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:AccountingPolicy</AbbreviatedIRI>
+        <Literal>Accounting Policy</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:AccountingPolicy</AbbreviatedIRI>
+        <Literal>Best practice: this method will be machine-processable and therefore automatic.
+
+Better practice will use a very simple association to make this automatic assignment: for any given scope there should be only one event that recognizes the revenue or expense. For some events, there is also a method to determine cost.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:AccountingScope</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:AccountingScope</AbbreviatedIRI>
+        <Literal>The accounting intent of a business event.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:AccountingScope</AbbreviatedIRI>
+        <Literal>Accounting Scope</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:AccountingScope</AbbreviatedIRI>
+        <Literal>Allows us to treat the event of purchasing chocolate differently if we are buying it for the purpose of making cookies (assuming we&apos;re in the cookie making business), versus expensing it on overhead in the cafeteria, or on the executive jet.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:AllocationEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:AllocationEvent</AbbreviatedIRI>
+        <Literal>An event that triggers the allocation of expenses.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:AllocationEvent</AbbreviatedIRI>
+        <Literal>Allocation Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:AllocationEvent</AbbreviatedIRI>
+        <Literal>This is typically a recurring process.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:AssetsHeldAwayAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:AssetsHeldAwayAccount</AbbreviatedIRI>
+        <Literal>An account tracking assests that the account holder owns but does not possess.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:AssetsHeldAwayAccount</AbbreviatedIRI>
+        <Literal>A bank account where the funds are held by the bank, or an investment account where the funds are held by a brokerage.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:AssetsHeldAwayAccount</AbbreviatedIRI>
+        <Literal>Assets Held Away Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:BillEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:BillEvent</AbbreviatedIRI>
+        <Literal>The receipt of a bill from a payee.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:BillEvent</AbbreviatedIRI>
+        <Literal>Bill Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:BudgetTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:BudgetTransaction</AbbreviatedIRI>
+        <Literal>The atomic unit of a budget. Each transaction is one internal commitment, which may be delegated.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:BudgetTransaction</AbbreviatedIRI>
+        <Literal>Budget Transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:CommitmentTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:CommitmentTransaction</AbbreviatedIRI>
+        <Literal>Changes the balance of a commitment, whether it be for ourselves or others.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:CommitmentTransaction</AbbreviatedIRI>
+        <Literal>Commitment Transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:CounterpartyAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:CounterpartyAccount</AbbreviatedIRI>
+        <Literal>An account that keeps track of what is owed between two parties based on their commitments to one another and the fulfillment of those commitments.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:CounterpartyAccount</AbbreviatedIRI>
+        <Literal>Counterparty Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:CounterpartyAccount</AbbreviatedIRI>
+        <Literal>Every interaction with another entity that results in commitments between those parties (money or delivery of goods or services) requires setting up a counterparty account. The types of counterparty account differ in the nature of the commitment (financial or delivery) the direction of the commitment (owed by us, owed to us) and the relationship of possession to ownership.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:DeliveryEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:DeliveryEvent</AbbreviatedIRI>
+        <Literal>Delivery of a product or service to a customer.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:DeliveryEvent</AbbreviatedIRI>
+        <Literal>Delivery Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:DueInAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:DueInAccount</AbbreviatedIRI>
+        <Literal>An account that comes into existence when we commit to purchase something that isn&apos;t delivered immediately.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:DueInAccount</AbbreviatedIRI>
+        <Literal>Due In Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:DueOutAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+        <AbbreviatedIRI>gist:DueOutAccount</AbbreviatedIRI>
+        <Literal>Obligation To Deliver Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:DueOutAccount</AbbreviatedIRI>
+        <Literal>An account that comes into existence when we commit to providing a product or service at some point in the future.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:DueOutAccount</AbbreviatedIRI>
+        <Literal>Due Out Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialAccount</AbbreviatedIRI>
+        <Literal>An account that tracks	a monetary resource.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialAccount</AbbreviatedIRI>
+        <Literal>Financial Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialAccount</AbbreviatedIRI>
+        <Literal>The base unit on the balance sheet in the data-centric accounting approach.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialBalance</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialBalance</AbbreviatedIRI>
+        <Literal>Any of several specially named financial balances, each having its own significance.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:FinancialBalance</AbbreviatedIRI>
+        <Literal>Major balance types:
+Order to Cash:
+- Obligation to Deliver
+- Delivered
+- Right to Receive Payment
+- Invoiced
+- Payment Received
+- Deposited
+Procure to Pay:
+- Obligation to Pay
+- Right to Receive
+- Received
+- Billed
+- Paid
+Make:
+- Plan to Make
+- Resource Consumed
+- Completed
+Resource Consumption:
+- Resource Available
+- Resource Consumed</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialBalance</AbbreviatedIRI>
+        <Literal>Financial Balance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialBalance</AbbreviatedIRI>
+        <Literal>These balances are affected by financial transactions. Each financial transaction affects a balance, resulting in an updated balance.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>A series of steps coordinated over time to achieve a business outcome.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>A mortgage.  The entire transaction might take as long as 30 years to complete.  Each related detailed event (a mortgage bill, a payment, a late notice, a foreclosure warning etc) occurs in the context of the FBT, and as such, by capturing and organizing the FBP attributes you can drastically reduce data gathering effort downstream.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>Financial Business Process</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>The FBT is instantiated by a particular event.  For Procure-to-pay, that is a purchase order; for Order-to-cash, it&apos;s a sales order; for Make, it&apos;s a production order; for a mortgage, it is loan origination; for an insurance policy, it&apos;s underwriting. In some cases, it would make sense to initiate the FBT prior to a commitment. For instance, if you&apos;re pretty sure you are going to buy a major piece of equipment, you might start the FBT while you are still soliciting bids, but in most cases the PO is the logical place to start.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>The three most common types of FBPs are:
+- Procure-to-pay, which runs at least from purchase order committment, through receipt, billing and payment.
+- Order-to-cash, which runs at least from sales order to delivery, invoicing and remittance.
+- Make, which runs from production order, through resource consumption to finished goods.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcess</AbbreviatedIRI>
+        <Literal>This is not the template; members of this class are specific instances of long transactions. It would be a good practice to have a standard template for each type of FBT, and perhaps variations on product types within FBTs it is not strictly necessary.  The FBT can work without a template.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcessType</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcessType</AbbreviatedIRI>
+        <Literal>Categorization types for Financial Business Processs.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcessType</AbbreviatedIRI>
+        <Literal>Common examples include procure-to-pay, order-to-cash, and make. Others are mortgage, line of credit, infrastructure build, and acquistion/divestiture.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialBusinessProcessType</AbbreviatedIRI>
+        <Literal>Financial Business Process Type</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialInstrument</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
+        <AbbreviatedIRI>gist:FinancialInstrument</AbbreviatedIRI>
+        <IRI>https://www.iasplus.com/en/standards/ias/ias32</IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialInstrument</AbbreviatedIRI>
+        <Literal>&apos;A contract that gives rise to a financial asset of one entity and a financial liability or equity instrument of another entity.&apos;</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialInstrument</AbbreviatedIRI>
+        <Literal>Financial Instrument</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialTransaction</AbbreviatedIRI>
+        <Literal>A transaction that has a monetary value and that participates in an auditable chain of updates to one or more account balances.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialTransaction</AbbreviatedIRI>
+        <Literal>Financial Transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialTransaction</AbbreviatedIRI>
+        <Literal>If it is an instantaneous event, it will only have an end date. If it is a flow activity, it will have a start and end date.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FinancialTransferEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FinancialTransferEvent</AbbreviatedIRI>
+        <Literal>A transfer event that moves money from one account to another without changing ownership.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FinancialTransferEvent</AbbreviatedIRI>
+        <Literal>Financial Transfer Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:FinancialTransferEvent</AbbreviatedIRI>
+        <Literal>If a transfer involves change of ownership of the funds, that is instead a payment.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FineOrFeeEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FineOrFeeEvent</AbbreviatedIRI>
+        <Literal>A financial penalty where there is no a priori agreement therefore no obligations to track.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FineOrFeeEvent</AbbreviatedIRI>
+        <Literal>Fine or Fee Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:FulfillmentTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:FulfillmentTransaction</AbbreviatedIRI>
+        <Literal>A transaction that fulfills payment or delivery obligations.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:FulfillmentTransaction</AbbreviatedIRI>
+        <Literal>Fulfillment Transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:IncomeStatement</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:IncomeStatement</AbbreviatedIRI>
+        <Literal>A financial report dealing with money coming into an account or fund over a period of time.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:IncomeStatement</AbbreviatedIRI>
+        <Literal>Income Statement</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:IncomeStatement</AbbreviatedIRI>
+        <Literal>While some of the other flow statements can be derived from the event type, the income statement cannot. It is the event plus the context plus the accounting policy that determines which transactions hit the income statement.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:IncomeStatementSection</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:IncomeStatementSection</AbbreviatedIRI>
+        <Literal>A portion of an income statement describing transactions connected to one specific accounting policy.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:IncomeStatementSection</AbbreviatedIRI>
+        <Literal>Income Statement Section</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:IncomeStatementSection</AbbreviatedIRI>
+        <Literal>We are providing three levels of commitment that can be reported on the income statement, which we call sections. Each could be on their own page, but we think the more interesting one will be consolidated, where the sections are columns.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:InvestmentAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:InvestmentAccount</AbbreviatedIRI>
+        <Literal>An account where stocks and other investments are held.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:InvestmentAccount</AbbreviatedIRI>
+        <Literal>Investment Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:InvestmentAccount</AbbreviatedIRI>
+        <Literal>Each position might be an account, and what we traditionally call an investment account might just be the collection of them.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:InvoiceEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:InvoiceEvent</AbbreviatedIRI>
+        <Literal>An event that marks the creation and communication of an invoice to a payor.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:InvoiceEvent</AbbreviatedIRI>
+        <Literal>Invoice Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:MakeToOrder</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:MakeToOrder</AbbreviatedIRI>
+        <Literal>An FBP that runs from production order, through resource consumption to finished goods.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:MakeToOrder</AbbreviatedIRI>
+        <Literal>Is this needed?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:MakeToOrder</AbbreviatedIRI>
+        <Literal>Make to Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <Literal>An account tracking a resource that can be consumed all at once.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <Literal>Non-temporal Resource Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <Literal>A non-temporal resource may be, but does not have to be, consumed all at once. If you have 100 pounds of chocolate, you can use them all up all at once, in a large batch of cookies. You could also dole them out a pound a week in the cafeteria, but it is the potential to acquire and consume them instantaneously that defines them.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <Literal>The primary types of non-temporal resources are inventory and cash.  Work in process (WIP) inventory is a special kind of inventory.  We can apply resources to WIP, either temporally (labor and equipment) or non-temporally (raw materials) but its nature as inventory means that it can be consumed instantly.  On the other hand, if the work in process is building equipment or real estate for internal use, it can, on completion, be considered a temporal resource.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:NonTemporalResourceAccount</AbbreviatedIRI>
+        <Literal>The temporalness of a resource is independent of whether you own it or not.  If you rent a piece of equipment, you should treat it as a temporal resource for the period of your rental.  From the standpoint of consuming resources, it doesn&apos;t matter whether you own it or not.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ObligationToPay</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:ObligationToPay</AbbreviatedIRI>
+        <Literal>Could use help with making a definition for this.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:ObligationToPay</AbbreviatedIRI>
+        <Literal>Should there also be a gist:ObligationToDelivery. There currently isn&apos;t one.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ObligationToPay</AbbreviatedIRI>
+        <Literal>Obligation to Pay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ObligationTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ObligationTransaction</AbbreviatedIRI>
+        <Literal>A transaction that changes the balance of at least one obligation. This could be financial or delivery, customer or supplier.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ObligationTransaction</AbbreviatedIRI>
+        <Literal>Obligation Transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:OrderToCash</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:OrderToCash</AbbreviatedIRI>
+        <Literal>An FBP that runs at least from sales order to delivery, invoicing and remittance.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:OrderToCash</AbbreviatedIRI>
+        <Literal>Is this needed?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:OrderToCash</AbbreviatedIRI>
+        <Literal>Order to Cash</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:PayeeAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+        <AbbreviatedIRI>gist:PayeeAccount</AbbreviatedIRI>
+        <Literal>Account Payable</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+        <AbbreviatedIRI>gist:PayeeAccount</AbbreviatedIRI>
+        <Literal>Payable Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:PayeeAccount</AbbreviatedIRI>
+        <Literal>An account that comes into existence when another party grants us credit; that is, allows us to pay later for some current commitment.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:PayeeAccount</AbbreviatedIRI>
+        <Literal>Payee Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:PayorAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+        <AbbreviatedIRI>gist:PayorAccount</AbbreviatedIRI>
+        <Literal>Account Receivable</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:altLabel"/>
+        <AbbreviatedIRI>gist:PayorAccount</AbbreviatedIRI>
+        <Literal>Financial Receivable Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:PayorAccount</AbbreviatedIRI>
+        <Literal>An account that comes into existence when we agree to accept payment at some later time, granting another party &quot;credit&quot;.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:PayorAccount</AbbreviatedIRI>
+        <Literal>Payor Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ProcureToPay</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ProcureToPay</AbbreviatedIRI>
+        <Literal>An FBP that runs at least from purchase order committment, through receipt, billing and payment.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:ProcureToPay</AbbreviatedIRI>
+        <Literal>Is this needed?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ProcureToPay</AbbreviatedIRI>
+        <Literal>Procure to Pay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ProductLine</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ProductLine</AbbreviatedIRI>
+        <Literal>A way of categorizing product offerings and product specifications for the purpose of financial reporting.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ProductLine</AbbreviatedIRI>
+        <Literal>Product Line</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ProductionOrder</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ProductionOrder</AbbreviatedIRI>
+        <Literal>An internal document stating materials/goods to be produced and the timeframe to produce them within.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ProductionOrder</AbbreviatedIRI>
+        <Literal>Production Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:PurchaseEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:PurchaseEvent</AbbreviatedIRI>
+        <Literal>A commitment to buy something.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:PurchaseEvent</AbbreviatedIRI>
+        <Literal>Purchase Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:PurchaseOrder</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:PurchaseOrder</AbbreviatedIRI>
+        <Literal>A buyer&apos;s commitment to make a purchase at a set price. Becomes a contract once the seller accepts.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:PurchaseOrder</AbbreviatedIRI>
+        <Literal>Purchase Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ReceiptAcknowledgement</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ReceiptAcknowledgement</AbbreviatedIRI>
+        <Literal>The acknowlegement from a customer that the goods or services were received and they were satisfactory (having gone through whatever quality control process they employ).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ReceiptAcknowledgement</AbbreviatedIRI>
+        <Literal>Receipt Acknowledgement</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ReceiptEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ReceiptEvent</AbbreviatedIRI>
+        <Literal>Receipt of a product or service from a supplier.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ReceiptEvent</AbbreviatedIRI>
+        <Literal>Receipt Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:RemittanceEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:RemittanceEvent</AbbreviatedIRI>
+        <Literal>Transmission of payment, either by check, cash, or direct deposit.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:RemittanceEvent</AbbreviatedIRI>
+        <Literal>Remittance Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ResourceAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ResourceAccount</AbbreviatedIRI>
+        <Literal>A registry to track transactions involving a particular resource.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:ResourceAccount</AbbreviatedIRI>
+        <Literal>Financial resources, pieces of equipment.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ResourceAccount</AbbreviatedIRI>
+        <Literal>Resource Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:ResourceAccount</AbbreviatedIRI>
+        <Literal>There is an account for every resource that the firm has control over and can deploy to satisfy their goals.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ResourceReservationEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ResourceReservationEvent</AbbreviatedIRI>
+        <Literal>The holding/allocating some resource toward the achievement of some future objective.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:ResourceReservationEvent</AbbreviatedIRI>
+        <Literal>Hiring a person to get x hours of labor; the putting aside of chocolate for a future batch of chocolate chip cookie dough.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ResourceReservationEvent</AbbreviatedIRI>
+        <Literal>Resource Reservation Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:ResourceReservationEvent</AbbreviatedIRI>
+        <Literal>The target of the resource consumption is either a goal (expense category) or some form of work in progress (such as a production work order, or a construction project, or a consulting project).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ResourceSchedulingEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ResourceSchedulingEvent</AbbreviatedIRI>
+        <Literal>The allocation of some resource to be used at a planned time toward the achievement of some objective.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:ResourceSchedulingEvent</AbbreviatedIRI>
+        <Literal>A time card entry; the addition of chocolate to the chocolate chip cookie dough.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ResourceSchedulingEvent</AbbreviatedIRI>
+        <Literal>Resource Scheduling Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:ResourceSchedulingEvent</AbbreviatedIRI>
+        <Literal>The target of the resource consumption is either a goal (expense category) or some form of work in progress (such as a production work order, or a construction project, or a consulting project).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:RevaluationEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:RevaluationEvent</AbbreviatedIRI>
+        <Literal>The adjustment of the valuation of an asset.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:RevaluationEvent</AbbreviatedIRI>
+        <Literal>Write off, Mark to Market</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:RevaluationEvent</AbbreviatedIRI>
+        <Literal>Revaluation Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:RightToReceivePayment</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:RightToReceivePayment</AbbreviatedIRI>
+        <Literal>Could use help with making a definition for this.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:RightToReceivePayment</AbbreviatedIRI>
+        <Literal>Right to Receive Payment</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:SalesEvent</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:SalesEvent</AbbreviatedIRI>
+        <Literal>The actual commitment on the part of a customer for a product or service.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:SalesEvent</AbbreviatedIRI>
+        <Literal>Sales Event</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:SalesOrder</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:SalesOrder</AbbreviatedIRI>
+        <Literal>A seller&apos;s internal documentation of a buyer&apos;s order.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:SalesOrder</AbbreviatedIRI>
+        <Literal>Sales Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:ShipmentNotification</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:ShipmentNotification</AbbreviatedIRI>
+        <Literal>Notification from a supplier that goods have been shipped.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:ShipmentNotification</AbbreviatedIRI>
+        <Literal>Shipment Notification</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:SupplierType</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:SupplierType</AbbreviatedIRI>
+        <Literal>A way of categorizing suppliers for the purpose of financial reporting.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:SupplierType</AbbreviatedIRI>
+        <Literal>Wages, subcontractor, raw material supplier, professional services supplier.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:SupplierType</AbbreviatedIRI>
+        <Literal>Supplier Type</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:SupplierType</AbbreviatedIRI>
+        <Literal>These distinctions often cause expenses to land in different lines on the income statement.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:TemporalResourceAccount</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:TemporalResourceAccount</AbbreviatedIRI>
+        <Literal>A temporal resource is one that can only be consumed and replenished over time.  For instance, a laborer can only work at the rate of one hour per hour.  If they did no useful work all week, they can&apos;t suddenly apply all 40 hours they haven&apos;t used to a task late Friday afternoon. Equipment, real estate, and labor are the main temporal resources. Every morning your concrete truck replenishes itself and is ready to provide another days worth of use. A licensed (or capitalized) software product should be considered a temporal resource that is used over time.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:TemporalResourceAccount</AbbreviatedIRI>
+        <Literal>Temporal Resource Account</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:TemporalResourceAccount</AbbreviatedIRI>
+        <Literal>Goodwill is a form of temporal account, as the value is amortized over time, but really its mostly an accounting fiction, as there is no actual resource that can be applied to any goal.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:TemporalResourceAccount</AbbreviatedIRI>
+        <Literal>Note that while the temporal resource has a &apos;balance,&apos; this is as of the end date of the last known transaction. When interrogated about its balance as of a particular point in time, the temporal resource account needs to calculate the balances based on the flows.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_AccountingScope_direct</AbbreviatedIRI>
+        <Literal>Expenses related to providing goods or services.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:_AccountingScope_direct</AbbreviatedIRI>
+        <Literal>Goods, materials, labor for production</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_AccountingScope_direct</AbbreviatedIRI>
+        <Literal>Direct</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_AccountingScope_indirect</AbbreviatedIRI>
+        <Literal>Expenses related to running a company.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:_AccountingScope_indirect</AbbreviatedIRI>
+        <Literal>Rent, utilities</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_AccountingScope_indirect</AbbreviatedIRI>
+        <Literal>Indirect</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_AccountingScope_non_operational</AbbreviatedIRI>
+        <Literal>Expenses not related to core operations.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_AccountingScope_non_operational</AbbreviatedIRI>
+        <Literal>Non-Operational</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_Commitment_production_order</AbbreviatedIRI>
+        <Literal>An internal document stating materials/goods to be produced and the timeframe to produce them within.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_Commitment_production_order</AbbreviatedIRI>
+        <Literal>Production Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_Commitment_purchase_order</AbbreviatedIRI>
+        <Literal>A buyer&apos;s commitment to make a purchase at a set price. Becomes a contract once the seller accepts.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_Commitment_purchase_order</AbbreviatedIRI>
+        <Literal>Purchase Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_Commitment_sales_order</AbbreviatedIRI>
+        <Literal>A seller&apos;s internal documentation of a buyer&apos;s order.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_Commitment_sales_order</AbbreviatedIRI>
+        <Literal>Sales Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_allocation</AbbreviatedIRI>
+        <Literal>The setting aside of a portion of a resource for a specific purpose.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_allocation</AbbreviatedIRI>
+        <Literal>Allocation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_bill</AbbreviatedIRI>
+        <Literal>A record of goods sold or services rendered, with the cost.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_bill</AbbreviatedIRI>
+        <Literal>Double-check this definition. What is the difference between &apos;invoice&apos; and &apos;bill&apos;?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_bill</AbbreviatedIRI>
+        <Literal>Bill</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_financial_transfer</AbbreviatedIRI>
+        <Literal>Movement of money between two accounts that are both owned by the same party.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_financial_transfer</AbbreviatedIRI>
+        <Literal>Financial Transfer</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_fine_or_fee</AbbreviatedIRI>
+        <Literal>A financial penalty with no a priori agreement therefore no obligations to track.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_fine_or_fee</AbbreviatedIRI>
+        <Literal>Fine or Fee</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_invoice</AbbreviatedIRI>
+        <Literal>A communication to a customer of how much they owe for a product we have provided or service we have rendered.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_invoice</AbbreviatedIRI>
+        <Literal>Double-check this definition. What is the difference between &apos;invoice&apos; and &apos;bill&apos;?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_invoice</AbbreviatedIRI>
+        <Literal>Invoice</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_purchase</AbbreviatedIRI>
+        <Literal>A commitment to buy something.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_purchase</AbbreviatedIRI>
+        <Literal>Purchase</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_receipt</AbbreviatedIRI>
+        <Literal>The acknowledgement that goods or services have been received.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_receipt</AbbreviatedIRI>
+        <Literal>Receipt</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_receipt</AbbreviatedIRI>
+        <Literal>This is distinct from the piece of paper we commonly call a receipt. The paper receipt often memorializes the receipt of a good or service, but occassionally it memorializes the receipt of money, or even just the execution of a sales order.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_receipt_acknowledgement</AbbreviatedIRI>
+        <Literal>Acknowlegement from a customer that a good has been received or a service has been rendered.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_receipt_acknowledgement</AbbreviatedIRI>
+        <Literal>Receipt Acknowlegement</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_remittance</AbbreviatedIRI>
+        <Literal>Transfer of money out in return for goods or services.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_remittance</AbbreviatedIRI>
+        <Literal>Remittance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_renewal</AbbreviatedIRI>
+        <Literal>The acknowledgement (typically recurring) that a resource is available for some period of time.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_renewal</AbbreviatedIRI>
+        <Literal>Resource Renewal</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_reservation</AbbreviatedIRI>
+        <Literal>The putting aside of a resource to accomplish some task.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_reservation</AbbreviatedIRI>
+        <Literal>Resource Reservation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_scheduling</AbbreviatedIRI>
+        <Literal>The planned use of a resource to accomplish some task.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_resource_scheduling</AbbreviatedIRI>
+        <Literal>Resource Scheduling</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_revaluation</AbbreviatedIRI>
+        <Literal>The adjustment of the valuation of an asset.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_revaluation</AbbreviatedIRI>
+        <Literal>Revaluation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_sale</AbbreviatedIRI>
+        <Literal>Completion of a sales order.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_sale</AbbreviatedIRI>
+        <Literal>Sale</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_sale</AbbreviatedIRI>
+        <Literal>Distinct from &quot;all donuts 50% off&quot;, which is an offer.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_shipment_notification</AbbreviatedIRI>
+        <Literal>Notification from a supplier that goods have been shipped.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessEventType_shipment_notification</AbbreviatedIRI>
+        <Literal>Shipment Notification</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_make_to_order</AbbreviatedIRI>
+        <Literal>An FBP that runs from production order, through resource consumption to finished goods.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_make_to_order</AbbreviatedIRI>
+        <Literal>Make to Order</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_order_to_cash</AbbreviatedIRI>
+        <Literal>An FBP that runs at least from sales order to delivery, invoicing and remittance.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_order_to_cash</AbbreviatedIRI>
+        <Literal>Order to Cash</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_procure_to_pay</AbbreviatedIRI>
+        <Literal>An FBP that runs at least from purchase order committment, through receipt, billing and payment.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_FinancialBusinessProcessType_procure_to_pay</AbbreviatedIRI>
+        <Literal>Procure to Pay</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_accrual</AbbreviatedIRI>
+        <Literal>Money that accumulates over time.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_accrual</AbbreviatedIRI>
+        <Literal>Accrual</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_budget</AbbreviatedIRI>
+        <Literal>Money or other resources set aside for a specific task or goal.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_budget</AbbreviatedIRI>
+        <Literal>Budget</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_cash</AbbreviatedIRI>
+        <Literal>Liquid assets.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_cash</AbbreviatedIRI>
+        <Literal>Cash</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_commit</AbbreviatedIRI>
+        <Literal>Revenue expected - such as from a recurring monthly subscription - but not necessarily received.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_commit</AbbreviatedIRI>
+        <Literal>Double-check definition to ensure it is correct for this context.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:_IncomeStatementSection_commit</AbbreviatedIRI>
+        <Literal>Commit</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:committedBalance</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:committedBalance</AbbreviatedIRI>
+        <Literal>An account balance that represent sums that have been committed.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:committedBalance</AbbreviatedIRI>
+        <Literal>Committed Balance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:committedBalance</AbbreviatedIRI>
+        <Literal>Typically in the form of a purchase order or a sales order. Hiring and borrowing also lead to commitments.
+
+Note that a purchase order gives rise to two commitments, the commitment to pay and the commitment to delivery. The sales order does the same two commitments, but with the roles and direction reversed.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:endDate</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:endDate</AbbreviatedIRI>
+        <Literal>The date something ended, with precison of one day and ambiguous as to planned vs. actual. For use with accounting.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:endDate</AbbreviatedIRI>
+        <Literal>end date</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:fulfilledBalance</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:fulfilledBalance</AbbreviatedIRI>
+        <Literal>The is the balance of transactions that have fulfilled the related commitments and obligations.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:fulfilledBalance</AbbreviatedIRI>
+        <Literal>In the case of an obligation to pay, the fulfillment is the payment. In the case of an obligation to deliver, the fulfillment is the delivery.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:fulfilledBalance</AbbreviatedIRI>
+        <Literal>Fulfilled Balance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasBeneficialOwner</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasBeneficialOwner</AbbreviatedIRI>
+        <Literal>Relates an asset to its beneficial owner.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasBeneficialOwner</AbbreviatedIRI>
+        <Literal>has beneficial owner</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:hasBeneficialOwner</AbbreviatedIRI>
+        <Literal>With everyday objects this is immediate. Some long term assets, such as trusts or the residual interest in a property, may be encumbered in the short term, but have interest in the long term. From a practical perspective, owning shares in a company short of controlling interest provide a beneficial ownership with no possession or control.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasBudget</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasBudget</AbbreviatedIRI>
+        <Literal>Relates a task or goal to the funds and resources set aside for it.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasBudget</AbbreviatedIRI>
+        <Literal>has budget</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasBudgetTransaction</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasBudgetTransaction</AbbreviatedIRI>
+        <Literal>Links a particular budget (we call it the budget statement) with the budget transactions and predictions that make it up.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasBudgetTransaction</AbbreviatedIRI>
+        <Literal>has budget transaction</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasCurrentBalance</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasCurrentBalance</AbbreviatedIRI>
+        <Literal>Points to the most recent balance on an account.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasCurrentBalance</AbbreviatedIRI>
+        <Literal>has current balance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasDeliveryObligation</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasDeliveryObligation</AbbreviatedIRI>
+        <Literal>The party that has an outstanding commitment to deliver/fulfill a transaction.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasDeliveryObligation</AbbreviatedIRI>
+        <Literal>has delivery obligation</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasObligatedBalance</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasObligatedBalance</AbbreviatedIRI>
+        <Literal>Relates the amount of a resource that is outstanding (committed but not delivered/fulfilled) to its transaction.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:hasObligatedBalance</AbbreviatedIRI>
+        <Literal>Receiving a bill, preparing an invoice, delivering a good or service, or being notified that a shipment is on its way. Also the recording of resource consumption is an obligation.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasObligatedBalance</AbbreviatedIRI>
+        <Literal>has obligated balance</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:hasObligatedBalance</AbbreviatedIRI>
+        <Literal>Receiving a bill creates an obligation for cash-to-be-paid. This is then fulfilled when the bill is paid.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasPayee</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasPayee</AbbreviatedIRI>
+        <Literal>The counterparty that we paid or will pay for goods, services, or taxes.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasPayee</AbbreviatedIRI>
+        <Literal>has payee</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasPayor</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasPayor</AbbreviatedIRI>
+        <Literal>The counterparty that paid or will pay us in return for goods, service, equity, etc.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasPayor</AbbreviatedIRI>
+        <Literal>has payor</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasPositionIn</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasPositionIn</AbbreviatedIRI>
+        <Literal>Used with an investment account to subdivide the holding into the various financial assets being held.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasPositionIn</AbbreviatedIRI>
+        <Literal>has position in</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasRecognizedFinancialActivity</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasRecognizedFinancialActivity</AbbreviatedIRI>
+        <Literal>The result of the accounting policy applied to business events and financial transactions. Being &quot;recognized&quot; means that this transaction will be reflected in the income statement.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasRecognizedFinancialActivity</AbbreviatedIRI>
+        <Literal>has recognized financial activity</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:hasRecognizedFinancialActivity</AbbreviatedIRI>
+        <Literal>In accrual circumstances, an invoice might be sufficient to consider a transaction to be reflected in the income statement.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:hasRecognizedFinancialActivity</AbbreviatedIRI>
+        <Literal>While some of the other flow statements can be derived from the event type, the income statement cannot. It is the event plus the context plus the accounting policy that determines which transactions hit the income statement.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:hasScope</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:hasScope</AbbreviatedIRI>
+        <Literal>Relates a business event to its intent.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:hasScope</AbbreviatedIRI>
+        <Literal>has scope</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:hasScope</AbbreviatedIRI>
+        <Literal>Each financial event and transaction must be within some scope for the enterprise in order for the accouting policy to work.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isControlledBy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isControlledBy</AbbreviatedIRI>
+        <Literal>Relates an owned object to the entity that has control over decisions related to it.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:isControlledBy</AbbreviatedIRI>
+        <Literal>A trustee has control of the assets in a trust without owning them; similarly for a managed investment account. This is the essence of usufructous ownership rights that you would get through, e.g., a lease, where you have control over the leased property through the course of the lease, without having the ultimate beneficial ownership.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isControlledBy</AbbreviatedIRI>
+        <Literal>is controlled by</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isEncumberedBy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isEncumberedBy</AbbreviatedIRI>
+        <Literal>Relates an asset or property to a claim a third party (not the owner) has on it.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:isEncumberedBy</AbbreviatedIRI>
+        <Literal>A mortgage is an encumbrance on a home. Other examples include liens and pledges.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isEncumberedBy</AbbreviatedIRI>
+        <Literal>is encumbered by</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:scopeNote"/>
+        <AbbreviatedIRI>gist:isEncumberedBy</AbbreviatedIRI>
+        <Literal>The enjoyment of beneficial ownership of an asset may be restricted by other parties&apos; interests.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isPossessedBy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isPossessedBy</AbbreviatedIRI>
+        <Literal>Having physical or the equivalent of physical possession, without necessarily having beneficial ownership or control (storing for someone else).</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isPossessedBy</AbbreviatedIRI>
+        <Literal>is possessed by</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isRecognizedOn</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isRecognizedOn</AbbreviatedIRI>
+        <Literal>Relates an accounting policy to the part of the income statement where the event will be recognized.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isRecognizedOn</AbbreviatedIRI>
+        <Literal>is recognized on</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isRenewedBy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isRenewedBy</AbbreviatedIRI>
+        <Literal>Relates a temporal resource to the purchase or renewal of that resource.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:example"/>
+        <AbbreviatedIRI>gist:isRenewedBy</AbbreviatedIRI>
+        <Literal>The renewal of a lease (that is, purchasing the space for another month). The renewal of a car rental.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isRenewedBy</AbbreviatedIRI>
+        <Literal>is renewed by</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isSuppliedBy</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isSuppliedBy</AbbreviatedIRI>
+        <Literal>The third party that has or will supply a product or a service. In the future, this will be mediated by a due-in account.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isSuppliedBy</AbbreviatedIRI>
+        <Literal>is supplied by</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isSuppliedTo</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isSuppliedTo</AbbreviatedIRI>
+        <Literal>The counter party to whom we will be, or have, delivered a product or service.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isSuppliedTo</AbbreviatedIRI>
+        <Literal>is supplied to</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:isTracking</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:isTracking</AbbreviatedIRI>
+        <Literal>The relationship between a resource account and the resource it is tracking.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:isTracking</AbbreviatedIRI>
+        <Literal>is tracking</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:postingDate</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:postingDate</AbbreviatedIRI>
+        <Literal>The dateTime of when an Event or Transaction was entered into the database.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:editorialNote"/>
+        <AbbreviatedIRI>gist:postingDate</AbbreviatedIRI>
+        <Literal>duplicate of gist:isRecordedAt?</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:postingDate</AbbreviatedIRI>
+        <Literal>posting dateTime</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
+        <AbbreviatedIRI>gist:startDate</AbbreviatedIRI>
+        <IRI></IRI>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:definition"/>
+        <AbbreviatedIRI>gist:startDate</AbbreviatedIRI>
+        <Literal>The date something started, with precison of one day and ambiguous as to planned vs. actual. For use with accounting.</Literal>
+    </AnnotationAssertion>
+    <AnnotationAssertion>
+        <AnnotationProperty abbreviatedIRI="skos:prefLabel"/>
+        <AbbreviatedIRI>gist:startDate</AbbreviatedIRI>
+        <Literal>start date</Literal>
+    </AnnotationAssertion>
+</Ontology>
+
+
+
+<!-- Generated by the OWL API (version 4.5.26.2023-07-17T20:34:13Z) https://github.com/owlcs/owlapi -->
+
