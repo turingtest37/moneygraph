@@ -1,0 +1,75 @@
+#! /bin/sh
+
+PROJBASE=/Users/doug/dev/questrade
+SERVER=http://127.0.0.1:7200/repositories/Investments/statements
+NAMED_GRAPH_BASE=https://triples.beesondouglas.com/questrade/__ontology
+
+GIST_GRAPH="${NAMED_GRAPH_BASE}__gist"
+QT_GRAPH="${NAMED_GRAPH_BASE}__qt"
+# echo $NAMED_GRAPH
+QT_ONTOLOGY="${PROJBASE}/ontologies/questrade.ttl"
+
+echo "Clearing gist ontology NG..."
+curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${GIST_GRAPH}>" "$SERVER"
+
+echo "Uploading gist ontology files..."
+for UPLOAD in ${PROJBASE}/ontologies/gist*; do
+echo "Uploading ${UPLOAD}..."
+    curl -i -v -H "Content-Type: text/turtle" --data-binary @"$UPLOAD" --url-query "context=<${GIST_GRAPH}>" "$SERVER"
+done
+
+echo "Clearing Questrade ontology NG..."
+curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${QT_GRAPH}>" "$SERVER"
+
+echo "Uploading Questrade ontology ${QT_ONTOLOGY}..."
+curl -i -v -H "Content-Type: text/turtle" --data-binary @"${QT_ONTOLOGY}" --url-query "context=<$QT_GRAPH>" "$SERVER"
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+
+SELECT ?identifier
+?id_kind 
+?nbSharesHeld 
+(COALESCE(?costPerDollar, ?shareUnitCost) AS ?unitCost)
+?shareUnitPrice 
+?sharePositionValue 
+?sharePositionProfit
+(?sharePositionProfit / (?nbSharesHeld * ?unitCost) AS ?rendement)
+
+
+FROM qt3:__securities__latest
+FROM qt3:__valuation__latest
+
+FROM qt3:__ontology__gist
+FROM qt3:__ontology__qt
+
+{ 
+    ?s a gist:RevaluationEvent ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareCount ; gist:numericValue ?nbSharesHeld ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?shareUnitPrice ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ; gist:numericValue ?shareUnitCost ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ; gist:numericValue ?sharePositionValue ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ; gist:numericValue ?sharePositionProfit ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ; gist:numericValue ?sharePercentPort ] ;
+
+    .
+    
+    
+    ?acct gist:isAffectedBy ?s ;   
+        gist:hasPositionIn [ 
+            gist:isIdentifiedBy [ 
+                gist:uniqueText ?identifier ; 
+                gist:isCategorizedBy ?idtype ;
+        ] ] ;
+    .
+        
+        ?idtype skos:prefLabel ?id_kind .
+    
+    OPTIONAL {
+        BIND(?shareUnitCost / ?nbSharesHeld AS ?costPerDollar)
+        FILTER(?idtype=qtx:_MarketableSecurityIdentifierType_qtBondId)
+    }
+}

@@ -1,11 +1,14 @@
 #! /bin/sh
 
+#! /bin/sh
+
 FILE=`realpath $1`
+echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 NAMEBASE=trades
-NAMED_GRAPH=https://triples.beesondouglas.com/questrade/__${NAMEBASE}__
+NAMED_GRAPH="https://triples.beesondouglas.com/questrade/__${NAMEBASE}__"
 QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
@@ -21,15 +24,15 @@ then
 fi
 
 # Generate RDF from the input file
-# java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f NT -o "${OUT}" -v loc="${FILE}"
 java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}"
 
 # Clear the named graph
-if test "xDEBUG" == "x"
-then
+if test "x$2" == "x"
+then 
 # Clear graph qt3:__trades__ 
 # curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH}>" "${SERVER}"
 # Upload to a named graph
+echo "Uploading to named graph ${NAMED_GRAPH}..."
 curl -i -H "Content-Type: application/n-triples" --data-binary @"${UPLOAD}" --url-query "context=<${NAMED_GRAPH}>" "${SERVER}"
 echo "Done uploading"
 fi

@@ -133,7 +133,9 @@ qt:Bond rdf:type owl:Class ;
                                                    ]
                                                  ) ;
                               rdf:type owl:Class
-                            ] .
+                            ] ;
+        <http://www.w3.org/2004/02/skos/core#definition> "A portion of a debt on which the owner receives interest periodically before being repaid the initial loan amount." ;
+        <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond" .
 
 
 ###  https://ontologies.beesondouglas.com/questrade/BondCoupon
@@ -324,7 +326,7 @@ qt:_365_day_year rdf:type owl:NamedIndividual ,
 qt:_CurrencyPerDurationUnit_CADPerDay rdf:type owl:NamedIndividual ,
                                                gist:CurrencyPerDurationUnit ;
                                       gist:hasDenominator gist:_one_day ;
-                                      gist:hasNumerator qtx:_CADollar_ ;
+                                      gist:hasNumerator qtx:_CADollar ;
                                       <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
 
 
@@ -332,7 +334,7 @@ qt:_CurrencyPerDurationUnit_CADPerDay rdf:type owl:NamedIndividual ,
 qt:_CurrencyPerDurationUnit_CADPerYear rdf:type owl:NamedIndividual ,
                                                 gist:CurrencyPerDurationUnit ;
                                        gist:hasDenominator qt:_365_day_year ;
-                                       gist:hasNumerator qtx:_CADollar_ ;
+                                       gist:hasNumerator qtx:_CADollar ;
                                        <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
 
 
@@ -501,12 +503,12 @@ qtx:_Aspect_yieldToMaturity rdf:type owl:NamedIndividual ,
                                      gist:Aspect .
 
 
-###  https://taxonomies.beesondouglas.com/questrade/_CADollar_
-qtx:_CADollar_ rdf:type owl:NamedIndividual ,
-                        gist:CurrencyUnit ;
-               <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
-               <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
-               gist:unitSymbol "CAD" .
+###  https://taxonomies.beesondouglas.com/questrade/_CADollar
+qtx:_CADollar rdf:type owl:NamedIndividual ,
+                       gist:CurrencyUnit ;
+              <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
+              <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
+              gist:unitSymbol "CAD" .
 
 
 ###  https://taxonomies.beesondouglas.com/questrade/_FinancialBusinessEventType_assetMerger
@@ -617,7 +619,7 @@ gist:_one_minute rdf:type owl:NamedIndividual .
 #################################################################
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( qtx:_CADollar_
+  owl:distinctMembers ( qtx:_CADollar
                         gist:_USDollar
                         gist:_kelvin
                         gist:_kilogram

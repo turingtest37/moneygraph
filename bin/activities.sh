@@ -1,6 +1,7 @@
 #! /bin/sh
 
 FILE=`realpath $1`
+echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
@@ -20,16 +21,15 @@ then
     OUTOPT=""
 fi
 
-# Clear the named graph
-# curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH}>" "${SERVER}"
-
 # Generate RDF from the input file
-# java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f NT -o "${OUT}" -v loc="${FILE}"
 java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}"
-if test "xDEBUG" == "x"
+
+if test "x$2" == "x"
 then 
 # Upload to a named graph
 curl -i -H "Content-Type: application/n-triples" --data-binary @"${UPLOAD}" --url-query "context=<${NAMED_GRAPH}>" "${SERVER}"
 echo "Done uploading"
 fi
+
+echo "Done."
 

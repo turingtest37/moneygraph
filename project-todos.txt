@@ -5,3 +5,15 @@ Idea: use the weighted average of bond coupons over all interest payment events 
 
 Ensure Bond pricing is per unit (divide Price by 100)
 
+Fix the dates on securities named graph - not today, but extract from named
+
+DONE - Add debug option to valuation.sh
+
+DONE - Fix broken Activity dates for 2013-2023
+
+Add New Event Types to Activities.requested
+
+
+
+
+

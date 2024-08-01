@@ -10,67 +10,68 @@ PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 CONSTRUCT
 
 {
-    ?__valuation a gist:Event, gist:RevaluationEvent ;
+    ?__valuation_iri a gist:Event, gist:RevaluationEvent ;
         gist:isCategorizedBy gist:_FinancialBusinessEventType_revaluation ;
         gist:atDateTime ?__valuation_datetime ;
 # Cost Basis        
-        gist:isCategorizedBy ?__cost_basis ;
+        gist:isCategorizedBy ?__cost_basis_iri ;
 # Share Quantity
-        gist:hasMagnitude ?__share_quantity_magn ;
+        gist:hasMagnitude ?__qty_magn_iri ;
 # Daily Market Price
-        gist:hasMagnitude ?__daily_share_price_magn ;
+        gist:hasMagnitude ?__daily_share_price_magn_iri ;
 # Position Cost
-        gist:hasMagnitude ?__security_position_cost_magn ;
+        gist:hasMagnitude ?__security_position_cost_magn_iri ;
 # Position Value
-        gist:hasMagnitude ?__security_position_value_magn ;
+        gist:hasMagnitude ?__security_position_value_magn_iri ;
 # Profit And Loss
-        gist:hasMagnitude ?__security_profit_loss_magn ;
+        gist:hasMagnitude ?__security_profit_loss_magn_iri ;
 # % Return
-        gist:hasMagnitude ?__position_return_perc_magn ;
+        gist:hasMagnitude ?__position_return_perc_magn_iri ;
 # % of Portfolio
-        gist:hasMagnitude ?__position_port_perc_magn ;
+        gist:hasMagnitude ?__position_port_perc_magn_iri ;
     .
 
 # The account for each security is affected by the revaluation
-    ?__security_account gist:isAffectedBy ?__valuation .
+    ?__security_account_iri gist:isAffectedBy ?__valuation_iri .
 
-    ?__share_quantity_magn a gist:Magnitude ;
-        gist:numericValue ?__share_number ;
+# Current balance of security account = the number of shares held, NOT their value
+    ?__qty_magn_iri a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareAmount ;
+        gist:numericValue ?__qty_amount ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
     .
 
-    ?__daily_share_price_magn a gist:Monetary ;
+    ?__daily_share_price_magn_iri a gist:Monetary ;
         gist:numericValue ?__share_current_price ;
-        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:hasUnitOfMeasure ?__share_price_uom_iri ;
         gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
-    ?__security_position_cost_magn a gist:Monetary ;
+    ?__security_position_cost_magn_iri a gist:Monetary ;
         gist:numericValue ?__security_position_cost ; 
-        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:hasUnitOfMeasure ?__share_price_uom_iri ;
         gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ;
     .
 
-    ?__security_position_value_magn a gist:Monetary ;
+    ?__security_position_value_magn_iri a gist:Monetary ;
         gist:numericValue ?__position_current_value ;
-        gist:hasUnitOfMeasure ?__share_price_uom ;
+        gist:hasUnitOfMeasure ?__share_price_uom_iri ;
         gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ;
     .
 
-    ?__security_profit_loss_magn a gist:Monetary ;
-        gist:numericValue ?__position_p_l ;
-        gist:hasUnitOfMeasure ?__share_price_uom ;
+    ?__security_profit_loss_magn_iri a gist:Monetary ;
+        gist:numericValue ?__position_p_l_value ;
+        gist:hasUnitOfMeasure ?__share_price_uom_iri ;
         gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ;
     .
 
-    ?__position_return_perc_magn a gist:Percentage ;
+    ?__position_return_perc_magn_iri a gist:Percentage ;
         gist:numericValue ?__position_return_perc ;
         gist:hasUnitOfMeasure qt:_RatioUnit_totalInvestmentReturnRate ;
         gist:isCategorizedBy qtx:_Aspect_securityPositionReturnRatio ;
     .
 
-    ?__position_port_perc_magn a gist:Percentage ;
+    ?__position_port_perc_magn_iri a gist:Percentage ;
         gist:numericValue ?__position_port_perc ;
         gist:hasUnitOfMeasure qt:_RatioUnit_monetaryPerMonetary ;
         gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ;
@@ -92,19 +93,32 @@ WHERE
             fx:root ?__location ;
         .
 
-        ?__csvline xyz:Equity%20Symbol ?Equity_Symbol .
-        ?__csvline xyz:Account%20Number ?Account_Number .
+        OPTIONAL { ?__csvline xyz:Equity%20Symbol ?Equity_Symbol }
+        OPTIONAL { ?__csvline xyz:Equity%5FSymbol ?Equity_Symbol }
+        OPTIONAL { ?__csvline xyz:Equity%20Description ?Equity_Description }
+        OPTIONAL { ?__csvline xyz:Equity%5FDescription ?Equity_Description }
+        OPTIONAL { ?__csvline xyz:Account%20Number ?Account_Number }
+        OPTIONAL { ?__csvline xyz:Account%5FNumber ?Account_Number }
         ?__csvline xyz:Currency ?Currency .
-        ?__csvline xyz:Cost%20Basis ?Cost_Basis . 
-        ?__csvline xyz:Asset%20Class ?Asset_Class .
+        OPTIONAL { ?__csvline xyz:Cost%20Basis ?Cost_Basis }
+        OPTIONAL { ?__csvline xyz:Cost%5FBasis ?Cost_Basis }
+        OPTIONAL { ?__csvline xyz:Asset%20Class ?Asset_Class }
+        OPTIONAL { ?__csvline xyz:Asset%5FClass ?Asset_Class }
         ?__csvline xyz:Quantity ?Quantity .
-        ?__csvline xyz:Cost%20Per%20Share ?Cost_Per_Share .
-        ?__csvline xyz:Position%20Cost ?Position_Cost .
-        ?__csvline xyz:Market%20Price ?Market_Price .
-        ?__csvline xyz:Market%20Value ?Market_Value .
-        ?__csvline xyz:Profit%20And%20Loss ?Profit_And_Loss .
-        ?__csvline <http://sparql.xyz/facade-x/data/%25%20Return> ?perc_Return .
-        ?__csvline <http://sparql.xyz/facade-x/data/%25%20of%20Portfolio> ?perc_of_Portfolio .
+        OPTIONAL { ?__csvline xyz:Cost%20Per%20Share ?Cost_Per_Share }
+        OPTIONAL { ?__csvline xyz:Cost%5FPer%5FShare ?Cost_Per_Share }
+        OPTIONAL { ?__csvline xyz:Position%20Cost ?Position_Cost }
+        OPTIONAL { ?__csvline xyz:Position%5FCost ?Position_Cost }
+        OPTIONAL { ?__csvline xyz:Market%20Price ?Market_Price }
+        OPTIONAL { ?__csvline xyz:Market%5FPrice ?Market_Price }
+        OPTIONAL { ?__csvline xyz:Market%20Value ?Market_Value }
+        OPTIONAL { ?__csvline xyz:Market%5FValue ?Market_Value }
+        OPTIONAL { ?__csvline xyz:Profit%20And%20Loss ?Profit_And_Loss }
+        OPTIONAL { ?__csvline xyz:Profit%5FAnd%5FLoss ?Profit_And_Loss }
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/%25%20Return> ?perc_Return }
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/%25%5FReturn> ?perc_Return }
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/%25%20of%20Portfolio> ?perc_of_Portfolio }
+        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/%25%5Fof%5FPortfolio> ?perc_of_Portfolio }
     }
 
     BIND(REPLACE(STR(?__valuation_datetime), "\\W+", "-") AS ?__dt_clean)
@@ -121,61 +135,58 @@ WHERE
         IF(CONTAINS(?__equity_symbol_str,"."),
             STRBEFORE(?__equity_symbol_str,"."),
             ?__equity_symbol_str)) AS ?__symbol_str_norm)
-    BIND(ENCODE_FOR_URI(LCASE(STR(?__symbol_str_norm))) AS ?__eq_symbol)
+    BIND(ENCODE_FOR_URI(UCASE(STR(?__symbol_str_norm))) AS ?__eq_symbol)
 
 # Marketable Security
     BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
+
+# Spot Valuation per Security
+    BIND(IRI(CONCAT(STR(qt3:),'_Event_daily_market_closing_',?__eq_symbol,'_',REPLACE(STR(?__dt_clean), "\\W+", "-"))) AS ?__valuation_iri)
+
 # Security Account
-    BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
+    BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account_iri)
 
 # Currency - CAD or USD
-    BIND(IF(?Currency="CAD", qtx:_CADollar_, IF(?Currency="USD", gist:_USDollar_, ?unbound)) AS ?__share_price_uom)
+    BIND(IF(?Currency="CAD", qtx:_CADollar, IF(?Currency="USD", gist:_USDollar, ?unbound)) AS ?__share_price_uom_iri)
 
 # Cost Basis - looks like HMV and BK are most common values: HMV? Highest Market Value? Book?
 # TODO Define this in Protege
-    BIND(IRI(CONCAT(STR(qt3:), '_CostBasis_',ENCODE_FOR_URI(LCASE(?Cost_Basis)))) AS ?__cost_basis)
+    BIND(IRI(CONCAT(STR(qt3:), '_CostBasis_',ENCODE_FOR_URI(LCASE(?Cost_Basis)))) AS ?__cost_basis_iri)
 
-# Quantity - Share Number
-    BIND(xsd:decimal(?Quantity) AS ?__share_number)
-    
-    # TEST TO SEE WHETHER THIS BINDS
-    BIND(xsd:decimal(?Quantity) AS ?lot_stabilityz_test_DS_DP_value)
+# Quantity
+    BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean_str)
+    BIND(ABS(xsd:integer(round(STRDT(?__qty_clean_str, xsd:decimal)))) AS ?__qty_amount)
 
-# Quantity Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_shareQty_',?__acct_key,'_',?__eq_symbol,'_',STR(?Quantity))) AS ?__share_quantity_magn)
+# Security Quantity Magnitude
+    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__acct_key,'_',?__eq_symbol,'_',?__qty_clean_str)) AS ?__qty_magn_iri)
+
 # Cost Per Share
     BIND(xsd:decimal(?Cost_Per_Share) AS ?__share_average_cost)
-# Cost Magnitude
     BIND(IRI(CONCAT(STR(qt3:),'_Monetary_costPerShare_',?__acct_key,'_',?__eq_symbol,'_',STR(?Cost_Per_Share))) AS ?__share_average_magn)
 
 # Position Cost
     BIND(xsd:decimal(?Position_Cost) AS ?__security_position_cost)
-# Position Cost Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionCost_',?__acct_key,'_',?__eq_symbol,'_',STR(?Position_Cost))) AS ?__security_position_cost_magn)
-
-# Spot Valuation
-    BIND(IRI(CONCAT(STR(qt3:),'_Event_daily_market_closing_',?__eq_symbol,'_',ENCODE_FOR_URI(STR(?__dt_clean)))) AS ?__valuation)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionCost_',?__acct_key,'_',?__eq_symbol,'_',STR(?Position_Cost))) AS ?__security_position_cost_magn_iri)
 
 # Market Price - Share current price
     BIND(xsd:decimal(?Market_Price) AS ?__share_current_price)
-# Daily Share Price Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_dailySecurityPrice_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Market_Price))) AS ?__daily_share_price_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_dailySecurityPrice_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',REPLACE(?Market_Price, "\\W+", "-"))) AS ?__daily_share_price_magn_iri)
 
 # Market Value - Share position value
     BIND(xsd:decimal(?Market_Value) AS ?__position_current_value)
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionValue_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Market_Value))) AS ?__security_position_value_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionValue_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',REPLACE(?Market_Value, "\\W+", "-"))) AS ?__security_position_value_magn_iri)
 
 # Profit And Loss
-    BIND(xsd:decimal(?Profit_And_Loss) AS ?__position_p_l)
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionProfitLoss_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?Profit_And_Loss))) AS ?__security_profit_loss_magn)
+    BIND(xsd:decimal(?Profit_And_Loss) AS ?__position_p_l_value)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPositionProfitLoss_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',REPLACE(?Profit_And_Loss, "\\W+", "-"))) AS ?__security_profit_loss_magn_iri)
 
 # % Return
     BIND(xsd:decimal(?perc_Return) AS ?__position_return_perc)
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentReturn_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?perc_Return))) AS ?__position_return_perc_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentReturn_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',REPLACE(?perc_Return, "\\W+", "-"))) AS ?__position_return_perc_magn_iri)
 
 # % of Portfolio
     BIND(xsd:decimal(?perc_of_Portfolio) AS ?__position_port_perc)
-    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentOfPortfolio_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',ENCODE_FOR_URI(?perc_of_Portfolio))) AS ?__position_port_perc_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Monetary_securityPercentOfPortfolio_',?__acct_key,'_',?__eq_symbol,'_',STR(?__dt_clean),'_',REPLACE(?perc_of_Portfolio, "\\W+", "-"))) AS ?__position_port_perc_magn_iri)
 
 #Equity Symbol	Equity Description	Due	Rate	Account Number	Currency	Cost Basis	Asset Class	Quantity	Cost Per Share	Position Cost	Market Price	Market Value	Profit And Loss	% Return	% of Portfolio
 }

@@ -1,0 +1,76 @@
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+#Symbol,Current Price,Date,Time,Change,Open,High,Low,Volume,Trade Date,Purchase Price,Quantity,Commission,High Limit,Low Limit,Comment
+
+SELECT DISTINCT
+(?__symbol AS ?Symbol) 
+?Current_Price # no - blank for new stuff
+?Date # no
+?Time # no
+?Change # no
+?Open # no
+?High # no
+?Low # no
+?Volume # no
+(?__evt_dt_formatted AS ?Trade_Date) # YES
+(?__share_purchase_price AS ?Purchase_Price) # YES
+(?__qty_amount AS ?Quantity) # YES
+(?__commission_amount AS ?Commission) # YES
+?High_Limit # no
+	?Low_Limit # no
+?Comment # YES
+
+FROM qt3:__securities__latest
+FROM qt3:__activities__
+FROM qt3:__ontologies__gist
+FROM qt3:__ontologies__qt
+
+WHERE {
+    ?acct gist:isAffectedBy ?evt .
+    ?evt a gist:Event ;
+    	gist:isCharacterizedAs ?__evt_type ;
+    	qt:transactionDate ?__evt_dt ;
+        gist:description ?Comment .
+
+# Covers Purchases and Sales
+    FILTER(?__evt_type IN 
+        (gist:_FinancialBusinessEventType_purchase,
+        gist:_FinancialBusinessEventType_sale)
+    )
+
+    ?evt gist:hasMagnitude [
+        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:numericValue ?__share_purchase_price ; 
+        gist:hasUnitOfMeasure gist:_USDollar_ ;
+    ] ;
+    gist:hasMagnitude [
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:numericValue ?__qty_amount ;
+    ] ;
+    gist:hasMagnitude [
+        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:numericValue ?__commission_amount ;
+    ] ;
+         .
+    ?acct gist:hasPositionIn ?s . 
+    ?s gist:isIdentifiedBy [ gist:uniqueText ?__stk_symbol ] .
+#    ?s rdfs:label ?__stk_symbol .
+    ?s gist:isCategorizedBy ?__idtype .
+    FILTER(?__idtype != qtx:_MarketableSecurityType_bond)
+
+# Make symbol as ticker 
+    BIND(?__stk_symbol AS ?__symbol)                           
+    BIND(year(xsd:date(?__evt_dt)) AS ?__year)
+    BIND(month(xsd:date(?__evt_dt)) AS ?__month)
+    BIND(IF(?__month < 10, CONCAT('0',STR(?__month)), STR(?__month)) AS ?__month_padl)
+    BIND(day(xsd:date(?__evt_dt)) AS ?__day)
+    BIND(IF(?__day < 10, CONCAT('0',STR(?__day)), STR(?__day)) AS ?__day_padl)
+    BIND(CONCAT(STR(?__year),STR(?__month_padl),STR(?__day_padl)) AS ?__evt_dt_formatted)
+} order by ?Symbol ASC(?__evt_dt) 

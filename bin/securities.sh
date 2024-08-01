@@ -1,5 +1,7 @@
 #! /bin/sh
+
 FILE=`realpath $1`
+echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
@@ -9,7 +11,11 @@ QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
 CURRENT_GRAPH="${NAMED_GRAPH_BASE}latest"
-TODAY_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
+
+# Extract date from $FILE using sed or awk; use that date for TODAY_GRAPH
+TODAY_GRAPH=${NAMED_GRAPH_BASE}`basename $FILE | sed 's/[^0-9]*$//' | sed 's/^[^0-9]*//'`
+echo "TODAY_GRAPH = $TODAY_GRAPH"
+# TODAY_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
 OUTOPT="-o ${OUT}"
 FORMAT="NT"
 
@@ -21,10 +27,9 @@ then
     OUTOPT=""
 fi
 
-echo "Processing ${FILE} with ${QUERY}..."
 java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}"
 
-if test "xDEBUG" == "x"
+if test "x$2" == "x"
 then 
 echo "Uploading to ${TODAY_GRAPH}..."
 curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${TODAY_GRAPH}>" "$SERVER"
@@ -34,6 +39,6 @@ curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH 
 
 echo "Uploading to ${CURRENT_GRAPH}..."
 curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
+fi
 
 echo "Done."
-fi

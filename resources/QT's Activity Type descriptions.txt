@@ -1,0 +1,13 @@
+Activity type descriptions
+
+    Commission: the balance of commission fees paid and rebated
+    Corporate actions: the balance of cash earned and paid through non-exchange events (e.g., option exercises and assignments, stock splits, mergers, acquisitions, rights issues, spin-offs, etc.)
+    Deposits: the value of all cash deposited to your account
+    Dividends: the value of all dividends earned
+    Dividend reinvestment: the value of dividends re-invested to buy more securities
+    Fees and rebates: the balance of fees and rebates
+    FX conversion: the net amount of cash converted between CAD and USD
+    Interest: the balance of interest earned and paid
+    Others: the balance of fees paid and rebated not categorized elsewhere
+    Transfers: the value of assets transferred in and out of your account
+    Withdrawals: the total amount withdrawn from your account

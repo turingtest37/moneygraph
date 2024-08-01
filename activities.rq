@@ -1,6 +1,7 @@
 PREFIX gist: <https://ontologies.semanticarts.com/gist/>
-PREFIX skos: <http://www.w3.org/2004/02/skos#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
 PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
@@ -26,20 +27,20 @@ CONSTRUCT
 
 #     <urn:txdt> ?__transaction_date ;
 #     <urn:settledt> ?__settlement_date .
- [] 
- <urn:Quantity> ?Quantity ;
- <urn:qtyclean> ?__qty_clean ;
- <urn:qty> ?__qty_amount ;
- <urn:price> ?__price_amount ;
- <urn:gross> ?__gross_amount ;
- <urn:commission> ?__commission_amount ;
- <urn:net> ?__net_amount ;
- <urn:discriminator> ?__discriminator ;
-<urn:symbol> ?__equity_symbol_str ;
-<urn:symbol_norm> ?__symbol_str_norm ;
- <urn:nosymbol> ?__no_symbol ;
- <urn:eq_symbol> ?__eq_symbol ;
- .
+#  [] 
+#  <urn:Quantity> ?Quantity ;
+#  <urn:qtyclean> ?__qty_clean ;
+#  <urn:qty> ?__qty_amount ;
+#  <urn:price> ?__price_amount ;
+#  <urn:gross> ?__gross_amount ;
+#  <urn:commission> ?__commission_amount ;
+#  <urn:net> ?__net_amount ;
+#  <urn:discriminator> ?__discriminator_str ;
+# <urn:symbol> ?__equity_symbol_str ;
+# <urn:symbol_norm> ?__symbol_str_norm ;
+#  <urn:nosymbol> ?__no_symbol ;
+#  <urn:eq_symbol> ?__eq_symbol ;
+#  .
  
 
     ?__activity a gist:Event .
@@ -48,18 +49,52 @@ CONSTRUCT
     ?__activity qt:transactionDate ?__transaction_date .
     ?__activity qt:settlementDate ?__settlement_date .
     ?__activity gist:isCharacterizedAs ?__event_type .
+    ?__activity qt:actionCode ?Action .
 
 # Security account is linked to Security
-    ?__security_account gist:isAffectedBy ?__activity .
-    
-# Dividend case
+    ?__security_account a gist:InvestmentAccount ;        
+        gist:isAffectedBy ?__activity ;
+        gist:hasPositionIn ?__security ;
+    .
+
+# If an Activity affects an InvestmentAccount balance it will bind the ?__inc_dec_asset predicate
+# Could be qt:isIncrementedBy or qt:isDecrementedBy
+    ?__security_account ?__inc_dec_asset ?__activity .
+
+# If an Activity affects the Cash balance it will bind the ?__inc_dec_cash predicate
+    ?__affected_cash_account ?__inc_dec_cash ?__activity .
+
+### Security
+# Repeating this here (usually should be defined in securities.rq)
+# because we do not have access to old Investment Summaries
+    ?__security a qt:MarketableSecurity .
+    ?__security gist:isIdentifiedBy ?__security_id .
+    ?__security rdfs:label ?Equity_Symbol .
+    ?__security skos:prefLabel ?__symbol_str_norm .
+
+# Security ID
+    ?__security_id a gist:ID ;
+        gist:isCategorizedBy ?__security_id_type ;
+        gist:uniqueText ?__symbol_str_norm ;
+    .
+
+######### Activity Events have Magnitudes that affect account balances
+
+# Dividend Case
     ?__activity gist:hasMagnitude ?__dividend_magn .
-    ?__dividend_magn a gist:Magnitude ;
+    ?__dividend_magn  a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
     .
 
+# Interest paid Case
+    ?__activity gist:hasMagnitude ?__interest_paid_magn .
+    ?__interest_paid_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_feeAmount ;
+    .
 
 # Purchase Case
     ?__activity gist:hasMagnitude ?__purchase_qty_magn .
@@ -133,13 +168,6 @@ CONSTRUCT
         gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
     .
 
-# Dividend Case
-    ?__activity gist:hasMagnitude ?__dividend_magn .
-    ?__dividend_magn  a gist:Magnitude ;
-        gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
-    .
 
 # Interest Case
     ?__activity gist:hasMagnitude ?__interest_magn.
@@ -157,12 +185,53 @@ CONSTRUCT
         gist:isCategorizedBy qtx:_Aspect_depositAmount ;
     .
 
-# Post-merger deposit case 
-    ?__activity gist:hasMagnitude ?__merger_deposit_magn.
-    ?__merger_deposit_magn a gist:Magnitude ;
+# Contribution case
+    ?__activity gist:hasMagnitude ?__contrib_magn .
+    ?__contrib_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_depositAmount ;
+    .
+
+# Financial Transfer
+    ?__activity gist:hasMagnitude ?__fin_transfer_magn .
+    ?__fin_transfer_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_transferAmount ;
+    .
+
+# Asset transfer case
+    ?__activity gist:hasMagnitude ?__asset_transfer_magn.
+    ?__asset_transfer_magn a gist:Magnitude ;
+        gist:numericValue ?__qty_amount ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_assetTransferAmount;
+    .
+
+# Asset Transfer for Liquidation case
+    ?__activity gist:hasMagnitude ?__asset_transferForLiqd_magn .
+    ?__asset_transferForLiqd_magn a gist:Magnitude ;
+        gist:numericValue ?__qty_amount ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_assetTransferAmount;
+    .
+
+# Asset Liquidation - essentially a forced sale of an asset
+# Needs a Quantity magnitude and a Net Amount magnitude
+    ?__activity gist:hasMagnitude ?__asset_liqd_qty_magn .
+    ?__asset_liqd_qty_magn a gist:Magnitude ;
+        gist:numericValue ?__qty_amount ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+    .
+
+
+    ?__activity gist:hasMagnitude ?__asset_liqd_net_amt_magn .
+    ?__asset_liqd_net_amt_magn a gist:Magnitude ;
+        gist:numericValue ?__net_amount ;
+        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # Foreign currency exchanged
@@ -171,6 +240,7 @@ CONSTRUCT
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_foreignCurrencyExchangeAmount ;
+    .
 
 # Debt (bond) Repayment
     ?__activity gist:hasMagnitude ?__debt_repayment_magn .
@@ -178,6 +248,15 @@ CONSTRUCT
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy qtx:_Aspect_debtPrincipalRepaymentAmount ;
+    .
+
+# Reverse Stock Split
+    ?__activity gist:hasMagnitude ?__reverse_stk_split_qty_magn .
+    ?__reverse_stk_split_qty_magn a gist:Magnitude ;
+        gist:numericValue ?__qty_amount ;
+        gist:hasUnitOfMeasure gist:_each ;
+        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+    .
 
 }
 
@@ -199,6 +278,8 @@ CONSTRUCT
 # ,Activity Type
 # ,Account Type
 
+# Transaction Date,Settlement Date,Trade Date,Action,Symbol,Description,Quantity,Price,Gross Amount,Commission,Net Amount,Currency,Account #,Activity Type,Account Type
+
 
 WHERE
 
@@ -217,19 +298,19 @@ WHERE
 
         ?__csvline xyz:Transaction%20Date ?TransactionDate .
         ?__csvline xyz:Settlement%20Date ?SettlementDate .
-        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/Trade%20Date> ?TradeDate }
+        OPTIONAL { ?__csvline xyz:Trade%20Date ?TradeDate }
         OPTIONAL { ?__csvline xyz:Action ?Action }
         OPTIONAL { ?__csvline xyz:Symbol ?Equity_Symbol }
         ?__csvline xyz:Description ?Description .
         ?__csvline xyz:Quantity ?Quantity .
         ?__csvline xyz:Price ?Price .
-        ?__csvline <http://sparql.xyz/facade-x/data/Gross%20Amount> ?GrossAmount .
+        ?__csvline xyz:Gross%20Amount ?GrossAmount .
         ?__csvline xyz:Commission ?Commission .
-        ?__csvline <http://sparql.xyz/facade-x/data/Net%20Amount> ?NetAmount .
+        ?__csvline xyz:Net%20Amount ?NetAmount .
         ?__csvline xyz:Currency ?Currency .
-        ?__csvline <http://sparql.xyz/facade-x/data/Account%20%23> ?AccountNumber .
-        ?__csvline <http://sparql.xyz/facade-x/data/Activity%20Type> ?ActivityType .
-        OPTIONAL { ?__csvline <http://sparql.xyz/facade-x/data/Account%20Type> ?AccountType }
+        ?__csvline xyz:Account%20%23 ?AccountNumber .
+        ?__csvline xyz:Activity%20Type ?ActivityType .
+        OPTIONAL { ?__csvline xyz:Account%20Type ?AccountType }
 
     }
 
@@ -237,72 +318,61 @@ WHERE
     BIND(STR(?Equity_Symbol) AS ?__equity_symbol_str)
     BIND(IF(
         # TODO convert to string
-        STRSTARTS(?__equity_symbol_str,"."), 
-        STRAFTER(?__equity_symbol_str,"."),
-        IF(CONTAINS(?__equity_symbol_str,"."),
-            STRBEFORE(?__equity_symbol_str,"."),
+        STRSTARTS(?__equity_symbol_str, "."), 
+        STRAFTER(?__equity_symbol_str, "."),
+        IF(CONTAINS(?__equity_symbol_str, "."),
+            STRBEFORE(?__equity_symbol_str, "."),
             ?__equity_symbol_str)) AS ?__symbol_str_norm)
-
+ 
 ### Clean up the numbers
 
 # Quantity
     BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean)
-    BIND(ABS(xsd:integer(round(STRDT(?__qty_clean, xsd:decimal)))) AS ?__qty_amount)
+    BIND(xsd:integer(round(STRDT(?__qty_clean, xsd:decimal))) AS ?__qty_amount)
+
 # Price
 # Need at least 3 significant digits
-    BIND(REPLACE(REPLACE(STR(?Price),"[^0-9.]",""), "(\\.\\d{2,3})\\d*$", "$1") AS ?__price_clean)
+    # BIND(REPLACE(REPLACE(STR(?Price),"[^0-9.]",""), "(\\.\\d{2,3})\\d*$", "$1") AS ?__price_clean)
+    BIND(REPLACE(STR(?Price),"[^0-9.]","") AS ?__price_clean)
     BIND(ABS(xsd:decimal(?__price_clean)) AS ?__price_amount)
 
 # Gross Amount
-    BIND(REPLACE(REPLACE(STR(?GrossAmount),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__grossamt_clean)
+    # BIND(REPLACE(REPLACE(STR(?GrossAmount),"[^0-9.-]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__grossamt_clean)
+    BIND(REPLACE(STR(?GrossAmount),"[^0-9.-]","") AS ?__grossamt_clean)
     BIND(ABS(xsd:decimal(?__grossamt_clean)) AS ?__gross_amount)
 
 # Commission
-    BIND(REPLACE(REPLACE(STR(?Commission),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__commamt_clean)
+    # BIND(REPLACE(REPLACE(STR(?Commission),"[^0-9.-]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__commamt_clean)
+    BIND(REPLACE(STR(?Commission),"[^0-9.-]","") AS ?__commamt_clean)
     BIND(ABS(xsd:decimal(?__commamt_clean)) AS ?__commission_amount)
+
 # Net Amount 
-    BIND(REPLACE(REPLACE(STR(?NetAmount),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__netmamt_clean)
-    BIND(ABS(xsd:decimal(?__netmamt_clean)) AS ?__net_amount)
+    # BIND(REPLACE(REPLACE(STR(?NetAmount),"[^0-9.-]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__netamt_clean)
+    BIND(REPLACE(STR(?NetAmount),"[^0-9.-]","") AS ?__netamt_clean)
+    BIND(ABS(xsd:decimal(?__netamt_clean)) AS ?__net_amount)
 
 # Discriminator - for use where no symbol exists in the data
 # Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
-    BIND(STR(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000) AS ?__discriminator)
+    BIND(STR(xsd:decimal(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000)) AS ?__discriminator_str)
 
-# Transaction Date - arghhhhhh (looks like "6/13/23 00:00" in the data)
+# Transaction Date - 2024-04-16 12:00:00 AM
     BIND(REPLACE(?TransactionDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__tx_dt_str)
     BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
 
 #  Local part of Security IRI = the equity symbol = where no ticker symbol exists
     BIND(MD5(CONCAT(
                 STR(?__transaction_date),
-                ?__qty_clean,
-                ?__discriminator
+                ?__discriminator_str
     )) AS ?__no_symbol)
 
 # Equity Symbol
     BIND(COALESCE(UCASE(?__symbol_str_norm), ?__no_symbol) AS ?__eq_symbol)
 
+# Security ID
+    BIND(IRI(CONCAT(STR(qt3:),'_ID_marketableSecurity_', ?__eq_symbol)) AS ?__security_id)
+
 # Account Number
     BIND(ENCODE_FOR_URI(LCASE(STR(?AccountNumber))) AS ?__acct_key)
-
-# Settlement Date
-    BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
-    BIND(STRDT(?__settle_dt_str, xsd:dateTime) AS ?__settlement_date)
-
-# Action - default to Unknown if not yet modeled
-BIND(
-    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemittance,
-    IF(UCASE(?Action)='BUY',gist:_FinancialBusinessEventType_purchase,
-    IF(UCASE(?Action)='SELL',gist:_FinancialBusinessEventType_sale,
-    IF(UCASE(?Action)='INT',qtx:_FinancialBusinessEventType_interestRemittance,
-    IF(UCASE(?Action)='CON',qtx:_FinancialBusinessEventType_deposit,
-    IF(UCASE(?Action)='MGR',qtx:_FinancialBusinessEventType_deposit,
-    IF(UCASE(?Action)='FTX',qtx:_FinancialBusinessEventType_exchangeCurrency,
-    IF(UCASE(?Action)='LQD',gist:_FinancialBusinessEventType_financialTransfer,
-    IF(UCASE(?Action)='LIQ',gist:_FinancialBusinessEventType_financialTransfer,
-    IF(UCASE(?Action)='TFI',gist:_FinancialBusinessEventType_financialTransfer,
-    IF(UCASE(?Action)='RED',gist:_FinancialBusinessEventType_debtPrincipalRepayment,
-    qtx:_FinancialBusinessEventType_unknown)))))))))) AS ?__event_type)
 
 # Marketable Security
     BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_', ?__eq_symbol)) AS ?__security)
@@ -310,12 +380,43 @@ BIND(
 # Security Account
     BIND(IRI(CONCAT(STR(qt3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
 
+# HERE TEST IF SYMBOL STARTS WITH 0-9 : if yes, is a bond
+    BIND(IF(REGEX(?__symbol_str_norm, "^[0-9]"),
+        qtx:_MarketableSecurityIdentifierType_qtBondId,
+        qtx:_MarketableSecurityIdentifierType_tickerSymbol) AS ?__security_id_type)
+
+# Settlement Date
+    BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
+    BIND(STRDT(?__settle_dt_str, xsd:dateTime) AS ?__settlement_date)
+
+# Action - default to Unknown if not yet modeled
+BIND(COALESCE(
+    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',qtx:_FinancialBusinessEventType_dividendRemittance, 1/0),
+    IF(!BOUND(?Action) && !BOUND(?Symbol) && STRSTARTS(?Description, 'INT'), qtx:_FinancialBusinessEventType_interestPaid, 1/0),
+    IF(UCASE(?Action)='BUY',gist:_FinancialBusinessEventType_purchase, 1/0),
+    IF(UCASE(?Action)='SELL',gist:_FinancialBusinessEventType_sale, 1/0),
+    IF(UCASE(?Action)='INT',qtx:_FinancialBusinessEventType_interestRemittance, 1/0),
+    IF(UCASE(?Action)='DEP',qtx:_FinancialBusinessEventType_deposit, 1/0),
+    IF(UCASE(?Action)='CON',qtx:_FinancialBusinessEventType_contribution, 1/0),
+    IF(UCASE(?Action)='MGR',qtx:_FinancialBusinessEventType_deposit, 1/0),
+    IF(UCASE(?Action)='EFT',gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+    IF(UCASE(?Action)='FXT',qtx:_FinancialBusinessEventType_exchangeOfCurrency, 1/0),
+    IF(UCASE(?Action)='LQD',qtx:_FinancialBusinessEventType_assetTransferForLiquidation, 1/0),
+    IF(UCASE(?Action)='LIQ',qtx:_FinancialBusinessEventType_assetLiquidation, 1/0),
+    IF(UCASE(?Action)='TFI' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+    IF(UCASE(?Action)='TFI' && BOUND(?Equity_Symbol), qtx:_FinancialBusinessEventType_assetTransfer, 1/0),
+    IF(UCASE(?Action)='TF6' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+    IF(UCASE(?Action)='RED',qtx:_FinancialBusinessEventType_debtPrincipalRepayment, 1/0),
+    IF(UCASE(?Action)='REV',qtx:_FinancialBusinessEventType_reverseStockSplit, 1/0),
+    qtx:_FinancialBusinessEventType_unknown) AS ?__event_type)
+
 # Transaction key = convenience binding for making new IRIs
     BIND(CONCAT(
         ?__acct_key,'_',
         ?__eq_symbol,'_',
         REPLACE(STR(?__transaction_date),"\\W+","-"),'_',
-        REPLACE(LCASE(?Action),"\\W+","-")
+        REPLACE(LCASE(?Action),"\\W+","-"),'_',
+        REPLACE(LCASE(?Currency),"\\W+","-")
         ) AS ?__tx_key)
 
 # Activity
@@ -324,96 +425,243 @@ BIND(
         '_Event_',
         ?__tx_key,
         '_',
-        ?__discriminator)) AS ?__activity)
+        ?__discriminator_str)) AS ?__activity)
         # )) AS ?__activity)
 
 # Activity Label
     BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
-### Dividends
+# qtx:_FinancialBusinessEventType_dividendRemittance, 1/0),
+# gist:_FinancialBusinessEventType_fine_or_fee
+# gist:_FinancialBusinessEventType_purchase, 1/0),
+# gist:_FinancialBusinessEventType_sale, 1/0),
+# qtx:_FinancialBusinessEventType_interestRemittance, 1/0),
+# qtx:_FinancialBusinessEventType_deposit, 1/0),
+# qtx:_FinancialBusinessEventType_contribution, 1/0),
+# qtx:_FinancialBusinessEventType_deposit, 1/0),
+# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+# qtx:_FinancialBusinessEventType_exchangeOfCurrency, 1/0),
+# qtx:_FinancialBusinessEventType_assetTransfer, 1/0),
+# qtx:_FinancialBusinessEventType_assetLiquidation, 1/0),
+# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+# qtx:_FinancialBusinessEventType_assetTransfer, 1/0),
+# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+# qtx:_FinancialBusinessEventType_debtPrincipalRepayment, 1/0),
+# qtx:_FinancialBusinessEventType_reverseStockSplit, 1/0),
+
+#### Dividends
 # Only net amount counts
-BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemittance, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_dividend_',?__tx_key,'_',?__netmamt_clean)), 
-    ?unbound) AS ?__dividend_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemittance, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_dividend_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__dividend_magn)
+# Dividends only increment the cash account
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_dividendRemittance, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_div)
 
-#### Buy
+#### Interest paid
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestPaid, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_interestPaid_',?__tx_key,'_',?__netamt_clean)), 
+    ?unbound) AS ?__interest_paid_magn)
+# Interest paid decrements the cash account
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestPaid, 
+        qt:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_intpaid)
+
+#### Purchase / Buy
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseQuantity_',?__tx_key,'_',?__qty_clean)),
-    ?unbound) AS ?__purchase_qty_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)),
+        ?unbound) AS ?__purchase_qty_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchasePrice_',?__tx_key,'_',?__price_clean)),
-    ?unbound) AS ?__purchase_price_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean)),
+        ?unbound) AS ?__purchase_price_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseGrossAmount_',?__tx_key,'_',?__grossamt_clean)),
-    ?unbound) AS ?__purchase_gross_amt_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean)),
+        ?unbound) AS ?__purchase_gross_amt_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
-    ?unbound) AS ?__purchase_commission_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
+        ?unbound) AS ?__purchase_commission_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__tx_key,'_',?__netmamt_clean)),
-    ?unbound) AS ?__purchase_net_amt_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)),
+        ?unbound) AS ?__purchase_net_amt_magn)
+# Purchases increment the security account balance
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_purchase)
+# Purchases decrement the cash balance
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
+        qt:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_purchase)
 
 ### Sell
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_saleQuantity_',?__tx_key,'_',?__qty_clean)),
-    ?unbound) AS ?__sale_qty_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)),
+        ?unbound) AS ?__sale_qty_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_salePrice_',?__tx_key,'_',?__price_clean)),
-    ?unbound) AS ?__sale_price_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean)),
+        ?unbound) AS ?__sale_price_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_saleGrossAmount_',?__tx_key,'_',?__grossamt_clean)),
-    ?unbound) AS ?__sale_gross_amt_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean)),
+        ?unbound) AS ?__sale_gross_amt_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
-    ?unbound) AS ?__sale_commission_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
+        ?unbound) AS ?__sale_commission_magn)
 
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(qt3:),'_Magnitude_purchaseNetAmount_',?__tx_key,'_',?__netmamt_clean)),
-    ?unbound) AS ?__sale_net_amt_magn)
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
+        IRI(CONCAT(STR(qt3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)),
+        ?unbound) AS ?__sale_net_amt_magn)
+# Sales increment the cash balance ...
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_sale)
+# ... and increment the share quantity balance
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_sale)
 
-### Interest
+### Interest received from a bond
 # Only net amount counts
-BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemittance, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_interestReceived_',?__tx_key,'_',?__netmamt_clean)), 
-    ?unbound) AS ?__interest_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemittance, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_interestReceived_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__interest_magn)
+# Interest received increments the cash balance
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestRemittance, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_int_recvd)
 
 ### Deposits
 # Only net amount counts
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_deposit, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_deposit_',?__tx_key,'_',?__netmamt_clean)), 
-    ?unbound) AS ?__deposit_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_deposit, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_deposit_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__deposit_magn)
+# Deposits increment the cash balance
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_deposit, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_dep)
 
 ### Contributions
-# same as deposits for now
+# treat as deposits for now
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_contribution, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_contribution_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__contrib_magn)
+# Contributions increment the cash balance
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_contribution, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_cont)
 
-### Mergers and acquisitions
-# Only net amount counts
-BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetMerger && xsd:decimal(?Quantity) < 0, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_depositFromMerger_',?__tx_key,'_',?__netmamt_clean)), 
-    ?unbound) AS ?__merger_deposit_magn)
+### Financial Transfer (money, not assets)
+## Outgoing EFTs are cash withdrawals; incoming are transfers from other institutions
+## Questrade muddies the waters here by treating incoming transfers from "known" bank account
+## as "contributions" or "deposits", while unknown accounts are treated as EFTs.
+    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_financialTransfer_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__fin_transfer_magn)
+# Use sign of net amount to determine impact on cash balance. A zero means unbound, so no account movement
+    BIND(
+        IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer && xsd:decimal(?NetAmount) > 0, qt:isIncrementedBy,
+        IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer && xsd:decimal(?NetAmount) < 0, qt:isDecrementedBy,
+        ?unbound)) AS ?__inc_dec_cash_eft)
 
-# Currency exchanged
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_exchangeCurrency, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',?__netmamt_clean)), 
-    ?unbound) AS ?__fxt_magn)
+### Asset Transfer - in or out of accounts I own
+# Only quantity counts
+    BIND(
+        IF(?__event_type = qtx:_FinancialBusinessEventType_assetTransfer,
+            IRI(CONCAT(STR(qt3:),'_Magnitude_assetTransfer_',?__tx_key,'_',?__qty_clean)), 
+        ?unbound) AS ?__asset_transfer_magn)
+# Use sign of quantity to determine impact on investment account balance
+    BIND(
+        IF(?__event_type = qtx:_FinancialBusinessEventType_assetTransfer && xsd:decimal(?Quantity) > 0, qt:isIncrementedBy,
+        IF(?__event_type = qtx:_FinancialBusinessEventType_assetTransfer && xsd:decimal(?NetAmount) < 0, qt:isDecrementedBy,
+        ?unbound)) AS ?__inc_dec_asset_transfer)
 
-# Debt Principal Repayment (i.e. 'redemption')
-BIND(IF(?__event_type = gist:_FinancialBusinessEventType_debt_principal_repayment, 
-    IRI(CONCAT(STR(qt3:),'_Magnitude_debtPrincipalRepayment_',?__tx_key,'_',?__netmamt_clean)), 
-    ?unbound) AS ?__debt_repayment_magn)
+### Special case of Asset Transfer in view of Liquidation
+# Seems to imply an involuntary transfer of shares - conducted by the broker - into an escrow account
+# Only Quantity counts
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetTransferForLiquidation, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_assetTransferForLiquidation_',?__tx_key,'_',?__qty_clean)), 
+        ?unbound) AS ?__asset_transferForLiqd_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetTransferForLiquidation,
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_transfer_liqd)
 
+### Asset Liquidation - this is the forced sale of an asset that has been 
+# previously transferred for liquidation
+# Account Share balance is decremented; Cash balance is incremented.
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetLiquidation, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)), 
+        ?unbound) AS ?__asset_liqd_qty_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetLiquidation, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__asset_liqd_net_amt_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetLiquidation,
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_assetliqd)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_assetLiquidation,
+        qt:isDecrementedBy, ?unbound) AS ?__inc_dec_assetliqd)
+
+### Debt Principal Repayment (i.e. 'redemption')
+# Share balance is decremented; cash balance is incremented
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_debtPrincipalRepayment, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_debtPrincipalRepayment_',?__tx_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__debt_repayment_magn)
+    # Redemptions increment the cash balance
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_debtPrincipalRepayment, 
+        qt:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_red)
+    # Redemptions decrement the share balance
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_debtPrincipalRepayment, 
+        qt:isDecrementedBy, ?unbound) AS ?__inc_dec_asset_red)
+
+### Currency exchanged - from Magnitude
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_exchangeOfCurrency, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',?__netamt_clean)), 
+        ?unbound) AS ?__fxt_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_exchangeOfCurrency && xsd:decimal(?NetAmount) < 0,
+        qt:isDecrementedBy,
+        IF(?__event_type = qtx:_FinancialBusinessEventType_exchangeOfCurrency && xsd:decimal(?NetAmount) > 0,
+        qt:isIncrementedBy, ?unbound)) AS ?__inc_dec_cash_fx)
+
+### Reverse Stock Split
+# Only Qty is affected
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_reverseStockSplit, 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)), 
+        ?unbound) AS ?__reverse_stk_split_qty_magn)
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_reverseStockSplit && xsd:decimal(?Quantity) < 0, 
+        qt:isDecrementedBy,
+        IF(?__event_type = qtx:_FinancialBusinessEventType_reverseStockSplit && xsd:decimal(?Quantity) > 0,
+        qt:isIncrementedBy, ?unbound)) AS ?__inc_dec_asset_split)
 
 # Currency - CAD or USD
-    BIND(IF(?Currency="CAD", qtx:_CADollar_, IF(?Currency="USD", gist:_USDollar_, ?unbound)) AS ?__event_currency)
+    BIND(IF(?Currency="CAD", qtx:_CADollar, IF(?Currency="USD", gist:_USDollar, ?unbound)) AS ?__event_currency)
 
+# Affected Cash account
+    BIND(
+        IF(?__event_currency=qtx:_CADollar, IRI(CONCAT(STR(qt3:),?__acct_key,'_CashAccount_CAD')),
+        IF(?__event_currency=gist:_USDollar, IRI(CONCAT(STR(qt3:),?__acct_key,'_CashAccount_USD')),
+        ?unbound)) AS ?__affected_cash_account)
+
+    # Coalesce inc/dec asset predicates
+    BIND(COALESCE(
+        ?__inc_dec_assetliqd,
+        ?__inc_dec_asset_purchase,
+        ?__inc_dec_asset_red,
+        ?__inc_dec_asset_sale,
+        ?__inc_dec_asset_split,
+        ?__inc_dec_asset_transfer,
+        ?__inc_dec_asset_transfer_liqd
+    ) AS ?__inc_dec_asset)
+
+
+    # Coalesce inc/dec cash predicates
+    BIND(COALESCE(
+        ?__inc_dec_cash_assetliqd,
+        ?__inc_dec_cash_cont,
+        ?__inc_dec_cash_dep,
+        ?__inc_dec_cash_div,
+        ?__inc_dec_cash_eft,
+        ?__inc_dec_cash_fx,
+        ?__inc_dec_cash_int_recvd,
+        ?__inc_dec_cash_intpaid,
+        ?__inc_dec_cash_purchase,
+        ?__inc_dec_cash_red,
+        ?__inc_dec_cash_sale
+        ) AS ?__inc_dec_cash)
 
 }
