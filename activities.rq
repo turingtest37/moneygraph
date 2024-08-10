@@ -44,6 +44,7 @@ CONSTRUCT
  
 
     ?__activity a gist:Event .
+    ?__activity a ?__coupon_payment_event . # Optional
     ?__activity skos:prefLabel ?__activity_label .
     ?__activity gist:description ?Description .
     ?__activity qt:transactionDate ?__transaction_date .
@@ -466,6 +467,11 @@ BIND(COALESCE(
 # Interest paid decrements the cash account
     BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestPaid, 
         qt:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_intpaid)
+# Add a CouponPaymentEvent type to the event if that's what this is
+# Really, this should be handled by the inference engine but most
+# triple stores do not fully interpret owl:EquivalentClass
+    BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_interestPaid, 
+        qt:CouponPaymentEvent, ?unbound) AS ?__coupon_payment_event)
 
 #### Purchase / Buy
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt

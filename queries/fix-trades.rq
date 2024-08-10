@@ -8,16 +8,17 @@ PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
 INSERT
 {
 	GRAPH qt3:__securities__extra {
-        ?__security gist:conformsTo ?__bond_repayment_conditions ;
+        ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_schedule ;
             qt:isTradedOn ?__exchange .
 
         ?__bond_repayment_conditions qt:callable ?__callable .
-
+        ?__coupon_payment_schedule gist:hasMember ?__next_coupon_evt .
+        ?__security_acct gist:isAffectedBy ?__next_coupon_evt .
    }
     GRAPH qt3:__activities__extra {
 		?evt qt:longDescription ?__longdesc ;
         	gist:hasMagnitude ?__ytm_magn .
-        ?__ytm_magn ?p_ytm ?o_ytm .
+        # ?__ytm_magn ?p_ytm ?o_ytm .
     }
 }
 #SELECT DISTINCT ?__security ?__trade_security ?__tx_dt ?__trade_tx_dt ?__qty_amount ?__trade_qty_amount ?__price_amount ?__trade_price_amount ?__gross_amount ?__trade_gross_amount ?__commission_amount ?__trade_commission_amount ?__net_amount ?__trade_net_amount
@@ -49,9 +50,13 @@ GRAPH qt3:__trades__ {
     .
     ?__ytm_magn gist:hasAspect qtx:_Aspect_yieldToMaturity ; ?p_ytm ?o_ytm .
     [] gist:isAffectedBy ?__trade_temp ; gist:hasPositionIn ?__trade_security .
-    ?__trade_security qt:isTradedOn ?__exchange ; gist:conformsTo ?__spec_repayment_temp .
+    ?__trade_security qt:isTradedOn ?__exchange ; gist:conformsTo ?__spec_repayment_temp, ?__coupon_payment_schedule_temp .
     ?__spec_repayment_temp a qt:BondRepaymentTerms .
-    ?__spec_repayment_temp qt:callable ?__callable 
+    ?__spec_repayment_temp qt:callable ?__callable .
+
+    ?__coupon_payment_schedule_temp a qt:CouponPaymentSchedule .
+    OPTIONAL { ?__coupon_payment_schedule_temp gist:hasMember ?__next_coupon_evt }
+
 }
 FILTER(
     ?__tx_dt = ?__trade_tx_dt &&
@@ -73,4 +78,7 @@ BIND(IF(
 
 # Repayment Conditions
     BIND(IRI(CONCAT(STR(qt3:),'_BondRepaymentTerms_', ?__eq_symbol)) AS ?__bond_repayment_conditions)
+# Coupon Payment Schedule
+    BIND(IRI(CONCAT(STR(qt3:),'_CouponPaymentSchedule_',?__eq_symbol)) AS ?__coupon_payment_schedule)
+
 } #ORDER BY ?__tx_dt
