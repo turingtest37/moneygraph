@@ -23,6 +23,11 @@
 <http://www.w3.org/2004/02/skos/core#editorialNote> rdf:type owl:AnnotationProperty .
 
 
+###  https://ontologies.beesondouglas.com/questrade/lastUpdated
+qt:lastUpdated rdf:type owl:AnnotationProperty ;
+               rdfs:subPropertyOf <http://www.w3.org/2004/02/skos/core#scopeNote> .
+
+
 ###  https://w3id.org/semanticarts/ns/ontology/gist/conversionFactor
 gist:conversionFactor rdf:type owl:AnnotationProperty .
 
@@ -145,6 +150,13 @@ qt:BondCoupon rdf:type owl:Class ;
                            "https://www.investopedia.com/terms/c/coupon.asp" ;
               <http://www.w3.org/2004/02/skos/core#definition> "The annual interest rate on a debt instrument making periodic interest payments to the instrument holder." ;
               <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Coupon" .
+
+
+###  https://ontologies.beesondouglas.com/questrade/BondRepaymentTerms
+qt:BondRepaymentTerms rdf:type owl:Class ;
+                      rdfs:subClassOf gist:Specification ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "A specification of the bond maturity and principal repayment event. Typically includes bond principal amount and maturity date." ;
+                      <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Repayment Terms" .
 
 
 ###  https://ontologies.beesondouglas.com/questrade/CashAccount

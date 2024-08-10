@@ -19,7 +19,7 @@ CONSTRUCT
     ?__portfolio_account gist:hasMember ?__cash_usd_account .
 
 # Security Account - for one Security
-    ?__security_account a gist:InvestmentAccount ;        
+    ?__security_account a gist:InvestmentAccount ;
         gist:hasPositionIn ?__security ;
         gist:hasCurrentBalance ?__qty_magn ;
     .
@@ -37,6 +37,7 @@ CONSTRUCT
     ?__security_id a gist:ID ;
         gist:isCategorizedBy ?__security_id_type ;
         gist:uniqueText ?__symbol_str_norm ;
+        skos:prefLabel ?__symbol_str_norm ;
     .
 
 # Current balance of security account = the number of shares held, NOT their value
@@ -44,21 +45,26 @@ CONSTRUCT
         gist:hasUnitOfMeasure gist:_each ;
         gist:numericValue ?__qty_amount ;
         gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:isRecordedAt ?__report_datetime ;        
     .
 
 # Cash Accounts
 # USD    
     ?__cash_usd_account a qt:CashAccount ;
-        gist:hasMagnitude ?__usd_cash_magn .
+        gist:hasMagnitude ?__usd_cash_magn ;
+        gist:isRecordedAt ?__report_datetime ;        
+    .
 # USD Cash Magnitude
     ?__usd_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_USDollar ;
         gist:isCategorizedBy qtx:_Aspect_USD_cash_balance ;
-    .
+.
 
 # CAD
     ?__cash_cad_account a qt:CashAccount ;
-        gist:hasMagnitude ?__cad_cash_magn .
+        gist:hasMagnitude ?__cad_cash_magn ;
+        gist:isRecordedAt ?__report_datetime ;
+    .        
 # CAD Cash Magnitude
     ?__cad_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure qtx:_CADollar ;
@@ -66,7 +72,7 @@ CONSTRUCT
     .
 
 ########  BONDS ###########
-
+# This stuff should not change over time
 # Coupon payment terms
     ?__coupon_payment_terms a qt:CouponPaymentTerms .
     ?__coupon_payment_terms skos:prefLabel ?__coupon_terms_label .
@@ -107,10 +113,6 @@ CONSTRUCT
         gist:numericValue ?__coupon_rate ;
         gist:isCategorizedBy qtx:_Aspect_annualInterestRate ;
     .
-    # [] <urn:equitysymbol> ?Equity_Symbol .
-    # [] <urn:assetclass> ?__security_type_iri .
-    # [] <urn:symbolstr> ?__symbol_str_norm .
-# [] <urn:coupon> ?__coupon_str.
     
 }
 
@@ -136,7 +138,7 @@ WHERE
     SERVICE <x-sparql-anything:> {
         BIND(IRI(CONCAT("file://",?_loc)) AS ?__location)
         # BIND(REPLACE(?_loc,".*(-\\d{4}[\\d-]+)\\.csv","$1") AS ?__dt_only)
-        # BIND(STRDT(CONCAT(STR(?__dt_only),"T00:00:00"), xsd:dateTime) AS ?__valuation_datetime)
+        BIND(STRDT(CONCAT(STR(?_dt),"T00:00:00"), xsd:dateTime) AS ?__report_datetime)
 
         fx:properties
             fx:location ?__location ;    
@@ -165,6 +167,8 @@ WHERE
         # OPTIONAL { ?__csvline xyz:Market%20Price ?Market_Price }
         # OPTIONAL { ?__csvline xyz:Market%5FPrice ?Market_Price }
     }
+
+    BIND(STR(?_dt) AS ?__date_key)
 
 # Currency - CAD or USD
     BIND(IF(?Currency="CAD", qtx:_CADollar, IF(?Currency="USD", gist:_USDollar, ?unbound)) AS ?__currency)
@@ -211,17 +215,17 @@ WHERE
     BIND(ABS(xsd:integer(round(STRDT(?__qty_clean_str, xsd:decimal)))) AS ?__qty_amount)
 
 # Security Quantity Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__acct_key,'_',?__eq_symbol,'_',?__qty_clean_str)) AS ?__qty_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_shareQuantity_',?__acct_key,'_',?__eq_symbol,'_',?__date_key,'_',?__qty_clean_str)) AS ?__qty_magn)
 
 # Cash account CAD
     BIND(IRI(CONCAT(STR(qt3:),?__acct_key,'_CashAccount_CAD')) AS ?__cash_cad_account)
 # CAD Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_Cash_CAD_',?__acct_key)) AS ?__cad_cash_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_Cash_CAD_',?__acct_key,'_',?__date_key)) AS ?__cad_cash_magn)
 
 # Cash account USD
     BIND(IRI(CONCAT(STR(qt3:),?__acct_key,'_CashAccount_USD')) AS ?__cash_usd_account)
 # USD Magnitude
-    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_Cash_USD_',?__acct_key)) AS ?__usd_cash_magn)
+    BIND(IRI(CONCAT(STR(qt3:),'_Magnitude_Cash_USD_',?__acct_key,'_',?__date_key)) AS ?__usd_cash_magn)
 
 # Marketable Security
     BIND(IRI(CONCAT(STR(qt3:),'_MarketableSecurity_',?__eq_symbol)) AS ?__security)

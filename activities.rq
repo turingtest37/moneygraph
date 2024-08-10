@@ -314,6 +314,11 @@ WHERE
 
     }
 
+# Transaction Date - 2024-04-16 12:00:00 AM
+    BIND(REPLACE(?TransactionDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__tx_dt_str)
+    BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
+    BIND(REPLACE(STR(xsd:date(?__transaction_date)),"\\W+","-") AS ?__date_key)
+
 # Security Symbol - remove leading ., or .zz if xxxxx.zz
     BIND(STR(?Equity_Symbol) AS ?__equity_symbol_str)
     BIND(IF(
@@ -354,10 +359,6 @@ WHERE
 # Discriminator - for use where no symbol exists in the data
 # Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
     BIND(STR(xsd:decimal(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000)) AS ?__discriminator_str)
-
-# Transaction Date - 2024-04-16 12:00:00 AM
-    BIND(REPLACE(?TransactionDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__tx_dt_str)
-    BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
 
 #  Local part of Security IRI = the equity symbol = where no ticker symbol exists
     BIND(MD5(CONCAT(
@@ -414,8 +415,8 @@ BIND(COALESCE(
     BIND(CONCAT(
         ?__acct_key,'_',
         ?__eq_symbol,'_',
-        REPLACE(STR(?__transaction_date),"\\W+","-"),'_',
         REPLACE(LCASE(?Action),"\\W+","-"),'_',
+        ?__date_key,'_',
         REPLACE(LCASE(?Currency),"\\W+","-")
         ) AS ?__tx_key)
 
@@ -611,7 +612,7 @@ BIND(COALESCE(
 
 ### Currency exchanged - from Magnitude
     BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_exchangeOfCurrency, 
-        IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__acct_key,'_',ENCODE_FOR_URI(STR(?__transaction_date)),'_',?__netamt_clean)), 
+        IRI(CONCAT(STR(qt3:),'_Magnitude_exchangedCurrency_',?__tx_key,'_',?__netamt_clean)), 
         ?unbound) AS ?__fxt_magn)
     BIND(IF(?__event_type = qtx:_FinancialBusinessEventType_exchangeOfCurrency && xsd:decimal(?NetAmount) < 0,
         qt:isDecrementedBy,
