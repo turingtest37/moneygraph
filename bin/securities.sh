@@ -10,13 +10,13 @@ NAMED_GRAPH_BASE="https://triples.beesondouglas.com/questrade/__${NAMEBASE}__"
 QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
-CURRENT_GRAPH="${NAMED_GRAPH_BASE}latest"
+CURRENT_GRAPH="${NAMED_GRAPH_BASE}"
 echo "CURRENT_GRAPH=$CURRENT_GRAPH"
+ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}archive"
+echo "ARCHIVE_GRAPH = $ARCHIVE_GRAPH"
 # Extract date from $FILE using sed or awk; use that date for ARCHIVE_GRAPH
 FILEDATE=`basename $FILE | sed 's/[^0-9]*$//' | sed 's/^[^0-9]*//'`
-ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}archive"
 echo "FILEDATE = $FILEDATE"
-echo "ARCHIVE_GRAPH = $ARCHIVE_GRAPH"
 # ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
 OUTOPT="-o ${OUT}"
 FORMAT="NT"

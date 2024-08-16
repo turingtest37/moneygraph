@@ -1,4 +1,4 @@
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -86,7 +86,7 @@ CONSTRUCT
     ?__dividend_magn  a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareDividendAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareDividendAmount ;
     .
 
 # Interest paid Case
@@ -94,7 +94,7 @@ CONSTRUCT
     ?__interest_paid_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_feeAmount ;
+        gist:hasAspect qtx:_Aspect_feeAmount ;
     .
 
 # Purchase Case
@@ -102,35 +102,35 @@ CONSTRUCT
     ?__purchase_qty_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_price_magn .
     ?__purchase_price_magn a gist:Magnitude;
         gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_gross_amt_magn .
     ?__purchase_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_commission_magn .
     ?__purchase_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__purchase_net_amt_magn .
     ?__purchase_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # Sale Case
@@ -138,35 +138,35 @@ CONSTRUCT
     ?__sale_qty_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_price_magn .
     ?__sale_price_magn a gist:Magnitude;
         gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_gross_amt_magn .
     ?__sale_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_commission_magn .
     ?__sale_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__sale_net_amt_magn .
     ?__sale_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
     .
 
 
@@ -175,7 +175,7 @@ CONSTRUCT
     ?__interest_magn  a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_debtInterestAmount ;
+        gist:hasAspect qtx:_Aspect_debtInterestAmount ;
     .
 
 # Deposit Case
@@ -183,7 +183,7 @@ CONSTRUCT
     ?__deposit_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_depositAmount ;
+        gist:hasAspect qtx:_Aspect_depositAmount ;
     .
 
 # Contribution case
@@ -191,7 +191,7 @@ CONSTRUCT
     ?__contrib_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_depositAmount ;
+        gist:hasAspect qtx:_Aspect_depositAmount ;
     .
 
 # Financial Transfer
@@ -199,7 +199,7 @@ CONSTRUCT
     ?__fin_transfer_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_transferAmount ;
+        gist:hasAspect qtx:_Aspect_transferAmount ;
     .
 
 # Asset transfer case
@@ -207,7 +207,7 @@ CONSTRUCT
     ?__asset_transfer_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_assetTransferAmount;
+        gist:hasAspect qtx:_Aspect_assetTransferAmount;
     .
 
 # Asset Transfer for Liquidation case
@@ -215,7 +215,7 @@ CONSTRUCT
     ?__asset_transferForLiqd_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_assetTransferAmount;
+        gist:hasAspect qtx:_Aspect_assetTransferAmount;
     .
 
 # Asset Liquidation - essentially a forced sale of an asset
@@ -224,7 +224,7 @@ CONSTRUCT
     ?__asset_liqd_qty_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
 
@@ -232,7 +232,7 @@ CONSTRUCT
     ?__asset_liqd_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # Foreign currency exchanged
@@ -240,7 +240,7 @@ CONSTRUCT
     ?__fxt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_foreignCurrencyExchangeAmount ;
+        gist:hasAspect qtx:_Aspect_foreignCurrencyExchangeAmount ;
     .
 
 # Debt (bond) Repayment
@@ -248,7 +248,7 @@ CONSTRUCT
     ?__debt_repayment_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_debtPrincipalRepaymentAmount ;
+        gist:hasAspect qtx:_Aspect_debtPrincipalRepaymentAmount ;
     .
 
 # Reverse Stock Split
@@ -256,7 +256,7 @@ CONSTRUCT
     ?__reverse_stk_split_qty_magn a gist:Magnitude ;
         gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
 }

@@ -1,6 +1,6 @@
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
@@ -27,11 +27,11 @@ WHERE
 GRAPH qt3:__activities__ {
     ?evt a gist:Event ;
         qt:transactionDate ?__tx_dt ;
-        gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareCount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ] ;
-        gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:hasAspect qtx:_Aspect_securityShareCount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ] ;
+        gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:hasAspect qtx:_Aspect_securityTradeNetAmount ] ;
     .
     ?__security_acct gist:isAffectedBy ?evt ; gist:hasPositionIn ?__security .
     ?__security gist:isIdentifiedBy [ gist:isCategorizedBy qtx:_MarketableSecurityIdentifierType_qtBondId ; gist:uniqueText ?__equity_symbol_str ] .
@@ -40,11 +40,11 @@ GRAPH qt3:__activities__ {
 GRAPH qt3:__trades__ {
     ?__trade_temp a gist:Event ;
         qt:transactionDate ?__trade_tx_dt ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareCount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_gross_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_commission_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:hasAspect qtx:_Aspect_securityShareCount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_gross_amount ; gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_commission_amount ; gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:hasAspect qtx:_Aspect_securityTradeNetAmount ] ;
         gist:hasMagnitude ?__ytm_magn ;
         qt:longDescription ?__longdesc ;
     .

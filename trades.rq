@@ -1,4 +1,4 @@
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -98,42 +98,42 @@ CONSTRUCT
     ?__purchase_qty_magn a gist:Magnitude ;
         gist:numericValue ?__event_qty ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__purchase_price_magn .
     ?__purchase_price_magn a gist:Magnitude;
         gist:numericValue ?__event_price ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__purchase_gross_amt_magn .
     ?__purchase_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__purchase_commission_magn .
     ?__purchase_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__trade_event_iri gist:hasMagnitude ?__purchase_sec_fees_magn .
     ?__purchase_sec_fees_magn a gist:Magnitude ;
         gist:numericValue ?__sec_fees_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_feeAmount ;
+        gist:hasAspect qtx:_Aspect_feeAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__purchase_net_amt_magn .
     ?__purchase_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
     .
 
 # # Sale Case
@@ -142,49 +142,49 @@ CONSTRUCT
     ?__sale_qty_magn a gist:Magnitude ;
         gist:numericValue ?__event_qty ;
         gist:hasUnitOfMeasure gist:_each ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_price_magn .
     ?__sale_price_magn a gist:Magnitude;
         gist:numericValue ?__event_price ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_gross_amt_magn .
     ?__sale_gross_amt_magn a gist:Magnitude ;
         gist:numericValue ?__gross_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_commission_magn .
     ?__sale_commission_magn a gist:Magnitude ;
         gist:numericValue ?__commission_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_sec_fees_magn .
     ?__sale_sec_fees_magn a gist:Magnitude ;
         gist:numericValue ?__sec_fees_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_feeAmount ;
+        gist:hasAspect qtx:_Aspect_feeAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_interest_magn .
     ?__sale_interest_magn a gist:Magnitude ;
         gist:numericValue ?__interest_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeInterestAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeInterestAmount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_net_amt_magn .
     ?__sale_net_amt_magn a gist:Magnitude ;
         gist:numericValue ?__net_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ;
+        gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
     .
 
 

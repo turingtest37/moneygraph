@@ -1,4 +1,4 @@
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -44,7 +44,7 @@ CONSTRUCT
     ?__qty_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:numericValue ?__qty_amount ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
         gist:isRecordedAt ?__report_datetime ;        
     .
 
@@ -57,7 +57,7 @@ CONSTRUCT
 # USD Cash Magnitude
     ?__usd_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_USDollar ;
-        gist:isCategorizedBy qtx:_Aspect_USD_cash_balance ;
+        gist:hasAspect qtx:_Aspect_USD_cash_balance ;
 .
 
 # CAD
@@ -68,7 +68,7 @@ CONSTRUCT
 # CAD Cash Magnitude
     ?__cad_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure qtx:_CADollar ;
-        gist:isCategorizedBy qtx:_Aspect_CAD_cash_balance ;
+        gist:hasAspect qtx:_Aspect_CAD_cash_balance ;
     .
 
 ########  BONDS ###########
@@ -111,7 +111,7 @@ CONSTRUCT
     ?__coupon a qt:BondCoupon ;
         gist:hasUnitOfMeasure qt:_RatioUnit_annualInterestRate ;
         gist:numericValue ?__coupon_rate ;
-        gist:isCategorizedBy qtx:_Aspect_annualInterestRate ;
+        gist:hasAspect qtx:_Aspect_annualInterestRate ;
     .
     
 }

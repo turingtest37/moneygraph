@@ -28,7 +28,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
 PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 
 SELECT ?identifier
 ?id_kind 
@@ -48,12 +48,12 @@ FROM qt3:__ontology__qt
 
 { 
     ?s a gist:RevaluationEvent ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareCount ; gist:numericValue ?nbSharesHeld ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?shareUnitPrice ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ; gist:numericValue ?shareUnitCost ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ; gist:numericValue ?sharePositionValue ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ; gist:numericValue ?sharePositionProfit ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ; gist:numericValue ?sharePercentPort ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityShareCount ; gist:numericValue ?nbSharesHeld ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?shareUnitPrice ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityPositionCostAmount ; gist:numericValue ?shareUnitCost ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityPositionValueAmount ; gist:numericValue ?sharePositionValue ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityPositionProfitAmount ; gist:numericValue ?sharePositionProfit ] ;
+    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_securityPositionPercentPortfolio ; gist:numericValue ?sharePercentPort ] ;
 
     .
     

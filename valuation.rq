@@ -1,4 +1,4 @@
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
@@ -40,43 +40,43 @@ CONSTRUCT
     ?__qty_magn_iri a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:numericValue ?__qty_amount ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
     .
 
     ?__daily_share_price_magn_iri a gist:Monetary ;
         gist:numericValue ?__share_current_price ;
         gist:hasUnitOfMeasure ?__share_price_uom_iri ;
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__security_position_cost_magn_iri a gist:Monetary ;
         gist:numericValue ?__security_position_cost ; 
         gist:hasUnitOfMeasure ?__share_price_uom_iri ;
-        gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ;
+        gist:hasAspect qtx:_Aspect_securityPositionCostAmount ;
     .
 
     ?__security_position_value_magn_iri a gist:Monetary ;
         gist:numericValue ?__position_current_value ;
         gist:hasUnitOfMeasure ?__share_price_uom_iri ;
-        gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ;
+        gist:hasAspect qtx:_Aspect_securityPositionValueAmount ;
     .
 
     ?__security_profit_loss_magn_iri a gist:Monetary ;
         gist:numericValue ?__position_p_l_value ;
         gist:hasUnitOfMeasure ?__share_price_uom_iri ;
-        gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ;
+        gist:hasAspect qtx:_Aspect_securityPositionProfitAmount ;
     .
 
     ?__position_return_perc_magn_iri a gist:Percentage ;
         gist:numericValue ?__position_return_perc ;
         gist:hasUnitOfMeasure qt:_RatioUnit_totalInvestmentReturnRate ;
-        gist:isCategorizedBy qtx:_Aspect_securityPositionReturnRatio ;
+        gist:hasAspect qtx:_Aspect_securityPositionReturnRatio ;
     .
 
     ?__position_port_perc_magn_iri a gist:Percentage ;
         gist:numericValue ?__position_port_perc ;
         gist:hasUnitOfMeasure qt:_RatioUnit_monetaryPerMonetary ;
-        gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ;
+        gist:hasAspect qtx:_Aspect_securityPositionPercentPortfolio ;
     .
 
 }

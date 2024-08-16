@@ -1,5 +1,5 @@
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -46,16 +46,16 @@ WHERE {
     )
 
     ?evt gist:hasMagnitude [
-        gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
         gist:numericValue ?__hundred_price ; 
         gist:hasUnitOfMeasure gist:_USDollar_ ;
     ] ;
     gist:hasMagnitude [
-        gist:isCategorizedBy qtx:_Aspect_securityShareCount ;
+        gist:hasAspect qtx:_Aspect_securityShareCount ;
         gist:numericValue ?__qty_amount ;
     ] ;
     gist:hasMagnitude [
-        gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
         gist:numericValue ?__commission_amount ;
     ] ;
          .
