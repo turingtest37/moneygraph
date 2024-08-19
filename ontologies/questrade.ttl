@@ -76,6 +76,14 @@ qt:hasRepaymentTerms rdf:type owl:ObjectProperty ;
                      <http://www.w3.org/2004/02/skos/core#prefLabel> "has repayment terms" .
 
 
+###  https://ontologies.beesondouglas.com/questrade/isIssuedBy
+qt:isIssuedBy rdf:type owl:ObjectProperty ;
+              rdfs:subPropertyOf gist:isAllocatedBy ;
+              rdfs:range gist:Organization ;
+              <http://www.w3.org/2004/02/skos/core#definition> "Relates to the organization that issued a security or financial instrument, e.g. common stock or a bond." ;
+              <http://www.w3.org/2004/02/skos/core#prefLabel> "is issued by" .
+
+
 ###  https://taxonomies.beesondouglas.com/questrade/hasInterestRate
 qtx:hasInterestRate rdf:type owl:ObjectProperty ;
                     rdfs:subPropertyOf gist:hasMagnitude ;
@@ -152,9 +160,16 @@ qt:BondCoupon rdf:type owl:Class ;
               <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Coupon" .
 
 
+###  https://ontologies.beesondouglas.com/questrade/BondRating
+qt:BondRating rdf:type owl:Class ;
+              rdfs:subClassOf gist:Category ;
+              <http://www.w3.org/2004/02/skos/core#definition> "A qualitative assessment of the financial risks associated to a bond, primarily based on the credit worthiness of its issuer. Ratings are provided by specialized agencies such as Dun and Bradstreet." ;
+              <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Rating" .
+
+
 ###  https://ontologies.beesondouglas.com/questrade/BondRepaymentTerms
 qt:BondRepaymentTerms rdf:type owl:Class ;
-                      rdfs:subClassOf gist:Specification ;
+                      rdfs:subClassOf gist:ContractTerm ;
                       <http://www.w3.org/2004/02/skos/core#definition> "A specification of the bond maturity and principal repayment event. Typically includes bond principal amount and maturity date." ;
                       <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Repayment Terms" .
 
@@ -210,7 +225,7 @@ qt:CouponPaymentSchedule rdf:type owl:Class ;
 
 ###  https://ontologies.beesondouglas.com/questrade/CouponPaymentTerms
 qt:CouponPaymentTerms rdf:type owl:Class ;
-                      rdfs:subClassOf gist:Specification ;
+                      rdfs:subClassOf gist:ContractTerm ;
                       rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/CouponPaymentTerms"^^xsd:anyURI ;
                       <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment Terms" .
 
@@ -574,8 +589,8 @@ qtx:_FinancialInstrument_cash rdf:type owl:NamedIndividual ,
                               <http://www.w3.org/2004/02/skos/core#prefLabel> "cash" .
 
 
-###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityIdentifierType_cusip
-qtx:_MarketableSecurityIdentifierType_cusip rdf:type owl:NamedIndividual ,
+###  https://taxonomies.beesondouglas.com/questrade/_MarketableSecurityIdentifierType_CUSIP
+qtx:_MarketableSecurityIdentifierType_CUSIP rdf:type owl:NamedIndividual ,
                                                      qt:MarketableSecurityIdentifierType ;
                                             rdfs:seeAlso "https://en.wikipedia.org/wiki/CUSIP"^^xsd:anyURI ;
                                             <http://www.w3.org/2004/02/skos/core#definition> "A CUSIP (/ˈkjuːsɪp/) is a nine-character numeric or alphanumeric code (e.g. 037833100 for Apple) that uniquely identifies a North American financial security for the purposes of facilitating clearing and settlement of trades. (Wikipedia)" ;

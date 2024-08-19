@@ -1,0 +1,38 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
+
+SELECT DISTINCT ?bond_iri ?bond (?coupon*100 AS ?coupon_) ?price ?my_price (?my_price-?price AS ?spread) ?yr ?maturity (?ytm*100 AS ?yield_to_mat) ?issuer ?rating ?callable
+
+FROM qt3:__bond-list__
+FROM qt3:__bondlist-extras__
+
+{
+        ?bond_iri a qt:Bond ; 
+            skos:prefLabel ?bond ; 
+            qt:isIssuedBy/gist:name ?issuer ;
+            qt:hasRepaymentTerms [ 
+            	gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ;
+        		qt:callable ?callable ;
+    		] ;
+            qt:hasInterestPaymentTerms [ gist:specifies [ a qt:BondCoupon ; gist:numericValue ?coupon ] ] ;
+        .
+        # Daily changing things (price, YTM)
+        ?_evt a gist:RevaluationEvent ;
+            gist:isAbout ?bond_iri ;
+            gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
+            gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price ] ;
+            gist:hasMagnitude [gist:numericValue ?npv_coupons ; gist:hasAspect qtx:_Aspect_npv_simulated_bond_coupons ] ;
+            gist:hasMagnitude [gist:numericValue ?npv_principal ; gist:hasAspect qtx:_Aspect_npv_simulated_bond_principal ] ;
+            gist:hasMagnitude [gist:numericValue ?npv_total ; gist:hasAspect qtx:_Aspect_npv_simulated_bond_value ] ;
+            gist:hasMagnitude [gist:numericValue ?my_price ; gist:hasAspect qtx:_Aspect_simulated_bond_price_realized_yield ] ;
+            gist:hasMagnitude [gist:numericValue ?net_cost ; gist:hasAspect qtx:_Aspect_simulated_bond_position_cost] ;
+        .
+        OPTIONAL { ?_evt gist:isAffectedBy/skos:prefLabel ?rating }
+    BIND(YEAR(?maturity) AS ?yr)
+} ORDER BY ASC(?yr) DESC(?spread)  

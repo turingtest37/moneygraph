@@ -1,5 +1,5 @@
 PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
-PREFIX gist: <https://ontologies.semanticarts.com/gist/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
 PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

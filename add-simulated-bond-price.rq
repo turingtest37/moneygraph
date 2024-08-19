@@ -1,0 +1,210 @@
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
+PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+
+PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
+
+#SELECT DISTINCT
+#?bond_iri
+#?valuation_dt
+#?npv_coupons
+#?npv_principal
+#?npv_total
+#?my_price
+#?net_cost
+#?__npv_coupons_magn
+#?__npv_principal_magn
+#?__npv_total_magn
+#?__realized_yield_price_magn
+#?__simulated_cost_magn
+##
+
+INSERT
+{
+    GRAPH <https://triples.beesondouglas.com/questrade/__bondlist-extras__> {
+		?_evt gist:hasMagnitude ?__npv_coupons_magn ;
+		gist:hasMagnitude ?__npv_principal_magn ;
+		gist:hasMagnitude ?__npv_total_magn ;
+		gist:hasMagnitude ?__realized_yield_price_magn ;
+		gist:hasMagnitude ?__simulated_cost_magn ;
+		.
+
+		?__npv_coupons_magn a gist:Monetary ;
+			gist:numericValue ?npv_coupons ;
+            gist:unitOfMeasure ?currency ;
+			gist:hasAspect qtx:_Aspect_npv_simulated_bond_coupons ;
+		.
+		?__npv_principal_magn a gist:Monetary ;
+			gist:numericValue ?npv_principal ;
+            gist:unitOfMeasure ?currency ;
+			gist:hasAspect qtx:_Aspect_npv_simulated_bond_principal ;
+		.
+        ?__realized_yield_price_magn a gist:Monetary ;
+			gist:numericValue ?my_price ;
+            gist:unitOfMeasure ?currency ;
+			gist:hasAspect qtx:_Aspect_simulated_bond_price_realized_yield;
+		.
+        ?__simulated_cost_magn a gist:Monetary ;
+			gist:numericValue ?net_cost ;
+            gist:unitOfMeasure ?currency ;
+			gist:hasAspect qtx:_Aspect_simulated_bond_position_cost;
+		.
+        ?__npv_total_magn a gist:Monetary ;
+			gist:numericValue ?npv_total ;
+            gist:unitOfMeasure ?currency ;
+			gist:hasAspect qtx:_Aspect_npv_simulated_bond_value;
+        .
+
+	}
+}
+
+#FROM qt3:__bond-list__
+#FROM qt3:__ontology__qt
+#FROM qt3:__ontology__gist
+#
+USING qt3:__bond-list__
+USING qt3:__ontology__qt
+USING qt3:__ontology__gist
+
+
+WHERE {
+    
+    {
+        SELECT
+        	?_evt
+        	?bond_iri
+        	?bond
+        	?valuation_dt
+        	(SUM(?npv_coupon_val) AS ?npv_coupons)
+        	?npv_principal
+        	(?npv_coupons+?npv_principal AS ?npv_total)
+            (?npv_total / 10 AS ?my_price)
+       		?price
+	        ?issuer
+        	?maturity
+        	?ytm
+        	?rating
+        	?principal
+        	?net_cost
+        {
+
+            { # This inner select runs once to extract key details of each bond before the purchase siumlation below
+                SELECT ?_evt ?bond_iri ?bond ?issuer ?maturity ?coupon ?ytm ?price ?currency ?valuation_dt ?rating ?principal ?net_cost ?coupon_amt ?callable
+                {
+
+                # Static things about the bond
+                ?bond_iri a qt:Bond ; 
+                    skos:prefLabel ?bond ; 
+                    qt:isIssuedBy/gist:name ?issuer ;
+                    qt:hasRepaymentTerms [ 
+                        gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ;
+                        qt:callable ?callable ;	
+                    ] ;
+                    qt:hasInterestPaymentTerms [ gist:specifies [ a qt:BondCoupon ; gist:numericValue ?coupon ] ] ;
+                .
+                # Daily changing things (price, YTM)
+                ?_evt a gist:RevaluationEvent ;
+                    gist:atDateTime ?valuation_dt ;
+                    gist:isAbout ?bond_iri ;
+                    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
+                    gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price  ; gist:hasUnitOfMeasure ?currency] ;
+                .
+                OPTIONAL { ?_evt gist:isAffectedBy/skos:prefLabel ?rating }
+                    
+            #Simulated purchase of $1000 bond today    
+                BIND(1000.00 AS ?principal)
+                BIND(?coupon * ?principal / 2 AS ?coupon_amt)
+            # Price is per hundred so x 10 for 1000
+                BIND(?price*10 AS ?net_cost) # This is unrealistic but...
+                }
+            } # end of inner inner select    
+
+            # Assume a maximum of 15 years of coupon payments
+            VALUES ?coupon_payment_period {
+                "P0Y6M0DT0H0M0S"^^xsd:duration 
+                "P1Y0M0DT0H0M0S"^^xsd:duration "P1Y6M0DT0H0M0S"^^xsd:duration 
+                "P2Y0M0DT0H0M0S"^^xsd:duration "P2Y6M0DT0H0M0S"^^xsd:duration 
+                "P3Y0M0DT0H0M0S"^^xsd:duration "P3Y6M0DT0H0M0S"^^xsd:duration 
+                "P4Y0M0DT0H0M0S"^^xsd:duration "P4Y6M0DT0H0M0S"^^xsd:duration 
+                "P5Y0M0DT0H0M0S"^^xsd:duration "P5Y6M0DT0H0M0S"^^xsd:duration 
+                "P6Y0M0DT0H0M0S"^^xsd:duration "P6Y6M0DT0H0M0S"^^xsd:duration 
+                "P7Y0M0DT0H0M0S"^^xsd:duration "P7Y6M0DT0H0M0S"^^xsd:duration 
+                "P8Y0M0DT0H0M0S"^^xsd:duration "P8Y6M0DT0H0M0S"^^xsd:duration 
+                "P9Y0M0DT0H0M0S"^^xsd:duration "P9Y6M0DT0H0M0S"^^xsd:duration 
+                "P10Y0M0DT0H0M0S"^^xsd:duration "P10Y6M0DT0H0M0S"^^xsd:duration 
+                "P11Y0M0DT0H0M0S"^^xsd:duration "P11Y6M0DT0H0M0S"^^xsd:duration 
+                "P12Y0M0DT0H0M0S"^^xsd:duration "P12Y6M0DT0H0M0S"^^xsd:duration 
+                "P13Y0M0DT0H0M0S"^^xsd:duration "P13Y6M0DT0H0M0S"^^xsd:duration 
+                "P14Y0M0DT0H0M0S"^^xsd:duration "P14Y6M0DT0H0M0S"^^xsd:duration 
+                "P15Y0M0DT0H0M0S"^^xsd:duration "P15Y6M0DT0H0M0S"^^xsd:duration 
+            } #/values
+
+            # We can't handle bonds with maturity > today + 15 years
+            FILTER(?maturity < NOW()+"P15Y6M0DT0H0M0S"^^xsd:duration)
+
+            BIND(NOW() AS ?coupon_start_dt)
+            
+            BIND(?coupon_start_dt + ?coupon_payment_period AS ?_onecoupondt)
+            BIND(IF(?callable && ?maturity > ?_onecoupondt, ?_onecoupondt-"P0Y6M0DT0H0M0S"^^xsd:duration, ?_onecoupondt) AS ?coupon_dt)
+            
+            FILTER(?maturity > ?coupon_dt && NOW() < ?coupon_dt)
+
+        # Calculate number of semi-annual periods from today to maturity date    
+            BIND(?maturity-NOW() AS ?now_to_mat_duration)
+            BIND(ofn:years-from-duration(?now_to_mat_duration) AS ?now_to_mat_years)
+            BIND(ofn:months-from-duration(?now_to_mat_duration) AS ?now_to_mat_months)
+            BIND(ofn:days-from-duration(?now_to_mat_duration) AS ?now_to_mat_days)
+            BIND(?now_to_mat_years * 2 + ?now_to_mat_months / (12/2) + ?now_to_mat_days / (365/2) AS ?now_to_mat_semiannual_periods)
+
+        # Calculate number of periods from coupon date to maturity date, two ways: daily and semi-annual    
+            BIND(?maturity-?coupon_dt AS ?coupon_remaining_diff)
+            BIND(ofn:years-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_years)
+            BIND(ofn:months-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_months)
+            BIND(ofn:days-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_days)
+            BIND(?coupon_to_mat_years*365 + ?coupon_to_mat_months*30 + ?coupon_to_mat_days AS ?coupon_to_mat_daysremaining)
+            BIND(?coupon_to_mat_years*2 + ?coupon_to_mat_months/(12/2) + ?coupon_to_mat_days/(365/2) AS ?coupon_to_mat_semiannual_periods)
+
+        # Assume discount rate for NPV is the bond's stated YTM rate at the current price
+            BIND(?ytm AS ?discount_rate)
+            BIND(?discount_rate/2 AS ?semiannual_discount)
+
+        # Use fixed values for inflation rate and my portfolio average annual return rate
+            VALUES (?inflation_rate ?my_annual_return) { (0.025 0.09) }
+            BIND(?my_annual_return/365 AS ?my_daily_return)
+            BIND(?inflation_rate/365 AS ?daily_inflation)
+
+        # Calculate multiplier for the coupon dollar amount by compounding, two strategies:
+        # 1) My daily return up to maturity, semi-annual discount rate maturity back to today
+            BIND(ofn:pow(1+?my_daily_return, ?coupon_to_mat_daysremaining) AS ?multiplier) # yield of reinvested past coupons
+        #    BIND(ofn:pow(1+?semiannual_discount, ?coupon_to_mat_semiannual_periods) AS ?multiplier) # yield of reinvested past coupons
+
+        # 2) Semi-annual discount rate up and down
+        #    BIND(ofn:pow(1+?semiannual_discount, ?coupon_to_mat_semiannual_periods) AS ?coupon_multiplier) # yield of reinvested past coupons
+
+        # The demultiplier applies the discount rate in reverse to calculate NPV    
+            BIND(ofn:pow(1+?semiannual_discount, ?now_to_mat_semiannual_periods) AS ?demultiplier)
+
+        # Each coupon is reinvested at the daily return rate which is 9% annualized, all the way to maturity
+            BIND(?coupon_amt * ?multiplier AS ?coupon_future_val)
+        # Each coupon's accumulated value at maturity is then NPVd back to today, using the discount rate
+            BIND(?coupon_future_val / ?demultiplier AS ?npv_coupon_val)
+        # The principal is returned at maturity but must be devalued to NPV using the discount rate
+            BIND(?principal / ?demultiplier AS ?npv_principal)
+
+        }#/where
+            GROUP BY ?_evt ?bond_iri ?bond ?valuation_dt ?npv_principal ?price ?issuer ?maturity ?ytm ?rating ?principal ?net_cost
+    } #/select
+    
+# IRIs for new price simulation triples    
+    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_coupons_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_coupons))) AS ?__npv_coupons_magn)
+    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_principal_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_principal))) AS ?__npv_principal_magn)
+    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_total_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_total))) AS ?__npv_total_magn)
+    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_cost_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?net_cost))) AS ?__simulated_cost_magn)
+    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_realized_price_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?my_price))) AS ?__realized_yield_price_magn)
+
+
+} 
+
