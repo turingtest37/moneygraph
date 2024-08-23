@@ -176,7 +176,7 @@ WHERE
     BIND(IRI(CONCAT(STR(qt3:), "_Organization_", LCASE(REPLACE(?Issuer,"\\W+","-")))) AS ?__issuer_iri)
 
 # Callable?
-    BIND(CONTAINS(?Issuer,"(F)") AS ?__callable)
+    BIND(CONTAINS(?Issuer,"(F)") || CONTAINS(?Issuer,"Callable") AS ?__callable)
 
 # Rating
     BIND(REPLACE(?Rating,"[^a-zA-Z0-9]","") AS ?__rating_stripped)

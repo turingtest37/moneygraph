@@ -20,18 +20,32 @@ PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 #?__npv_total_magn
 #?__realized_yield_price_magn
 #?__simulated_cost_magn
-##
+#?issuer
+#?maturity
+#?callable
+#?effective_maturity
+#?__callable_repayment_event
+#
 
 INSERT
 {
-    GRAPH <https://triples.beesondouglas.com/questrade/__bondlist-extras__> {
-		?_evt gist:hasMagnitude ?__npv_coupons_magn ;
+    GRAPH <https://triples.beesondouglas.com/questrade/__bondlist__extras> {
+
+        ?_evt gist:hasMagnitude ?__npv_coupons_magn ;
 		gist:hasMagnitude ?__npv_principal_magn ;
 		gist:hasMagnitude ?__npv_total_magn ;
 		gist:hasMagnitude ?__realized_yield_price_magn ;
 		gist:hasMagnitude ?__simulated_cost_magn ;
+        gist:isAbout ?bond_iri ;
 		.
-
+        
+        ?repayment_terms gist:specifies ?__callable_repayment_event .
+        ?__callable_repayment_event a gist:ScheduledEvent ;
+            gist:affects ?bond_iri ;
+            gist:isCharacterizedAs qtx:_FinancialBusinessEventType_callable_debt_principal_repayment ;
+            qt:plannedOccursDate ?effective_maturity ;
+		.
+        
 		?__npv_coupons_magn a gist:Monetary ;
 			gist:numericValue ?npv_coupons ;
             gist:unitOfMeasure ?currency ;
@@ -64,7 +78,7 @@ INSERT
 #FROM qt3:__bond-list__
 #FROM qt3:__ontology__qt
 #FROM qt3:__ontology__gist
-#
+
 USING qt3:__bond-list__
 USING qt3:__ontology__qt
 USING qt3:__ontology__gist
@@ -85,26 +99,30 @@ WHERE {
        		?price
 	        ?issuer
         	?maturity
+        	?callable
+        	?effective_maturity
         	?ytm
         	?rating
         	?principal
         	?net_cost
+            ?repayment_terms
         {
 
             { # This inner select runs once to extract key details of each bond before the purchase siumlation below
-                SELECT ?_evt ?bond_iri ?bond ?issuer ?maturity ?coupon ?ytm ?price ?currency ?valuation_dt ?rating ?principal ?net_cost ?coupon_amt ?callable
+                SELECT ?_evt ?bond_iri ?bond ?issuer ?maturity ?coupon ?ytm ?price ?currency ?valuation_dt ?rating ?principal ?net_cost ?coupon_amt ?callable ?repayment_terms
                 {
 
                 # Static things about the bond
                 ?bond_iri a qt:Bond ; 
                     skos:prefLabel ?bond ; 
                     qt:isIssuedBy/gist:name ?issuer ;
-                    qt:hasRepaymentTerms [ 
-                        gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ;
-                        qt:callable ?callable ;	
-                    ] ;
                     qt:hasInterestPaymentTerms [ gist:specifies [ a qt:BondCoupon ; gist:numericValue ?coupon ] ] ;
+                    qt:hasRepaymentTerms ?repayment_terms ;
                 .
+                ?repayment_terms gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ;
+                    qt:callable ?callable ;	
+                .
+                    
                 # Daily changing things (price, YTM)
                 ?_evt a gist:RevaluationEvent ;
                     gist:atDateTime ?valuation_dt ;
@@ -142,25 +160,26 @@ WHERE {
                 "P15Y0M0DT0H0M0S"^^xsd:duration "P15Y6M0DT0H0M0S"^^xsd:duration 
             } #/values
 
+# If the bond is callable, shorten the maturity by one six-month period
+            BIND(IF(?callable, ?maturity-"P0Y6M0DT0H0M0S"^^xsd:duration, ?maturity) AS ?effective_maturity)
+            
             # We can't handle bonds with maturity > today + 15 years
-            FILTER(?maturity < NOW()+"P15Y6M0DT0H0M0S"^^xsd:duration)
+            FILTER(?effective_maturity <= NOW()+"P15Y6M0DT0H0M0S"^^xsd:duration)
 
             BIND(NOW() AS ?coupon_start_dt)
             
-            BIND(?coupon_start_dt + ?coupon_payment_period AS ?_onecoupondt)
-            BIND(IF(?callable && ?maturity > ?_onecoupondt, ?_onecoupondt-"P0Y6M0DT0H0M0S"^^xsd:duration, ?_onecoupondt) AS ?coupon_dt)
-            
-            FILTER(?maturity > ?coupon_dt && NOW() < ?coupon_dt)
+            BIND(?coupon_start_dt + ?coupon_payment_period AS ?coupon_dt)
+            FILTER(?effective_maturity >= ?coupon_dt && NOW() < ?coupon_dt)
 
         # Calculate number of semi-annual periods from today to maturity date    
-            BIND(?maturity-NOW() AS ?now_to_mat_duration)
+            BIND(?effective_maturity-NOW() AS ?now_to_mat_duration)
             BIND(ofn:years-from-duration(?now_to_mat_duration) AS ?now_to_mat_years)
             BIND(ofn:months-from-duration(?now_to_mat_duration) AS ?now_to_mat_months)
             BIND(ofn:days-from-duration(?now_to_mat_duration) AS ?now_to_mat_days)
             BIND(?now_to_mat_years * 2 + ?now_to_mat_months / (12/2) + ?now_to_mat_days / (365/2) AS ?now_to_mat_semiannual_periods)
 
         # Calculate number of periods from coupon date to maturity date, two ways: daily and semi-annual    
-            BIND(?maturity-?coupon_dt AS ?coupon_remaining_diff)
+            BIND(?effective_maturity-?coupon_dt AS ?coupon_remaining_diff)
             BIND(ofn:years-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_years)
             BIND(ofn:months-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_months)
             BIND(ofn:days-from-duration(?coupon_remaining_diff) AS ?coupon_to_mat_days)
@@ -195,7 +214,7 @@ WHERE {
             BIND(?principal / ?demultiplier AS ?npv_principal)
 
         }#/where
-            GROUP BY ?_evt ?bond_iri ?bond ?valuation_dt ?npv_principal ?price ?issuer ?maturity ?ytm ?rating ?principal ?net_cost
+            GROUP BY ?_evt ?bond_iri ?bond ?valuation_dt ?npv_principal ?price ?issuer ?maturity ?effective_maturity ?ytm ?rating ?principal ?net_cost ?repayment_terms ?callable
     } #/select
     
 # IRIs for new price simulation triples    
@@ -205,6 +224,9 @@ WHERE {
     BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_cost_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?net_cost))) AS ?__simulated_cost_magn)
     BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_realized_price_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?my_price))) AS ?__realized_yield_price_magn)
 
+# IRI for effective maturity
+    BIND(IF(?callable, IRI(CONCAT(STR(qt3:),'_Event_callableBondPrincipalRepayment_',?bond,'_',REPLACE(STR(?effective_maturity),"\\W+","-"))), ?unbound) AS ?__callable_repayment_event)
+
 
 } 
-
+#ORDER BY ?maturity
