@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <Ontology xmlns="http://www.w3.org/2002/07/owl#"
-     xml:base="http://ontologies.beesondouglas.com/o/questrade"
+     xml:base="https://w3id.org/moneygraph/o/ontology/"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     ontologyIRI="http://ontologies.beesondouglas.com/o/questrade"
-     versionIRI="http://ontologies.beesondouglas.com/o/questrade_1.0.0">
-    <Prefix name="" IRI="http://ontologies.beesondouglas.com/o/questrade#"/>
-    <Prefix name="qt" IRI="https://ontologies.beesondouglas.com/questrade/"/>
+     ontologyIRI="https://w3id.org/moneygraph/o/ontology/"
+     versionIRI="https://w3id.org/moneygraph/o/moneygraph_1.0.0">
+    <Prefix name="" IRI="https://w3id.org/moneygraph/ns/ontology/"/>
+    <Prefix name="mg" IRI="https://w3id.org/moneygraph/ns/ontology/"/>
     <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
-    <Prefix name="qtx" IRI="https://taxonomies.beesondouglas.com/questrade/"/>
+    <Prefix name="mgx" IRI="https://w3id.org/moneygraph/ns/taxonomy/"/>
     <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
     <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
     <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
@@ -23,43 +23,43 @@
         <Literal>Ontology for a personal investment portfolio supporting stocks, bonds, etfs, and mutual funds.</Literal>
     </Annotation>
     <Declaration>
-        <Class abbreviatedIRI="qt:Bond"/>
+        <Class abbreviatedIRI="mg:Bond"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:BondCoupon"/>
+        <Class abbreviatedIRI="mg:BondCoupon"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:CommonStock"/>
+        <Class abbreviatedIRI="mg:CommonStock"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:CouponPayment"/>
+        <Class abbreviatedIRI="mg:CouponPayment"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:CouponPaymentSchedule"/>
+        <Class abbreviatedIRI="mg:CouponPaymentSchedule"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:CouponPaymentTerms"/>
+        <Class abbreviatedIRI="mg:CouponPaymentTerms"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:ExchangeTradedFund"/>
+        <Class abbreviatedIRI="mg:ExchangeTradedFund"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:FixedInterestRate"/>
+        <Class abbreviatedIRI="mg:FixedInterestRate"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:InvestmentPortfolio"/>
+        <Class abbreviatedIRI="mg:InvestmentPortfolio"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:MarketableSecurity"/>
+        <Class abbreviatedIRI="mg:MarketableSecurity"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifier"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifier"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
     </Declaration>
     <Declaration>
-        <Class abbreviatedIRI="qt:MarketableSecurityType"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityType"/>
     </Declaration>
     <Declaration>
         <Class abbreviatedIRI="gist:CurrencyPerDurationUnit"/>
@@ -77,136 +77,136 @@
         <Class abbreviatedIRI="gist:RemittanceEvent"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty abbreviatedIRI="qt:hasInterestPaymentTerms"/>
+        <ObjectProperty abbreviatedIRI="mg:hasInterestPaymentTerms"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty abbreviatedIRI="qt:hasRepaymentTerms"/>
+        <ObjectProperty abbreviatedIRI="mg:hasRepaymentTerms"/>
     </Declaration>
     <Declaration>
-        <ObjectProperty abbreviatedIRI="qtx:hasInterestRate"/>
+        <ObjectProperty abbreviatedIRI="mgx:hasInterestRate"/>
     </Declaration>
     <Declaration>
-        <DataProperty abbreviatedIRI="qt:assessmentDate"/>
+        <DataProperty abbreviatedIRI="mg:assessmentDate"/>
     </Declaration>
     <Declaration>
-        <DataProperty abbreviatedIRI="qt:plannedOccursDate"/>
+        <DataProperty abbreviatedIRI="mg:plannedOccursDate"/>
     </Declaration>
     <Declaration>
         <DataProperty abbreviatedIRI="gist:atDate"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_365_day_year"/>
+        <NamedIndividual abbreviatedIRI="mg:_365_day_year"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_annualInterestRate"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_dailyInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_dailyInterestRate"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_monetaryPerMonetary"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_monetaryPerMonetary"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_totalInvestmentReturnRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_totalInvestmentReturnRate"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_annualInterestRate"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtInterestAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtInterestAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtPrincipalAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtPrincipalAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtPrincipalRepaymentAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtPrincipalRepaymentAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_depositAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_depositAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionCostAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionCostAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionPercentPortfolio"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionPercentPortfolio"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionProfitAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionProfitAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionReturnRatio"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionReturnRatio"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionValueAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionValueAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareDividendAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareDividendAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeGrossAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeGrossAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeNetAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeNetAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareUnitPriceAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareUnitPriceAmount"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeTransactionCommission"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeTransactionCommission"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_CADollar"/>
+        <NamedIndividual abbreviatedIRI="mgx:_CADollar"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_assetMerger"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_assetMerger"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_debtPrincipalRepayment"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_debtPrincipalRepayment"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_deposit"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_deposit"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_dividendRemittance"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_dividendRemittance"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_exchangeOfCurrency"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_exchangeOfCurrency"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_interestRemittance"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_interestRemittance"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialInstrument_cash"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialInstrument_cash"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_cusip"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_cusip"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_qtBondId"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_qtBondId"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_tickerSymbol"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_tickerSymbol"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_bond"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_bond"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_cash"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_cash"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_common_stock"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_common_stock"/>
     </Declaration>
     <Declaration>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_exchange_traded_fund"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_exchange_traded_fund"/>
     </Declaration>
     <Declaration>
         <NamedIndividual abbreviatedIRI="gist:_one_day"/>
@@ -410,58 +410,58 @@
         <NamedIndividual abbreviatedIRI="gist:_PrefixDeclaration_gist"/>
     </Declaration>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:Bond"/>
+        <Class abbreviatedIRI="mg:Bond"/>
         <ObjectIntersectionOf>
             <Class abbreviatedIRI="gist:FinancialInstrument"/>
             <ObjectSomeValuesFrom>
-                <ObjectProperty abbreviatedIRI="qt:hasInterestPaymentTerms"/>
-                <Class abbreviatedIRI="qt:CouponPaymentTerms"/>
+                <ObjectProperty abbreviatedIRI="mg:hasInterestPaymentTerms"/>
+                <Class abbreviatedIRI="mg:CouponPaymentTerms"/>
             </ObjectSomeValuesFrom>
             <ObjectHasValue>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_bond"/>
+                <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_bond"/>
             </ObjectHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:CommonStock"/>
+        <Class abbreviatedIRI="mg:CommonStock"/>
         <ObjectIntersectionOf>
-            <Class abbreviatedIRI="qt:MarketableSecurity"/>
+            <Class abbreviatedIRI="mg:MarketableSecurity"/>
             <ObjectHasValue>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_common_stock"/>
+                <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_common_stock"/>
             </ObjectHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:CouponPayment"/>
+        <Class abbreviatedIRI="mg:CouponPayment"/>
         <ObjectIntersectionOf>
             <Class abbreviatedIRI="gist:Event"/>
             <ObjectHasValue>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_interestRemittance"/>
+                <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_interestRemittance"/>
             </ObjectHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:CouponPaymentSchedule"/>
+        <Class abbreviatedIRI="mg:CouponPaymentSchedule"/>
         <ObjectSomeValuesFrom>
             <ObjectProperty abbreviatedIRI="gist:hasMember"/>
-            <Class abbreviatedIRI="qt:CouponPayment"/>
+            <Class abbreviatedIRI="mg:CouponPayment"/>
         </ObjectSomeValuesFrom>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:ExchangeTradedFund"/>
+        <Class abbreviatedIRI="mg:ExchangeTradedFund"/>
         <ObjectIntersectionOf>
-            <Class abbreviatedIRI="qt:MarketableSecurity"/>
+            <Class abbreviatedIRI="mg:MarketableSecurity"/>
             <ObjectHasValue>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_exchange_traded_fund"/>
+                <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_exchange_traded_fund"/>
             </ObjectHasValue>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:InvestmentPortfolio"/>
+        <Class abbreviatedIRI="mg:InvestmentPortfolio"/>
         <ObjectIntersectionOf>
             <Class abbreviatedIRI="gist:Collection"/>
             <ObjectSomeValuesFrom>
@@ -471,227 +471,227 @@
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:MarketableSecurity"/>
+        <Class abbreviatedIRI="mg:MarketableSecurity"/>
         <ObjectIntersectionOf>
             <Class abbreviatedIRI="gist:FinancialInstrument"/>
             <ObjectSomeValuesFrom>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <Class abbreviatedIRI="qt:MarketableSecurityType"/>
+                <Class abbreviatedIRI="mg:MarketableSecurityType"/>
             </ObjectSomeValuesFrom>
             <ObjectSomeValuesFrom>
                 <ObjectProperty abbreviatedIRI="gist:isIdentifiedBy"/>
-                <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
+                <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
             </ObjectSomeValuesFrom>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <EquivalentClasses>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifier"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifier"/>
         <ObjectIntersectionOf>
             <Class abbreviatedIRI="gist:ID"/>
             <ObjectSomeValuesFrom>
                 <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-                <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
+                <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
             </ObjectSomeValuesFrom>
         </ObjectIntersectionOf>
     </EquivalentClasses>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:BondCoupon"/>
+        <Class abbreviatedIRI="mg:BondCoupon"/>
         <Class abbreviatedIRI="gist:Percentage"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:CommonStock"/>
-        <Class abbreviatedIRI="qt:MarketableSecurity"/>
+        <Class abbreviatedIRI="mg:CommonStock"/>
+        <Class abbreviatedIRI="mg:MarketableSecurity"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:CouponPayment"/>
+        <Class abbreviatedIRI="mg:CouponPayment"/>
         <Class abbreviatedIRI="gist:RemittanceEvent"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:CouponPaymentSchedule"/>
+        <Class abbreviatedIRI="mg:CouponPaymentSchedule"/>
         <Class abbreviatedIRI="gist:Collection"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:CouponPaymentTerms"/>
+        <Class abbreviatedIRI="mg:CouponPaymentTerms"/>
         <Class abbreviatedIRI="gist:Specification"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:ExchangeTradedFund"/>
-        <Class abbreviatedIRI="qt:MarketableSecurity"/>
+        <Class abbreviatedIRI="mg:ExchangeTradedFund"/>
+        <Class abbreviatedIRI="mg:MarketableSecurity"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:FixedInterestRate"/>
+        <Class abbreviatedIRI="mg:FixedInterestRate"/>
         <Class abbreviatedIRI="gist:Percentage"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:FixedInterestRate"/>
+        <Class abbreviatedIRI="mg:FixedInterestRate"/>
         <Class abbreviatedIRI="gist:ReferenceValue"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:InvestmentPortfolio"/>
+        <Class abbreviatedIRI="mg:InvestmentPortfolio"/>
         <Class abbreviatedIRI="gist:Collection"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:MarketableSecurity"/>
+        <Class abbreviatedIRI="mg:MarketableSecurity"/>
         <Class abbreviatedIRI="gist:FinancialInstrument"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
         <Class abbreviatedIRI="gist:Category"/>
     </SubClassOf>
     <SubClassOf>
-        <Class abbreviatedIRI="qt:MarketableSecurityType"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityType"/>
         <Class abbreviatedIRI="gist:Behavior"/>
     </SubClassOf>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:DurationUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_365_day_year"/>
+        <NamedIndividual abbreviatedIRI="mg:_365_day_year"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:CurrencyPerDurationUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:CurrencyPerDurationUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:RatioUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_annualInterestRate"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:RatioUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_dailyInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_dailyInterestRate"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:CoherentRatioUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_monetaryPerMonetary"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_monetaryPerMonetary"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:RatioUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_totalInvestmentReturnRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_totalInvestmentReturnRate"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_annualInterestRate"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtInterestAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtInterestAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtPrincipalAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtPrincipalAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_debtPrincipalRepaymentAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_debtPrincipalRepaymentAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_depositAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_depositAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionCostAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionCostAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionPercentPortfolio"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionPercentPortfolio"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionProfitAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionProfitAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionReturnRatio"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionReturnRatio"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityPositionValueAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityPositionValueAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareDividendAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareDividendAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeGrossAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeGrossAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeNetAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeNetAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityShareUnitPriceAmount"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityShareUnitPriceAmount"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:Aspect"/>
-        <NamedIndividual abbreviatedIRI="qtx:_Aspect_securityTradeTransactionCommission"/>
+        <NamedIndividual abbreviatedIRI="mgx:_Aspect_securityTradeTransactionCommission"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:CurrencyUnit"/>
-        <NamedIndividual abbreviatedIRI="qtx:_CADollar"/>
+        <NamedIndividual abbreviatedIRI="mgx:_CADollar"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_assetMerger"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_assetMerger"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_debtPrincipalRepayment"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_debtPrincipalRepayment"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_deposit"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_deposit"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_dividendRemittance"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_dividendRemittance"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_exchangeOfCurrency"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_exchangeOfCurrency"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialBusinessEventType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialBusinessEventType_interestRemittance"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialBusinessEventType_interestRemittance"/>
     </ClassAssertion>
     <ClassAssertion>
         <Class abbreviatedIRI="gist:FinancialInstrument"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialInstrument_cash"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialInstrument_cash"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_cusip"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_cusip"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_qtBondId"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_qtBondId"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityIdentifierType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityIdentifierType_tickerSymbol"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityIdentifierType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityIdentifierType_tickerSymbol"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_bond"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_bond"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_common_stock"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_common_stock"/>
     </ClassAssertion>
     <ClassAssertion>
-        <Class abbreviatedIRI="qt:MarketableSecurityType"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_exchange_traded_fund"/>
+        <Class abbreviatedIRI="mg:MarketableSecurityType"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_exchange_traded_fund"/>
     </ClassAssertion>
     <DifferentIndividuals>
-        <NamedIndividual abbreviatedIRI="qtx:_CADollar"/>
+        <NamedIndividual abbreviatedIRI="mgx:_CADollar"/>
         <NamedIndividual abbreviatedIRI="gist:_USDollar"/>
         <NamedIndividual abbreviatedIRI="gist:_kelvin"/>
         <NamedIndividual abbreviatedIRI="gist:_kilogram"/>
@@ -706,636 +706,636 @@
     </DifferentIndividuals>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasBaseUnit"/>
-        <NamedIndividual abbreviatedIRI="qt:_365_day_year"/>
+        <NamedIndividual abbreviatedIRI="mg:_365_day_year"/>
         <NamedIndividual abbreviatedIRI="gist:_day"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasDenominator"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
         <NamedIndividual abbreviatedIRI="gist:_one_day"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasNumerator"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
-        <NamedIndividual abbreviatedIRI="qtx:_CADollar"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mgx:_CADollar"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasDenominator"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
-        <NamedIndividual abbreviatedIRI="qt:_365_day_year"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mg:_365_day_year"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasNumerator"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
-        <NamedIndividual abbreviatedIRI="qtx:_CADollar"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mgx:_CADollar"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasDenominator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_annualInterestRate"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasNumerator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_annualInterestRate"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerYear"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_annualInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerYear"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasDenominator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_dailyInterestRate"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_dailyInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasNumerator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_dailyInterestRate"/>
-        <NamedIndividual abbreviatedIRI="qt:_CurrencyPerDurationUnit_CADPerDay"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_dailyInterestRate"/>
+        <NamedIndividual abbreviatedIRI="mg:_CurrencyPerDurationUnit_CADPerDay"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasDenominator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_monetaryPerMonetary"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_monetaryPerMonetary"/>
         <NamedIndividual abbreviatedIRI="gist:_USDollar"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:hasNumerator"/>
-        <NamedIndividual abbreviatedIRI="qt:_RatioUnit_monetaryPerMonetary"/>
+        <NamedIndividual abbreviatedIRI="mg:_RatioUnit_monetaryPerMonetary"/>
         <NamedIndividual abbreviatedIRI="gist:_USDollar"/>
     </ObjectPropertyAssertion>
     <ObjectPropertyAssertion>
         <ObjectProperty abbreviatedIRI="gist:isCategorizedBy"/>
-        <NamedIndividual abbreviatedIRI="qtx:_FinancialInstrument_cash"/>
-        <NamedIndividual abbreviatedIRI="qtx:_MarketableSecurityType_cash"/>
+        <NamedIndividual abbreviatedIRI="mgx:_FinancialInstrument_cash"/>
+        <NamedIndividual abbreviatedIRI="mgx:_MarketableSecurityType_cash"/>
     </ObjectPropertyAssertion>
     <SubObjectPropertyOf>
-        <ObjectProperty abbreviatedIRI="qt:hasInterestPaymentTerms"/>
+        <ObjectProperty abbreviatedIRI="mg:hasInterestPaymentTerms"/>
         <ObjectProperty abbreviatedIRI="gist:conformsTo"/>
     </SubObjectPropertyOf>
     <SubObjectPropertyOf>
-        <ObjectProperty abbreviatedIRI="qt:hasRepaymentTerms"/>
+        <ObjectProperty abbreviatedIRI="mg:hasRepaymentTerms"/>
         <ObjectProperty abbreviatedIRI="gist:conformsTo"/>
     </SubObjectPropertyOf>
     <SubObjectPropertyOf>
-        <ObjectProperty abbreviatedIRI="qtx:hasInterestRate"/>
+        <ObjectProperty abbreviatedIRI="mgx:hasInterestRate"/>
         <ObjectProperty abbreviatedIRI="gist:hasMagnitude"/>
     </SubObjectPropertyOf>
     <SubDataPropertyOf>
-        <DataProperty abbreviatedIRI="qt:assessmentDate"/>
+        <DataProperty abbreviatedIRI="mg:assessmentDate"/>
         <DataProperty abbreviatedIRI="gist:endDate"/>
     </SubDataPropertyOf>
     <SubDataPropertyOf>
-        <DataProperty abbreviatedIRI="qt:plannedOccursDate"/>
+        <DataProperty abbreviatedIRI="mg:plannedOccursDate"/>
         <DataProperty abbreviatedIRI="gist:atDate"/>
     </SubDataPropertyOf>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:BondCoupon</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:BondCoupon</AbbreviatedIRI>
         <Literal>https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondCoupon</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:BondCoupon</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:BondCoupon</AbbreviatedIRI>
         <Literal>https://www.investopedia.com/terms/c/coupon.asp</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:BondCoupon</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:BondCoupon</AbbreviatedIRI>
         <Literal>The annual interest rate on a debt instrument making periodic interest payments to the instrument holder.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:BondCoupon</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:BondCoupon</AbbreviatedIRI>
         <Literal>Bond Coupon</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:CommonStock</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CommonStock</AbbreviatedIRI>
         <Literal>A general class of securities conferring partial ownership of a corporation to the shareholder.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:CommonStock</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CommonStock</AbbreviatedIRI>
         <Literal>Common Stock</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:CouponPayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPayment</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#anyURI">fibo-sec-dbt-bnd:CouponPayment</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:CouponPayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPayment</AbbreviatedIRI>
         <Literal>Receipt of a bond interest payment, usually on a fixed schedule.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:CouponPayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPayment</AbbreviatedIRI>
         <Literal>Coupon Payment</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:CouponPaymentSchedule</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPaymentSchedule</AbbreviatedIRI>
         <Literal>A series of payments of bond coupons, either planned or past.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:CouponPaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPaymentTerms</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/CouponPaymentTerms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:CouponPaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:CouponPaymentTerms</AbbreviatedIRI>
         <Literal>Coupon Payment Terms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:ExchangeTradedFund</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:ExchangeTradedFund</AbbreviatedIRI>
         <Literal>A basket security whose value is adjusted continously to track that of a larger index of stocks but which, unlike mutual funds, is traded on a public exchange.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:FixedInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:FixedInterestRate</AbbreviatedIRI>
         <Literal>Fixed Interest Rate</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:InvestmentPortfolio</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:InvestmentPortfolio</AbbreviatedIRI>
         <Literal>A collection of investment accounts that each track an investment asset.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:InvestmentPortfolio</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:InvestmentPortfolio</AbbreviatedIRI>
         <Literal>Investment Portfolio</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:MarketableSecurity</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurity</AbbreviatedIRI>
         <Literal>An instrument of debt or equity, or options to buy and sell, that may be sold on a market.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:MarketableSecurity</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurity</AbbreviatedIRI>
         <Literal>Marketable Security</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:MarketableSecurityIdentifier</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityIdentifier</AbbreviatedIRI>
         <Literal>An identifier for marketable securities, e.g. CUSIP</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:MarketableSecurityIdentifier</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityIdentifier</AbbreviatedIRI>
         <Literal>Marketable Security Identifier</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:MarketableSecurityIdentifierType</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityIdentifierType</AbbreviatedIRI>
         <Literal>Kinds of IDs used in financial markets, e.g. CUSIP for bonds, exchange symbol for stocks, etc.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:MarketableSecurityIdentifierType</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityIdentifierType</AbbreviatedIRI>
         <Literal>Marketable Security Identifier Type</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:MarketableSecurityType</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityType</AbbreviatedIRI>
         <Literal>Kinds of securities include stocks, bonds, etf.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#editorialNote"/>
-        <AbbreviatedIRI>qt:MarketableSecurityType</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityType</AbbreviatedIRI>
         <Literal>Cash is a represented as an instance of Financial Instrument, not Marketable Security, as cash is not &quot;marketable&quot; per se.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:MarketableSecurityType</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:MarketableSecurityType</AbbreviatedIRI>
         <Literal>Financial Instrument Type</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_365_day_year</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_365_day_year</AbbreviatedIRI>
         <Literal>One year defined as exactly 365 24-hour days (not 365.25).</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:_365_day_year</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_365_day_year</AbbreviatedIRI>
         <Literal>365-day year</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="gist:conversionFactor"/>
-        <AbbreviatedIRI>qt:_365_day_year</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_365_day_year</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">365</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="gist:unitSymbol"/>
-        <AbbreviatedIRI>qt:_365_day_year</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_365_day_year</AbbreviatedIRI>
         <Literal>yr</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_CurrencyPerDurationUnit_CADPerDay</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_CurrencyPerDurationUnit_CADPerDay</AbbreviatedIRI>
         <Literal>e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_CurrencyPerDurationUnit_CADPerYear</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_CurrencyPerDurationUnit_CADPerYear</AbbreviatedIRI>
         <Literal>e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_RatioUnit_annualInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_annualInterestRate</AbbreviatedIRI>
         <Literal>interest rate = 1 - (principal amount + interest amount for the time period) / principal amount)
 
 interest amount for one period = interest rate for one period * principal amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_RatioUnit_dailyInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_dailyInterestRate</AbbreviatedIRI>
         <Literal>interest rate = 1 - (principal amount + interest amount for the time period) / principal amount)
 
 interest amount for one period = interest rate for one period * principal amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_RatioUnit_monetaryPerMonetary</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_monetaryPerMonetary</AbbreviatedIRI>
         <Literal>Amount of money per amount of money, as a percentage.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="gist:conversionFactor"/>
-        <AbbreviatedIRI>qt:_RatioUnit_monetaryPerMonetary</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_monetaryPerMonetary</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#decimal">0.01</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:_RatioUnit_totalInvestmentReturnRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_totalInvestmentReturnRate</AbbreviatedIRI>
         <Literal>Percentage return on an investment from purchase to today.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:_RatioUnit_totalInvestmentReturnRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:_RatioUnit_totalInvestmentReturnRate</AbbreviatedIRI>
         <Literal>total investment return rate</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qt:assessmentDate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:assessmentDate</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:assessmentDate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:assessmentDate</AbbreviatedIRI>
         <Literal>Date on which the value of an investment is reported or assessed.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:assessmentDate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:assessmentDate</AbbreviatedIRI>
         <Literal>assessment date</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:hasInterestPaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:hasInterestPaymentTerms</AbbreviatedIRI>
         <Literal>https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/hasInterestPaymentTerms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:hasInterestPaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:hasInterestPaymentTerms</AbbreviatedIRI>
         <Literal>has interest payment terms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qt:hasRepaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:hasRepaymentTerms</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#anyURI">fibo-sec-dbt-dbti:hasRepaymentTerms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:hasRepaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:hasRepaymentTerms</AbbreviatedIRI>
         <Literal>Relates the subject to a specification of loan repayment conditions.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:hasRepaymentTerms</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:hasRepaymentTerms</AbbreviatedIRI>
         <Literal>has repayment terms</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qt:plannedOccursDate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:plannedOccursDate</AbbreviatedIRI>
         <Literal>The date on which something is planned or expected to occur.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qt:plannedOccursDate</AbbreviatedIRI>
+        <AbbreviatedIRI>mg:plannedOccursDate</AbbreviatedIRI>
         <Literal>planned occurs date</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_annualInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_annualInterestRate</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_annualInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_annualInterestRate</AbbreviatedIRI>
         <Literal>Amount of interest as a percentage value for one year. There is no specific or particular meaning of &quot;year&quot; implied here.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtInterestAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtInterestAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtInterestAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtInterestAmount</AbbreviatedIRI>
         <Literal>Interest received or paid for a debt (e.g. bond).</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtPrincipalAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtPrincipalAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtPrincipalAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtPrincipalAmount</AbbreviatedIRI>
         <Literal>The amount of money representing the principal of a debt, e.g. a bond face value.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
         <Literal>Amount repaid on the principal of a debt.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_debtPrincipalRepaymentAmount</AbbreviatedIRI>
         <Literal>debt principal repayment amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_depositAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_depositAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_depositAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_depositAmount</AbbreviatedIRI>
         <Literal>An amount of money deposited to an account.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
         <Literal>Price paid for all shares, including fees, of a security.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionCostAmount</AbbreviatedIRI>
         <Literal>security position cost amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionPercentPortfolio</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionPercentPortfolio</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionPercentPortfolio</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionPercentPortfolio</AbbreviatedIRI>
         <Literal>The value of a security position as a percentage of the total portfolio&apos;s value.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
         <Literal>Value of the current security position less its initial cost.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionProfitAmount</AbbreviatedIRI>
         <Literal>security position profit amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionReturnRatio</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionReturnRatio</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionReturnRatio</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionReturnRatio</AbbreviatedIRI>
         <Literal>Value of an security position divided by its cost.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
         <Literal>Assessed value of a position in a security.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityPositionValueAmount</AbbreviatedIRI>
         <Literal>security position value amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareAmount</AbbreviatedIRI>
         <Literal>The number (may be fractional) of shares in a security, owned, sold, referred to, etc.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareDividendAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareDividendAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareDividendAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareDividendAmount</AbbreviatedIRI>
         <Literal>Monetary amount of a dividend paid on shares of common stock or an ETF.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeGrossAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeGrossAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeGrossAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeGrossAmount</AbbreviatedIRI>
         <Literal>Share unit price multiplied by number of shares purchased.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeNetAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeNetAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeNetAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeNetAmount</AbbreviatedIRI>
         <Literal>Share unit price multiplied by number of shares purchased, plus commission fees.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
         <Literal>Price paid for one share of a security.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityShareUnitPriceAmount</AbbreviatedIRI>
         <Literal>security share unit price amount</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeTransactionCommission</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeTransactionCommission</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_Aspect_securityTradeTransactionCommission</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_Aspect_securityTradeTransactionCommission</AbbreviatedIRI>
         <Literal>Fee assessed for security transactions such as buying, selling, or transferring.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_CADollar</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_CADollar</AbbreviatedIRI>
         <Literal>Loonies and twonies and more.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_CADollar</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_CADollar</AbbreviatedIRI>
         <Literal>Canadian Dollar</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="gist:unitSymbol"/>
-        <AbbreviatedIRI>qtx:_CADollar</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_CADollar</AbbreviatedIRI>
         <Literal>CAD</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_assetMerger</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_assetMerger</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_assetMerger</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_assetMerger</AbbreviatedIRI>
         <Literal>Asset mergers may result in shares of one asset being replaced by shares of another asset.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
         <Literal>Some or part of the principal of a debt is repaid.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#example"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_debtPrincipalRepayment</AbbreviatedIRI>
         <Literal>Repayment in full of a bond at maturity would be represented by this event type.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
         <Literal>Money is placed into an account.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_deposit</AbbreviatedIRI>
         <Literal>deposit</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_dividendRemittance</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_dividendRemittance</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_dividendRemittance</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_dividendRemittance</AbbreviatedIRI>
         <Literal>The remittance of money from an asset dividend, e.g. a stock dividend.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_exchangeOfCurrency</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_exchangeOfCurrency</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_exchangeOfCurrency</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_exchangeOfCurrency</AbbreviatedIRI>
         <Literal>Changing US dollars into Canadian dollars, for example.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:isDefinedBy"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_interestRemittance</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_interestRemittance</AbbreviatedIRI>
         <IRI></IRI>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_FinancialBusinessEventType_interestRemittance</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialBusinessEventType_interestRemittance</AbbreviatedIRI>
         <Literal>The receipt of interest money from a loan or security.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_FinancialInstrument_cash</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_FinancialInstrument_cash</AbbreviatedIRI>
         <Literal>cash</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
         <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#anyURI">https://en.wikipedia.org/wiki/CUSIP</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
         <Literal>A CUSIP (/ˈkjuːsɪp/) is a nine-character numeric or alphanumeric code (e.g. 037833100 for Apple) that uniquely identifies a North American financial security for the purposes of facilitating clearing and settlement of trades. (Wikipedia)</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_cusip</AbbreviatedIRI>
         <Literal>Marketable Security ID Type: CUSIP</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#definition"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_qtBondId</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_qtBondId</AbbreviatedIRI>
         <Literal>ID used by Questrade to identify bonds.</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_qtBondId</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_qtBondId</AbbreviatedIRI>
         <Literal>Marketable Security ID Type: QT Bond ID</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:_MarketableSecurityIdentifierType_tickerSymbol</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:_MarketableSecurityIdentifierType_tickerSymbol</AbbreviatedIRI>
         <Literal>Marketable Security ID Type : ticker symbol</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty abbreviatedIRI="rdfs:seeAlso"/>
-        <AbbreviatedIRI>qtx:hasInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:hasInterestRate</AbbreviatedIRI>
         <Literal>https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/hasInterestRate</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>
         <AnnotationProperty IRI="http://www.w3.org/2004/02/skos/core#prefLabel"/>
-        <AbbreviatedIRI>qtx:hasInterestRate</AbbreviatedIRI>
+        <AbbreviatedIRI>mgx:hasInterestRate</AbbreviatedIRI>
         <Literal>has interest rate</Literal>
     </AnnotationAssertion>
     <AnnotationAssertion>

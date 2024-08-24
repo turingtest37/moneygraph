@@ -1,9 +1,9 @@
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 
@@ -13,7 +13,7 @@ SELECT DISTINCT ?bond_iri ?price ?effective_maturity_dt ?corra (?coupon * 100 AS
 
     VALUES (?cusip ?price ?ytm ?starting_coupon) { ('56501RAQ9' 104.958 0.03901 0.05409) }
     
-    BIND(IRI(CONCAT(STR(qt3:),"_Bond_",?cusip)) AS ?bond_iri)
+    BIND(IRI(CONCAT(STR(mg3:),"_Bond_",?cusip)) AS ?bond_iri)
     BIND(NOW() AS ?purchase_dt)
     BIND("2033-03-10T00:00:00"^^xsd:dateTime AS ?maturity)
     BIND("P5Y0M0DT0H0M0S"^^xsd:duration AS ?five_years)

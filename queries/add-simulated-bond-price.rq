@@ -1,9 +1,9 @@
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 
@@ -29,7 +29,7 @@ PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 
 INSERT
 {
-    GRAPH <https://triples.beesondouglas.com/questrade/__bondlist__extras> {
+    GRAPH <https://w3id.org/moneygraph/ns/data/__bondlist__extras> {
 
         ?_evt gist:hasMagnitude ?__npv_coupons_magn ;
 		gist:hasMagnitude ?__npv_principal_magn ;
@@ -42,46 +42,46 @@ INSERT
         ?repayment_terms gist:specifies ?__callable_repayment_event .
         ?__callable_repayment_event a gist:ScheduledEvent ;
             gist:affects ?bond_iri ;
-            gist:isCharacterizedAs qtx:_FinancialBusinessEventType_callable_debt_principal_repayment ;
-            qt:plannedOccursDate ?effective_maturity ;
+            gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debt_principal_repayment ;
+            mg:plannedOccursDate ?effective_maturity ;
 		.
         
 		?__npv_coupons_magn a gist:Monetary ;
 			gist:numericValue ?npv_coupons ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect qtx:_Aspect_npv_simulated_bond_coupons ;
+			gist:hasAspect mgx:_Aspect_npv_simulated_bond_coupons ;
 		.
 		?__npv_principal_magn a gist:Monetary ;
 			gist:numericValue ?npv_principal ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect qtx:_Aspect_npv_simulated_bond_principal ;
+			gist:hasAspect mgx:_Aspect_npv_simulated_bond_principal ;
 		.
         ?__realized_yield_price_magn a gist:Monetary ;
 			gist:numericValue ?my_price ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect qtx:_Aspect_simulated_bond_price_realized_yield;
+			gist:hasAspect mgx:_Aspect_simulated_bond_price_realized_yield;
 		.
         ?__simulated_cost_magn a gist:Monetary ;
 			gist:numericValue ?net_cost ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect qtx:_Aspect_simulated_bond_position_cost;
+			gist:hasAspect mgx:_Aspect_simulated_bond_position_cost;
 		.
         ?__npv_total_magn a gist:Monetary ;
 			gist:numericValue ?npv_total ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect qtx:_Aspect_npv_simulated_bond_value;
+			gist:hasAspect mgx:_Aspect_npv_simulated_bond_value;
         .
 
 	}
 }
 
-#FROM qt3:__bond-list__
-#FROM qt3:__ontology__qt
-#FROM qt3:__ontology__gist
+#FROM mg3:__bond-list__
+#FROM mg3:__ontology__qt
+#FROM mg3:__ontology__gist
 
-USING qt3:__bond-list__
-USING qt3:__ontology__qt
-USING qt3:__ontology__gist
+USING mg3:__bond-list__
+USING mg3:__ontology__qt
+USING mg3:__ontology__gist
 
 
 WHERE {
@@ -113,22 +113,22 @@ WHERE {
                 {
 
                 # Static things about the bond
-                ?bond_iri a qt:Bond ; 
+                ?bond_iri a mg:Bond ; 
                     skos:prefLabel ?bond ; 
-                    qt:isIssuedBy/gist:name ?issuer ;
-                    qt:hasInterestPaymentTerms [ gist:specifies [ a qt:BondCoupon ; gist:numericValue ?coupon ] ] ;
-                    qt:hasRepaymentTerms ?repayment_terms ;
+                    mg:isIssuedBy/gist:name ?issuer ;
+                    mg:hasInterestPaymentTerms [ gist:specifies [ a mg:BondCoupon ; gist:numericValue ?coupon ] ] ;
+                    mg:hasRepaymentTerms ?repayment_terms ;
                 .
-                ?repayment_terms gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ;
-                    qt:callable ?callable ;	
+                ?repayment_terms gist:specifies [ a gist:ScheduledEvent ; mg:plannedOccursDate ?maturity ] ;
+                    mg:callable ?callable ;	
                 .
                     
                 # Daily changing things (price, YTM)
                 ?_evt a gist:RevaluationEvent ;
                     gist:atDateTime ?valuation_dt ;
                     gist:isAbout ?bond_iri ;
-                    gist:hasMagnitude [ gist:hasAspect qtx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
-                    gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price  ; gist:hasUnitOfMeasure ?currency] ;
+                    gist:hasMagnitude [ gist:hasAspect mgx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
+                    gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price  ; gist:hasUnitOfMeasure ?currency] ;
                 .
                 OPTIONAL { ?_evt gist:isAffectedBy/skos:prefLabel ?rating }
                     
@@ -218,14 +218,14 @@ WHERE {
     } #/select
     
 # IRIs for new price simulation triples    
-    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_coupons_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_coupons))) AS ?__npv_coupons_magn)
-    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_principal_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_principal))) AS ?__npv_principal_magn)
-    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_npv_total_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_total))) AS ?__npv_total_magn)
-    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_cost_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?net_cost))) AS ?__simulated_cost_magn)
-    BIND(IRI(CONCAT(STR(qt3:), '_Magnitude_simulated_realized_price_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?my_price))) AS ?__realized_yield_price_magn)
+    BIND(IRI(CONCAT(STR(mg3:), '_Magnitude_npv_coupons_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_coupons))) AS ?__npv_coupons_magn)
+    BIND(IRI(CONCAT(STR(mg3:), '_Magnitude_npv_principal_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_principal))) AS ?__npv_principal_magn)
+    BIND(IRI(CONCAT(STR(mg3:), '_Magnitude_npv_total_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?npv_total))) AS ?__npv_total_magn)
+    BIND(IRI(CONCAT(STR(mg3:), '_Magnitude_simulated_cost_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?net_cost))) AS ?__simulated_cost_magn)
+    BIND(IRI(CONCAT(STR(mg3:), '_Magnitude_simulated_realized_price_', ?bond, '_', REPLACE(STR(?valuation_dt),"\\W+","-"), '_', STR(?my_price))) AS ?__realized_yield_price_magn)
 
 # IRI for effective maturity
-    BIND(IF(?callable, IRI(CONCAT(STR(qt3:),'_Event_callableBondPrincipalRepayment_',?bond,'_',REPLACE(STR(?effective_maturity),"\\W+","-"))), ?unbound) AS ?__callable_repayment_event)
+    BIND(IF(?callable, IRI(CONCAT(STR(mg3:),'_Event_callableBondPrincipalRepayment_',?bond,'_',REPLACE(STR(?effective_maturity),"\\W+","-"))), ?unbound) AS ?__callable_repayment_event)
 
 
 } 

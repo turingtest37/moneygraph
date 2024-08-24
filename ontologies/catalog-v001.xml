@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-    <uri name="http://ontologies.beesondouglas.com/o/questrade" uri="questrade.ttl"/>
+    <uri name="https://w3id.org/moneygraph/o/ontology/" uri="questrade.ttl"/>
     <uri name="https://w3id.org/semanticarts/ontology/gistCore12.0.1" uri="gistCore12.0.1.ttl"/>
     <uri name="https://w3id.org/semanticarts/ontology/gistDCAcct1.0.0" uri="gistDCAcct1.0.0.ttl"/>
     <uri name="https://w3id.org/semanticarts/ontology/gistBusiness0.7.0" uri="gistBusiness0.7.0.ttl"/>

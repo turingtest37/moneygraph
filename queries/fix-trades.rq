@@ -1,22 +1,22 @@
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 
 INSERT
 {
-	GRAPH qt3:__securities__extra {
+	GRAPH mg3:__securities__extra {
         ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_schedule ;
-            qt:isTradedOn ?__exchange .
+            mg:isTradedOn ?__exchange .
 
-        ?__bond_repayment_conditions qt:callable ?__callable .
+        ?__bond_repayment_conditions mg:callable ?__callable .
         ?__coupon_payment_schedule gist:hasMember ?__next_coupon_evt .
         ?__security_acct gist:isAffectedBy ?__next_coupon_evt .
    }
-    GRAPH qt3:__activities__extra {
-		?evt qt:longDescription ?__longdesc ;
+    GRAPH mg3:__activities__extra {
+		?evt mg:longDescription ?__longdesc ;
         	gist:hasMagnitude ?__ytm_magn .
         # ?__ytm_magn ?p_ytm ?o_ytm .
     }
@@ -24,37 +24,37 @@ INSERT
 #SELECT DISTINCT ?__security ?__trade_security ?__tx_dt ?__trade_tx_dt ?__qty_amount ?__trade_qty_amount ?__price_amount ?__trade_price_amount ?__gross_amount ?__trade_gross_amount ?__commission_amount ?__trade_commission_amount ?__net_amount ?__trade_net_amount
 WHERE
 {
-GRAPH qt3:__activities__ {
+GRAPH mg3:__activities__ {
     ?evt a gist:Event ;
-        qt:transactionDate ?__tx_dt ;
-        gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareCount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ] ;
-        gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ] ;
+        mg:transactionDate ?__tx_dt ;
+        gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ] ;
+        gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
     .
     ?__security_acct gist:isAffectedBy ?evt ; gist:hasPositionIn ?__security .
-    ?__security gist:isIdentifiedBy [ gist:isCategorizedBy qtx:_MarketableSecurityIdentifierType_qtBondId ; gist:uniqueText ?__equity_symbol_str ] .
+    ?__security gist:isIdentifiedBy [ gist:isCategorizedBy mgx:_MarketableSecurityIdentifierType_qtBondId ; gist:uniqueText ?__equity_symbol_str ] .
 }
 
-GRAPH qt3:__trades__ {
+GRAPH mg3:__trades__ {
     ?__trade_temp a gist:Event ;
-        qt:transactionDate ?__trade_tx_dt ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareCount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_gross_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeGrossAmount ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_commission_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeTransactionCommission ] ;
-        gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:isCategorizedBy qtx:_Aspect_securityTradeNetAmount ] ;
+        mg:transactionDate ?__trade_tx_dt ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_gross_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_commission_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ] ;
+        gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
         gist:hasMagnitude ?__ytm_magn ;
-        qt:longDescription ?__longdesc ;
+        mg:longDescription ?__longdesc ;
     .
-    ?__ytm_magn gist:hasAspect qtx:_Aspect_yieldToMaturity ; ?p_ytm ?o_ytm .
+    ?__ytm_magn gist:hasAspect mgx:_Aspect_yieldToMaturity ; ?p_ytm ?o_ytm .
     [] gist:isAffectedBy ?__trade_temp ; gist:hasPositionIn ?__trade_security .
-    ?__trade_security qt:isTradedOn ?__exchange ; gist:conformsTo ?__spec_repayment_temp, ?__coupon_payment_schedule_temp .
-    ?__spec_repayment_temp a qt:BondRepaymentTerms .
-    ?__spec_repayment_temp qt:callable ?__callable .
+    ?__trade_security mg:isTradedOn ?__exchange ; gist:conformsTo ?__spec_repayment_temp, ?__coupon_payment_schedule_temp .
+    ?__spec_repayment_temp a mg:BondRepaymentTerms .
+    ?__spec_repayment_temp mg:callable ?__callable .
 
-    ?__coupon_payment_schedule_temp a qt:CouponPaymentSchedule .
+    ?__coupon_payment_schedule_temp a mg:CouponPaymentSchedule .
     OPTIONAL { ?__coupon_payment_schedule_temp gist:hasMember ?__next_coupon_evt }
 
 }
@@ -77,8 +77,8 @@ BIND(IF(
     BIND(REPLACE(UCASE(STR(?__symbol_str_norm)), "\\W+", "-") AS ?__eq_symbol)
 
 # Repayment Conditions
-    BIND(IRI(CONCAT(STR(qt3:),'_BondRepaymentTerms_', ?__eq_symbol)) AS ?__bond_repayment_conditions)
+    BIND(IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)) AS ?__bond_repayment_conditions)
 # Coupon Payment Schedule
-    BIND(IRI(CONCAT(STR(qt3:),'_CouponPaymentSchedule_',?__eq_symbol)) AS ?__coupon_payment_schedule)
+    BIND(IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)) AS ?__coupon_payment_schedule)
 
 } #ORDER BY ?__tx_dt

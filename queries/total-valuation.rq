@@ -2,7 +2,7 @@
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMED_GRAPH_BASE=https://triples.beesondouglas.com/questrade/__ontology
+NAMED_GRAPH_BASE=https://w3id.org/moneygraph/ns/data/__ontology
 
 GIST_GRAPH="${NAMED_GRAPH_BASE}__gist"
 QT_GRAPH="${NAMED_GRAPH_BASE}__qt"
@@ -25,9 +25,9 @@ echo "Uploading Questrade ontology ${QT_ONTOLOGY}..."
 curl -i -v -H "Content-Type: text/turtle" --data-binary @"${QT_ONTOLOGY}" --url-query "context=<$QT_GRAPH>" "$SERVER"
 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 
 SELECT ?identifier
@@ -40,20 +40,20 @@ SELECT ?identifier
 (?sharePositionProfit / (?nbSharesHeld * ?unitCost) AS ?rendement)
 
 
-FROM qt3:__securities__latest
-FROM qt3:__valuation__latest
+FROM mg3:__securities__latest
+FROM mg3:__valuation__latest
 
-FROM qt3:__ontology__gist
-FROM qt3:__ontology__qt
+FROM mg3:__ontology__gist
+FROM mg3:__ontology__qt
 
 { 
     ?s a gist:RevaluationEvent ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareCount ; gist:numericValue ?nbSharesHeld ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?shareUnitPrice ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionCostAmount ; gist:numericValue ?shareUnitCost ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionValueAmount ; gist:numericValue ?sharePositionValue ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionProfitAmount ; gist:numericValue ?sharePositionProfit ] ;
-    gist:hasMagnitude [ gist:isCategorizedBy qtx:_Aspect_securityPositionPercentPortfolio ; gist:numericValue ?sharePercentPort ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityShareCount ; gist:numericValue ?nbSharesHeld ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?shareUnitPrice ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityPositionCostAmount ; gist:numericValue ?shareUnitCost ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityPositionValueAmount ; gist:numericValue ?sharePositionValue ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityPositionProfitAmount ; gist:numericValue ?sharePositionProfit ] ;
+    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityPositionPercentPortfolio ; gist:numericValue ?sharePercentPort ] ;
 
     .
     
@@ -70,6 +70,6 @@ FROM qt3:__ontology__qt
     
     OPTIONAL {
         BIND(?shareUnitCost / ?nbSharesHeld AS ?costPerDollar)
-        FILTER(?idtype=qtx:_MarketableSecurityIdentifierType_qtBondId)
+        FILTER(?idtype=mgx:_MarketableSecurityIdentifierType_qtBondId)
     }
 }

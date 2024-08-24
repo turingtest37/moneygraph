@@ -2,7 +2,7 @@
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMED_GRAPH_BASE=https://triples.beesondouglas.com/questrade/__ontology
+NAMED_GRAPH_BASE=https://w3id.org/moneygraph/ns/data/__ontology
 
 GIST_GRAPH="${NAMED_GRAPH_BASE}__gist"
 QT_GRAPH="${NAMED_GRAPH_BASE}__qt"

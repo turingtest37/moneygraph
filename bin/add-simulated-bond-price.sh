@@ -4,7 +4,7 @@ PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 NAMEBASE=add-simulated-bond-price
 QUERY=${PROJBASE}/queries/${NAMEBASE}.rq
-CURRENT_GRAPH=https://triples.beesondouglas.com/questrade/__bondlist__extras
+CURRENT_GRAPH=https://w3id.org/moneygraph/ns/data/__bondlist__extras
 
 if test "$1" == "debug"
 then
