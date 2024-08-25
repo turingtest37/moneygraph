@@ -8,8 +8,8 @@ echo "Processing ${FILE}..."
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 NAMEBASE=trades
-NAMED_GRAPH="https://triples.beesondouglas.com/questrade/__${NAMEBASE}__"
-QUERY=$PROJBASE/$NAMEBASE.rq
+NAMED_GRAPH="https://w3id.org/moneygraph/ns/data/__${NAMEBASE}__"
+QUERY=$PROJBASE/tarql/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
 OUTOPT="-o ${OUT}"
@@ -29,7 +29,7 @@ java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT
 # Clear the named graph
 if test "x$2" == "x"
 then 
-# Clear graph qt3:__trades__ 
+# Clear graph mg3:__trades__ 
 # curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH}>" "${SERVER}"
 # Upload to a named graph
 echo "Uploading to named graph ${NAMED_GRAPH}..."

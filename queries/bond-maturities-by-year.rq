@@ -1,20 +1,20 @@
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 
 SELECT 
 ?maturityyear
 (SUM(?amt) AS ?peryear)
 
-FROM qt3:__securities__latest
+FROM mg3:__securities__latest
 where {
     [] a gist:ScheduledEvent ;
-        qt:plannedOccursDate ?repaydatetime ;
+        mg:plannedOccursDate ?repaydatetime ;
         gist:hasMagnitude [ gist:numericValue ?amt ] ;
-        gist:isCharacterizedAs  qtx:_FinancialBusinessEventType_debt_principal_repayment .
+        gist:isCharacterizedAs  mgx:_FinancialBusinessEventType_debt_principal_repayment .
     BIND(YEAR(?repaydatetime) AS ?maturityyear)
 
 } GROUP BY ?maturityyear 

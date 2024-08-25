@@ -5,7 +5,7 @@ echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMED_GRAPH=https://triples.beesondouglas.com/questrade/__activities__
+NAMED_GRAPH=https://w3id.org/moneygraph/ns/data/__activities__
 NAMEBASE=activities
 QUERY=$PROJBASE/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt

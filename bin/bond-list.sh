@@ -5,18 +5,18 @@ echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/questrade
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMEBASE=securities
+NAMEBASE=bond-list
 NAMED_GRAPH_BASE="https://w3id.org/moneygraph/ns/data/__${NAMEBASE}__"
 QUERY=$PROJBASE/tarql/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
 UPLOAD=$PROJBASE/out/$NAMEBASE-1.nt
 CURRENT_GRAPH="${NAMED_GRAPH_BASE}"
 echo "CURRENT_GRAPH=$CURRENT_GRAPH"
-ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}archive"
-echo "ARCHIVE_GRAPH = $ARCHIVE_GRAPH"
 # Extract date from $FILE using sed or awk; use that date for ARCHIVE_GRAPH
 FILEDATE=`basename $FILE | sed 's/[^0-9]*$//' | sed 's/^[^0-9]*//'`
 echo "FILEDATE = $FILEDATE"
+ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}archive"
+echo "ARCHIVE_GRAPH = $ARCHIVE_GRAPH"
 # ARCHIVE_GRAPH="${NAMED_GRAPH_BASE}`date -I`"
 OUTOPT="-o ${OUT}"
 FORMAT="NT"

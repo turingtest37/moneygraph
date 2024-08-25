@@ -1,7 +1,7 @@
-PREFIX qtx: <https://taxonomies.beesondouglas.com/questrade/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
-PREFIX qt: <https://ontologies.beesondouglas.com/questrade/>
-PREFIX qt3: <https://triples.beesondouglas.com/questrade/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -27,16 +27,16 @@ SELECT DISTINCT
 	?Low_Limit # no
 ?Comment # YES
 
-FROM qt3:__securities__latest
-FROM qt3:__activities__
-FROM qt3:__ontologies__gist
-FROM qt3:__ontologies__qt
+FROM mg3:__securities__latest
+FROM mg3:__activities__
+FROM mg3:__ontologies__gist
+FROM mg3:__ontologies__qt
 
 WHERE {
     ?acct gist:isAffectedBy ?evt .
     ?evt a gist:Event ;
     	gist:isCharacterizedAs ?__evt_type ;
-    	qt:transactionDate ?__evt_dt ;
+    	mg:transactionDate ?__evt_dt ;
         gist:description ?Comment .
 
 # Covers Purchases and Sales
@@ -46,16 +46,16 @@ WHERE {
     )
 
     ?evt gist:hasMagnitude [
-        gist:hasAspect qtx:_Aspect_securityShareUnitPriceAmount ;
+        gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
         gist:numericValue ?__share_purchase_price ; 
-        gist:hasUnitOfMeasure qtx:_CADollar ;
+        gist:hasUnitOfMeasure mgx:_CADollar ;
     ] ;
     gist:hasMagnitude [
-        gist:hasAspect qtx:_Aspect_securityShareCount ;
+        gist:isCategorizedBy mgx:_Aspect_securityShareCount ;
         gist:numericValue ?__qty_amount ;
     ] ;
     gist:hasMagnitude [
-        gist:hasAspect qtx:_Aspect_securityTradeTransactionCommission ;
+        gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ;
         gist:numericValue ?__commission_amount ;
     ] ;
          .
@@ -63,7 +63,7 @@ WHERE {
     ?s gist:isIdentifiedBy [ gist:uniqueText ?__stk_symbol ] .
 #    ?s rdfs:label ?__stk_symbol .
     ?s gist:isCategorizedBy ?__idtype .
-    FILTER(?__idtype != qtx:_MarketableSecurityType_bond)
+    FILTER(?__idtype != mgx:_MarketableSecurityType_bond)
 
 # Make symbol as ticker 
     BIND(CONCAT(?__stk_symbol,".TO") AS ?__symbol)                           
