@@ -1,9 +1,0 @@
-https://ag1mftakvrjmpfvp.allegrograph.cloud/repositories/actors/sparql
-
-curl -u admin:password1234 \
-       --header 'Accept: application/json' \
-       -d 'query=select * { ?s ?p ?o . }' \
-       -d 'limit=10' \
-       https://ag1mftakvrjmpfvp.allegrograph.cloud/repositories/actors/sparql
-	   
-	  
