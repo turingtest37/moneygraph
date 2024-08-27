@@ -2,7 +2,6 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
 PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
-
 PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ofn: <http://www.ontotext.com/sparql/functions/>

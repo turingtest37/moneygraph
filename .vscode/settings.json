@@ -1,0 +1,30 @@
+{
+        "sparql-executor.endpoints": [
+
+            {
+              "protocol": "http",
+              "host": "127.0.0.1:7200",
+            //   "port": 7200,
+              "path": "/repositories/Investments/sparql",
+              "name": "Investments",
+              "customHeaders": [
+                // {
+                //   "headerName": "User-Agent",
+                //   "headerValue": "Firefox/129.0.2"
+                // },
+                {
+                    "headerName": "Accept",
+                    "headerValue": "application/json"
+                }
+              ],
+              "method": "GET",
+              "queryParameterName": "query"
+            }
+            // {
+            //   "protocol": "https",
+            //   "host": "dbpedia.org",
+            //   "name": "DBpedia",
+            //   "path": "/sparql"
+            // }
+    ]
+}

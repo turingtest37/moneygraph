@@ -1,7 +1,7 @@
 #! /bin/sh
 FILE=`realpath $1`
 
-PROJBASE=/Users/doug/dev/questrade
+PROJBASE=/Users/doug/dev/moneygraph
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 NAMEBASE=valuation
 NAMED_GRAPH_BASE="https://w3id.org/moneygraph/ns/data/__${NAMEBASE}__"

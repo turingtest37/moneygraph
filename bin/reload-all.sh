@@ -1,11 +1,11 @@
 #! /bin/bash
 
-PROJBASE=/Users/doug/dev/questrade
+PROJBASE=/Users/doug/dev/moneygraph
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 
 # NAMEBASE=securities,activities,trades
 for NAMEBASE in "securities","activities","trades"; do
-    NAMED_GRAPH_BASE="https://triples.beesondouglas.com/questrade/__${NAMEBASE}__"
+    NAMED_GRAPH_BASE="https://triples.beesondouglas.com/moneygraph__${NAMEBASE}__"
     echo "Clearing ${NAMED_GRAPH_BASE}..."
     curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH_BASE}>" "$SERVER"
 done

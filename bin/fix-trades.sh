@@ -1,6 +1,6 @@
 #! /bin/sh
 
-PROJBASE=/Users/doug/dev/questrade
+PROJBASE=/Users/doug/dev/moneygraph
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
 NAMEBASE=fix-trades
 QUERY=${PROJBASE}/queries/${NAMEBASE}.rq
