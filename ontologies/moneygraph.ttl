@@ -79,7 +79,7 @@ mg:hasRepaymentTerms rdf:type owl:ObjectProperty ;
 
 ###  https://w3id.org/moneygraph/ns/ontology/isIssuedBy
 mg:isIssuedBy rdf:type owl:ObjectProperty ;
-              rdfs:subPropertyOf gist:isAllocatedBy ;
+              rdfs:subPropertyOf gist:isControlledBy ;
               rdfs:range gist:Organization ;
               <http://www.w3.org/2004/02/skos/core#definition> "Relates to the organization that issued a security or financial instrument, e.g. common stock or a bond." ;
               <http://www.w3.org/2004/02/skos/core#prefLabel> "is issued by" .
@@ -138,7 +138,11 @@ gist:atDate rdf:type owl:DatatypeProperty .
 mg:Bond rdf:type owl:Class ;
         owl:equivalentClass [ owl:intersectionOf ( gist:FinancialInstrument
                                                    [ rdf:type owl:Restriction ;
-                                                     owl:onProperty mg:hasInterestPaymentTerms ;
+                                                     owl:onProperty gist:conformsTo ;
+                                                     owl:someValuesFrom mg:BondRepaymentTerms
+                                                   ]
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty gist:conformsTo ;
                                                      owl:someValuesFrom mg:CouponPaymentTerms
                                                    ]
                                                    [ rdf:type owl:Restriction ;
@@ -210,27 +214,31 @@ mg:CommonStock rdf:type owl:Class ;
                <http://www.w3.org/2004/02/skos/core#prefLabel> "Common Stock" .
 
 
-###  https://w3id.org/moneygraph/ns/ontology/CouponPayment
-mg:CouponPayment rdf:type owl:Class ;
-                 owl:equivalentClass [ owl:intersectionOf ( gist:Event
-                                                            [ rdf:type owl:Restriction ;
-                                                              owl:onProperty gist:isCategorizedBy ;
-                                                              owl:hasValue mgx:_FinancialBusinessEventType_interestRemittance
-                                                            ]
-                                                          ) ;
-                                       rdf:type owl:Class
-                                     ] ;
-                 rdfs:subClassOf gist:RemittanceEvent ;
-                 rdfs:seeAlso "fibo-sec-dbt-bnd:CouponPayment"^^xsd:anyURI ;
-                 <http://www.w3.org/2004/02/skos/core#definition> "Receipt of a bond interest payment, usually on a fixed schedule." ;
-                 <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment" .
+###  https://w3id.org/moneygraph/ns/ontology/CouponPaymentEvent
+mg:CouponPaymentEvent rdf:type owl:Class ;
+                      owl:equivalentClass [ owl:intersectionOf ( gist:Event
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty gist:hasMagnitude ;
+                                                                   owl:someValuesFrom gist:Monetary
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty gist:isCharacterizedAs ;
+                                                                   owl:hasValue mgx:_FinancialBusinessEventType_interestRemittance
+                                                                 ]
+                                                               ) ;
+                                            rdf:type owl:Class
+                                          ] ;
+                      rdfs:subClassOf gist:RemittanceEvent ;
+                      rdfs:seeAlso "fibo-sec-dbt-bnd:CouponPayment"^^xsd:anyURI ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "Receipt of a bond interest payment, usually on a fixed schedule." ;
+                      <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment Event" .
 
 
 ###  https://w3id.org/moneygraph/ns/ontology/CouponPaymentSchedule
 mg:CouponPaymentSchedule rdf:type owl:Class ;
                          owl:equivalentClass [ rdf:type owl:Restriction ;
                                                owl:onProperty gist:hasMember ;
-                                               owl:someValuesFrom mg:CouponPayment
+                                               owl:someValuesFrom mg:CouponPaymentEvent
                                              ] ;
                          rdfs:subClassOf gist:Collection ;
                          <http://www.w3.org/2004/02/skos/core#definition> "A series of payments of bond coupons, either planned or past." .
@@ -241,6 +249,25 @@ mg:CouponPaymentTerms rdf:type owl:Class ;
                       rdfs:subClassOf gist:ContractTerm ;
                       rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/CouponPaymentTerms"^^xsd:anyURI ;
                       <http://www.w3.org/2004/02/skos/core#prefLabel> "Coupon Payment Terms" .
+
+
+###  https://w3id.org/moneygraph/ns/ontology/DividendRemittanceEvent
+mg:DividendRemittanceEvent rdf:type owl:Class ;
+                           owl:equivalentClass [ owl:intersectionOf ( gist:Event
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty gist:hasMagnitude ;
+                                                                        owl:someValuesFrom gist:Monetary
+                                                                      ]
+                                                                      [ rdf:type owl:Restriction ;
+                                                                        owl:onProperty gist:isCharacterizedAs ;
+                                                                        owl:hasValue mgx:_FinancialBusinessEventType_dividendRemittance
+                                                                      ]
+                                                                    ) ;
+                                                 rdf:type owl:Class
+                                               ] ;
+                           rdfs:subClassOf gist:RemittanceEvent ;
+                           <http://www.w3.org/2004/02/skos/core#definition> "Receipt of dividends paid by stocks, ETFs, and other securities (not bonds; those are Coupon Payment Events)." ;
+                           <http://www.w3.org/2004/02/skos/core#prefLabel> "Dividend Remittance Event" .
 
 
 ###  https://w3id.org/moneygraph/ns/ontology/ExchangeTradedFund
@@ -603,8 +630,7 @@ mgx:_FinancialBusinessEventType_interestRemittance rdf:type owl:NamedIndividual 
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_FinancialInstrument_cash
-mgx:_FinancialInstrument_cash rdf:type owl:NamedIndividual ,
-                                       gist:FinancialInstrument ;
+mgx:_FinancialInstrument_cash rdf:type owl:NamedIndividual ;
                               <http://www.w3.org/2004/02/skos/core#prefLabel> "cash" .
 
 

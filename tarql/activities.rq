@@ -11,45 +11,14 @@ PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 CONSTRUCT
 {
 
-# Transaction Date,Settlement Date,Action,Symbol,Description,Quantity,Price,Gross Amount,Commission,Net Amount,Currency,Account #,Activity Type,Account Type
-# 2014-03-03 12:00:00 AM,2014-03-03 12:00:00 AM,FXT,,CONVERSION - CAD/USD,0.00000,0.00000000,0.00,0.00,885.00,USD,51590610,FX conversion,Individual RRSP
-# 2014-03-03 12:00:00 AM,2014-03-06 12:00:00 AM,Buy,OPXA,OPEXA THERAPEUTICS INC COM WE ACTED AS AGENT,500.00000,1.76000000,-880.00,-5.00,-885.00,USD,51590610,Trades,Individual RRSP
-# 2015-03-16 12:00:00 AM,2015-03-16 12:00:00 AM,DIS,P040749,RTS OPEXA THERAPEUTICS INC EXP PENDING CONTRA CUSIP RTS DIST ON 500 SHS REC 03/13/15 PAY 03/13/15,500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Dividends,Individual RRSP
-# 2015-04-24 12:00:00 AM,2015-04-24 12:00:00 AM,RTS,P040749,RTS OPEXA THERAPEUTICS INC CONTRA CUSIP EXP 04/08/2015 RIGHTS EXPIRED BOOK VALUE $ .00,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
-# 2015-09-29 12:00:00 AM,2015-09-29 12:00:00 AM,REV,P032174,OPEXA THERAPEUTICS INC COM REVERSE SPLIT 1:8 INTO 68372T301,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
-
-#  [] <urn:grossamtrnd> ?__gross_amount_rnd ;
-#     <urn:grossamtrndmult100> ?__gross_amount_rnd_mult_100 ;
-#     <urn:grossamtrndmult1000> ?__gross_amount_rnd_mult_1000 ;
-#     <urn:qty_clean> ?__qty_clean ;
-#     <urn:grossamt_clean> ?__grossamt_clean ;
-#     .
-
-#     <urn:txdt> ?__transaction_date ;
-#     <urn:settledt> ?__settlement_date .
-#  [] 
-#  <urn:Quantity> ?Quantity ;
-#  <urn:qtyclean> ?__qty_clean ;
-#  <urn:qty> ?__qty_amount ;
-#  <urn:price> ?__price_amount ;
-#  <urn:gross> ?__gross_amount ;
-#  <urn:commission> ?__commission_amount ;
-#  <urn:net> ?__net_amount ;
-#  <urn:discriminator> ?__discriminator_str ;
-# <urn:symbol> ?__equity_symbol_str ;
-# <urn:symbol_norm> ?__symbol_str_norm ;
-#  <urn:nosymbol> ?__no_symbol ;
-#  <urn:eq_symbol> ?__eq_symbol ;
-#  .
- 
-
+# Create the basic event. 
     ?__activity a gist:Event .
     ?__activity a ?__coupon_payment_event . # Optional
+    ?__activity gist:isCharacterizedAs ?__event_type .
     ?__activity skos:prefLabel ?__activity_label .
     ?__activity gist:description ?Description .
     ?__activity mg:transactionDate ?__transaction_date .
     ?__activity mg:settlementDate ?__settlement_date .
-    ?__activity gist:isCharacterizedAs ?__event_type .
     ?__activity mg:actionCode ?Action .
 
 # Security account is linked to Security
@@ -391,26 +360,71 @@ WHERE
     BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
     BIND(STRDT(?__settle_dt_str, xsd:dateTime) AS ?__settlement_date)
 
+# Determine the Event type
+#
 # Action - default to Unknown if not yet modeled
-BIND(COALESCE(
-    IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',mgx:_FinancialBusinessEventType_dividendRemittance, 1/0),
-    IF(!BOUND(?Action) && !BOUND(?Symbol) && STRSTARTS(?Description, 'INT'), mgx:_FinancialBusinessEventType_interestPaid, 1/0),
-    IF(UCASE(?Action)='BUY',gist:_FinancialBusinessEventType_purchase, 1/0),
-    IF(UCASE(?Action)='SELL',gist:_FinancialBusinessEventType_sale, 1/0),
-    IF(UCASE(?Action)='INT',mgx:_FinancialBusinessEventType_interestRemittance, 1/0),
-    IF(UCASE(?Action)='DEP',mgx:_FinancialBusinessEventType_deposit, 1/0),
-    IF(UCASE(?Action)='CON',mgx:_FinancialBusinessEventType_contribution, 1/0),
-    IF(UCASE(?Action)='MGR',mgx:_FinancialBusinessEventType_deposit, 1/0),
-    IF(UCASE(?Action)='EFT',gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-    IF(UCASE(?Action)='FXT',mgx:_FinancialBusinessEventType_exchangeOfCurrency, 1/0),
-    IF(UCASE(?Action)='LQD',mgx:_FinancialBusinessEventType_assetTransferForLiquidation, 1/0),
-    IF(UCASE(?Action)='LIQ',mgx:_FinancialBusinessEventType_assetLiquidation, 1/0),
-    IF(UCASE(?Action)='TFI' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-    IF(UCASE(?Action)='TFI' && BOUND(?Equity_Symbol), mgx:_FinancialBusinessEventType_assetTransfer, 1/0),
-    IF(UCASE(?Action)='TF6' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-    IF(UCASE(?Action)='RED',mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 1/0),
-    IF(UCASE(?Action)='REV',mgx:_FinancialBusinessEventType_reverseStockSplit, 1/0),
-    mgx:_FinancialBusinessEventType_unknown) AS ?__event_type)
+# BIND(COALESCE(
+#     IF(!BOUND(?Action) || UCASE(?Action)='DIV' || UCASE(?ActivityType)='DIVIDENDS',mgx:_FinancialBusinessEventType_dividendRemittance, 1/0),
+#     IF(!BOUND(?Action) && !BOUND(?Symbol) && STRSTARTS(?Description, 'INT'), mgx:_FinancialBusinessEventType_interestPaid, 1/0),
+#     IF(UCASE(?Action)='BUY',gist:_FinancialBusinessEventType_purchase, 1/0),
+#     IF(UCASE(?Action)='SELL',gist:_FinancialBusinessEventType_sale, 1/0),
+#     IF(UCASE(?Action)='INT',mgx:_FinancialBusinessEventType_interestRemittance, 1/0),
+#     IF(UCASE(?Action)='DEP',mgx:_FinancialBusinessEventType_deposit, 1/0),
+#     IF(UCASE(?Action)='CON',mgx:_FinancialBusinessEventType_contribution, 1/0),
+#     IF(UCASE(?Action)='MGR',mgx:_FinancialBusinessEventType_deposit, 1/0),
+#     IF(UCASE(?Action)='EFT',gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+#     IF(UCASE(?Action)='FXT',mgx:_FinancialBusinessEventType_exchangeOfCurrency, 1/0),
+#     IF(UCASE(?Action)='LQD',mgx:_FinancialBusinessEventType_assetTransferForLiquidation, 1/0),
+#     IF(UCASE(?Action)='LIQ',mgx:_FinancialBusinessEventType_assetLiquidation, 1/0),
+#     IF(UCASE(?Action)='TFI' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+#     IF(UCASE(?Action)='TFI' && BOUND(?Equity_Symbol), mgx:_FinancialBusinessEventType_assetTransfer, 1/0),
+#     IF(UCASE(?Action)='TF6' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, 1/0),
+#     IF(UCASE(?Action)='RED',mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 1/0),
+#     IF(UCASE(?Action)='REV',mgx:_FinancialBusinessEventType_reverseStockSplit, 1/0),
+#     mgx:_FinancialBusinessEventType_unknown) AS ?__event_type)
+
+# Is this easier to understand than a bunch of IF/ELSE ??
+    OPTIONAL {
+        VALUES (?__action ?__evt_type) {
+            ('BUY' gist:_FinancialBusinessEventType_purchase)
+            ('SELL' gist:_FinancialBusinessEventType_sale)
+            ('INT' mgx:_FinancialBusinessEventType_interestRemittance)
+            ('DEP' mgx:_FinancialBusinessEventType_deposit)
+            ('CON' mgx:_FinancialBusinessEventType_contribution)
+            ('MGR' mgx:_FinancialBusinessEventType_deposit)
+            ('EFT' gist:_FinancialBusinessEventType_financialTransfer)
+            ('FXT' mgx:_FinancialBusinessEventType_exchangeOfCurrency)
+            ('LQD' mgx:_FinancialBusinessEventType_assetTransferForLiquidation)
+            ('LIQ' mgx:_FinancialBusinessEventType_assetLiquidation)
+            ('RED' mgx:_FinancialBusinessEventType_debtPrincipalRepayment)
+            ('REV' mgx:_FinancialBusinessEventType_reverseStockSplit)
+            ('TFI' gist:_FinancialBusinessEventType_financialTransfer)
+            ('TFI' mgx:_FinancialBusinessEventType_assetTransfer)
+            ('TF6' gist:_FinancialBusinessEventType_financialTransfer) 
+            ('DIV' mgx:_FinancialBusinessEventType_dividendRemittance)
+        }
+
+# The strategy here is as follows:
+# We test one by one the odd cases, potentially binding an event type 
+# In the useual case, the Action column value matches one action string in the VALUES list and the event type is bound as the result.
+# More than one variable may bind, potentially; these are coalesced into a single result event type
+        BIND(IF(!BOUND(?Action) && !BOUND(?Symbol) && STRSTARTS(?Description, 'INT'), mgx:_FinancialBusinessEventType_interestPaid, ?unbound) AS ?__inferred_int_type)
+        BIND(IF(!BOUND(?Action) && UCASE(?ActivityType)='DIVIDENDS', mgx:_FinancialBusinessEventType_dividendRemittance, ?unbound) AS ?__inferred_div_type)
+        BIND(IF(UCASE(?Action)='TFI' && !BOUND(?Equity_Symbol), gist:_FinancialBusinessEventType_financialTransfer, ?unbound) AS ?__tfi_1)
+        BIND(IF(UCASE(?Action)='TFI' && BOUND(?Equity_Symbol), mgx:_FinancialBusinessEventType_assetTransfer, ?unbound) AS ?__tfi_2)
+
+# From the many, shall one only be chosen.
+        BIND(COALESCE(
+            ?__inferred_div_type,
+            ?__inferred_int_type,
+            ?__tfi_1,
+            ?__tfi_2,
+            ?__evt_type,
+            mgx:_FinancialBusinessEventType_unknown
+        ) AS ?__event_type)
+        
+        FILTER(UCASE(?Action) = ?__action || !BOUND(?Action)) 
+    }
 
 # Transaction key = convenience binding for making new IRIs
     BIND(CONCAT(
@@ -433,24 +447,6 @@ BIND(COALESCE(
 # Activity Label
     BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
-# mgx:_FinancialBusinessEventType_dividendRemittance, 1/0),
-# gist:_FinancialBusinessEventType_fine_or_fee
-# gist:_FinancialBusinessEventType_purchase, 1/0),
-# gist:_FinancialBusinessEventType_sale, 1/0),
-# mgx:_FinancialBusinessEventType_interestRemittance, 1/0),
-# mgx:_FinancialBusinessEventType_deposit, 1/0),
-# mgx:_FinancialBusinessEventType_contribution, 1/0),
-# mgx:_FinancialBusinessEventType_deposit, 1/0),
-# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-# mgx:_FinancialBusinessEventType_exchangeOfCurrency, 1/0),
-# mgx:_FinancialBusinessEventType_assetTransfer, 1/0),
-# mgx:_FinancialBusinessEventType_assetLiquidation, 1/0),
-# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-# mgx:_FinancialBusinessEventType_assetTransfer, 1/0),
-# gist:_FinancialBusinessEventType_financialTransfer, 1/0),
-# mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 1/0),
-# mgx:_FinancialBusinessEventType_reverseStockSplit, 1/0),
-
 #### Dividends
 # Only net amount counts
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_dividendRemittance, 
@@ -464,9 +460,11 @@ BIND(COALESCE(
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestPaid, 
         IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__tx_key,'_',?__netamt_clean)), 
     ?unbound) AS ?__interest_paid_magn)
+
 # Interest paid decrements the cash account
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestPaid, 
         mg:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_intpaid)
+
 # Add a CouponPaymentEvent type to the event if that's what this is
 # Really, this should be handled by the inference engine but most
 # triple stores do not fully interpret owl:EquivalentClass
