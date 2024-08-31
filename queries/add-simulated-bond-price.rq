@@ -31,54 +31,56 @@ INSERT
     GRAPH <https://w3id.org/moneygraph/ns/data/__bondlist__extras> {
 
         ?_evt gist:hasMagnitude ?__npv_coupons_magn ;
-		gist:hasMagnitude ?__npv_principal_magn ;
-		gist:hasMagnitude ?__npv_total_magn ;
-		gist:hasMagnitude ?__realized_yield_price_magn ;
-		gist:hasMagnitude ?__simulated_cost_magn ;
-        gist:isAbout ?bond_iri ;
+            gist:hasMagnitude ?__npv_principal_magn ;
+            gist:hasMagnitude ?__npv_total_magn ;
+            gist:hasMagnitude ?__realized_yield_price_magn ;
+            gist:hasMagnitude ?__simulated_cost_magn ;
+            gist:isAbout ?bond_iri ;
 		.
         
         ?repayment_terms gist:specifies ?__callable_repayment_event .
+
         ?__callable_repayment_event a gist:ScheduledEvent ;
             gist:affects ?bond_iri ;
             gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debt_principal_repayment ;
             mg:plannedOccursDate ?effective_maturity ;
 		.
-        
+# Net Present Value of all coupon payments, discounted to today's value, for one bond        
 		?__npv_coupons_magn a gist:Monetary ;
 			gist:numericValue ?npv_coupons ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect mgx:_Aspect_npv_simulated_bond_coupons ;
+			gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_coupons ;
 		.
+# Net Present Value of the bond principal
 		?__npv_principal_magn a gist:Monetary ;
 			gist:numericValue ?npv_principal ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect mgx:_Aspect_npv_simulated_bond_principal ;
+			gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_principal ;
 		.
         ?__realized_yield_price_magn a gist:Monetary ;
 			gist:numericValue ?my_price ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect mgx:_Aspect_simulated_bond_price_realized_yield;
+			gist:isCategorizedBy mgx:_Aspect_simulated_bond_price_realized_yield;
 		.
         ?__simulated_cost_magn a gist:Monetary ;
 			gist:numericValue ?net_cost ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect mgx:_Aspect_simulated_bond_position_cost;
+			gist:isCategorizedBy mgx:_Aspect_simulated_bond_position_cost;
 		.
         ?__npv_total_magn a gist:Monetary ;
 			gist:numericValue ?npv_total ;
             gist:unitOfMeasure ?currency ;
-			gist:hasAspect mgx:_Aspect_npv_simulated_bond_value;
+			gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_value;
         .
 
 	}
 }
 
-#FROM mg3:__bond-list__
+#FROM mg3:__bondlist__
 #FROM mg3:__ontology__qt
 #FROM mg3:__ontology__gist
 
-USING mg3:__bond-list__
+USING mg3:__bondlist__
 USING mg3:__ontology__qt
 USING mg3:__ontology__gist
 
@@ -126,8 +128,8 @@ WHERE {
                 ?_evt a gist:RevaluationEvent ;
                     gist:atDateTime ?valuation_dt ;
                     gist:isAbout ?bond_iri ;
-                    gist:hasMagnitude [ gist:hasAspect mgx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
-                    gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price  ; gist:hasUnitOfMeasure ?currency] ;
+                    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
+                    gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price  ; gist:hasUnitOfMeasure ?currency] ;
                 .
                 OPTIONAL { ?_evt gist:isAffectedBy/skos:prefLabel ?rating }
                     

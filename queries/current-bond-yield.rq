@@ -30,33 +30,33 @@ SELECT DISTINCT ?bond_iri
 #((?current_bond_value-?npv_cost)*100/?npv_cost AS ?current_yield)
 #?desc
 #
-FROM qt3:__securities__
-FROM qt3:__securities__extra
-FROM qt3:__activities__
-FROM qt3:__activities__extra
-FROM qt3:__trades__
+FROM mg3:__securities__
+FROM mg3:__securities__extra
+FROM mg3:__activities__
+FROM mg3:__activities__extra
+FROM mg3:__trades__
 
 {
 
     # Inner SELECT to fetch the bond and its latest coupon payment date 
     {
         SELECT DISTINCT ?bond_iri ?bond ?desc (AVG(?_ytm) AS ?ytm) (MAX(?future_coupon_one) AS ?future_coupon_amt) ?maturity (MAX(?past_coupon_dt) AS ?last_coupon_dt) {
-            ?bond_iri gist:isCategorizedBy qtx:_MarketableSecurityType_bond ; skos:prefLabel ?bond ; gist:description ?desc ;
-		        gist:conformsTo [ a qt:BondRepaymentTerms ; gist:specifies [ a gist:ScheduledEvent ; qt:plannedOccursDate ?maturity ] ] ;
-		        gist:conformsTo [ a qt:CouponPaymentTerms ; gist:specifies [ a qt:BondCoupon ; gist:numericValue ?coupon ] ] ;
+            ?bond_iri gist:isCategorizedBy mgx:_MarketableSecurityType_bond ; skos:prefLabel ?bond ; gist:description ?desc ;
+		        gist:conformsTo [ a mg:BondRepaymentTerms ; gist:specifies [ a gist:ScheduledEvent ; mg:plannedOccursDate ?maturity ] ] ;
+		        gist:conformsTo [ a mg:CouponPaymentTerms ; gist:specifies [ a mg:BondCoupon ; gist:numericValue ?coupon ] ] ;
 			.            
 
             [] gist:hasPositionIn ?bond_iri ;
-                gist:hasCurrentBalance [ gist:numericValue ?_principal ; gist:hasAspect qtx:_Aspect_securityShareCount ] ;
+                gist:hasCurrentBalance [ gist:numericValue ?_principal ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
                 gist:isAffectedBy [
-                    gist:isCharacterizedAs qtx:_FinancialBusinessEventType_interestRemittance ;
-                    qt:transactionDate ?past_coupon_dt ;
+                    gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ;
+                    mg:transactionDate ?past_coupon_dt ;
                 ] ;
 				gist:isAffectedBy [
         			gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
                     gist:hasMagnitude [
            				gist:numericValue ?_ytm ;
-           				gist:hasAspect qtx:_Aspect_yieldToMaturity;
+           				gist:isCategorizedBy mgx:_Aspect_yieldToMaturity;
         			] ;
             	] ;
              .  
@@ -72,14 +72,14 @@ FROM qt3:__trades__
 	{ 
     ?secacct gist:isAffectedBy [
         gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
-        qt:transactionDate ?purchase_dt ;
+        mg:transactionDate ?purchase_dt ;
         gist:hasMagnitude [
             gist:numericValue ?principal ; 
-            gist:hasAspect qtx:_Aspect_securityShareCount ;
+            gist:isCategorizedBy mgx:_Aspect_securityShareCount ;
         ] ;
         gist:hasMagnitude [
             gist:numericValue ?net_cost ;
-            gist:hasAspect qtx:_Aspect_securityTradeNetAmount ;
+            gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ;
         ] ;
     ] ;
 	.
@@ -88,11 +88,11 @@ UNION
     # Not every bond has already has a coupon. Concatenate past coupons and future coupons
     {
     ?secacct gist:isAffectedBy [
-        gist:isCharacterizedAs qtx:_FinancialBusinessEventType_interestRemittance ;
-        qt:transactionDate ?remitdate ;
+        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ;
+        mg:transactionDate ?remitdate ;
         gist:hasMagnitude [
             gist:numericValue ?remitamt ;
-            gist:hasAspect qtx:_Aspect_debtInterestAmount ;
+            gist:isCategorizedBy mgx:_Aspect_debtInterestAmount ;
         ] ;
     ] ;
     .       

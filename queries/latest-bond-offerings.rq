@@ -2,14 +2,13 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
 PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
-
 PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 
 SELECT DISTINCT (?__report_datetime AS ?as_of) ?bond_iri ?bond (?coupon*100 AS ?coupon_) ?price ?my_price (?my_price-?price AS ?spread) ?yr ?maturity ?effective_maturity (?ytm*100 AS ?yield_to_mat) ?issuer ?rating ?callable
 
-FROM mg3:__bond-list__
+FROM mg3:__bondlist__
 FROM mg3:__bondlist__extras
 
 {
@@ -32,13 +31,13 @@ FROM mg3:__bondlist__extras
     # Daily changing things (price, YTM)
     ?_evt a gist:RevaluationEvent ;
         gist:isAbout ?bond_iri ;
-        gist:hasMagnitude [ gist:hasAspect mgx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
-        gist:hasMagnitude [ gist:hasAspect|gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price ] ;
-        gist:hasMagnitude [gist:numericValue ?npv_coupons ; gist:hasAspect mgx:_Aspect_npv_simulated_bond_coupons ] ;
-        gist:hasMagnitude [gist:numericValue ?npv_principal ; gist:hasAspect mgx:_Aspect_npv_simulated_bond_principal ] ;
-        gist:hasMagnitude [gist:numericValue ?npv_total ; gist:hasAspect mgx:_Aspect_npv_simulated_bond_value ] ;
-        gist:hasMagnitude [gist:numericValue ?my_price ; gist:hasAspect mgx:_Aspect_simulated_bond_price_realized_yield ] ;
-        gist:hasMagnitude [gist:numericValue ?net_cost ; gist:hasAspect mgx:_Aspect_simulated_bond_position_cost] ;
+        gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ; gist:numericValue ?ytm ] ;
+        gist:hasMagnitude [ gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:numericValue ?price ] ;
+        gist:hasMagnitude [gist:numericValue ?npv_coupons ; gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_coupons ] ;
+        gist:hasMagnitude [gist:numericValue ?npv_principal ; gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_principal ] ;
+        gist:hasMagnitude [gist:numericValue ?npv_total ; gist:isCategorizedBy mgx:_Aspect_npv_simulated_bond_value ] ;
+        gist:hasMagnitude [gist:numericValue ?my_price ; gist:isCategorizedBy mgx:_Aspect_simulated_bond_price_realized_yield ] ;
+        gist:hasMagnitude [gist:numericValue ?net_cost ; gist:isCategorizedBy mgx:_Aspect_simulated_bond_position_cost] ;
     .
     OPTIONAL { ?_evt gist:isAffectedBy/skos:prefLabel ?rating }
     BIND(YEAR(?maturity) AS ?yr)

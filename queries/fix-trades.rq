@@ -4,41 +4,66 @@ PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
 PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 INSERT
 {
 	GRAPH mg3:__securities__extra {
-        ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_schedule ;
-            mg:isTradedOn ?__exchange .
+       ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_terms ;
+           mg:isTradedOn ?__exchange ;
+           mg:isIssuedBy ?__issuer ;
+        .
 
-        ?__bond_repayment_conditions mg:callable ?__callable .
-        ?__coupon_payment_schedule gist:hasMember ?__next_coupon_evt .
-        ?__security_acct gist:isAffectedBy ?__next_coupon_evt .
-   }
-    GRAPH mg3:__activities__extra {
+       ?__bond_repayment_conditions mg:callable ?__callable .
+       
+       ?__coupon_payment_terms a mg:CouponPaymentTerms; gist:specifies ?__coupon_payment_schedule , ?__coupon_magn ;
+            mg:couponPaymentMonthNumber ?__coupon_mo ;
+            mg:couponPaymentMonthDayNumber ?__mo_day_nbr ;
+       .
+
+       ?__coupon_payment_schedule gist:hasMember ?__next_coupon_evt .
+
+       ?__security_acct gist:isAffectedBy ?__next_coupon_evt .
+
+   # Coupon Rate (%)
+       ?__coupon_magn a gist:BondCoupon ;
+           gist:hasUnitOfMeasure mg:_RatioUnit_annualInterestRate ;
+   # Stored here as a fraction, not a percentage, e.g. 0.04 NOT 4.0
+           gist:numericValue ?__coupon_rate ;
+           gist:isCategorizedBy mgx:_Aspect_annualInterestRate ;
+       .
+
+  }
+   GRAPH mg3:__activities__extra {
 		?evt mg:longDescription ?__longdesc ;
-        	gist:hasMagnitude ?__ytm_magn .
-        # ?__ytm_magn ?p_ytm ?o_ytm .
-    }
+       	gist:hasMagnitude ?__ytm_magn ;
+           owl:sameAs ?__trade_temp ; # Make the Trade Confirmation event the same as this one
+       # ?__ytm_magn ?p_ytm ?o_ytm .
+   }
 }
 #SELECT DISTINCT ?__security ?__trade_security ?__tx_dt ?__trade_tx_dt ?__qty_amount ?__trade_qty_amount ?__price_amount ?__trade_price_amount ?__gross_amount ?__trade_gross_amount ?__commission_amount ?__trade_commission_amount ?__net_amount ?__trade_net_amount
+#
+# SELECT DISTINCT ?__security ?__trade_security ?__exchange ?__callable (GROUP_CONCAT(?__coupon_mo; SEPARATOR=";") AS ?coupon_months) ?__mo_day_nbr ?__next_coupon_evt ?__coupon_rate
+
+
 WHERE
 {
 GRAPH mg3:__activities__ {
-    ?evt a gist:Event ;
+    ?evt gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
         mg:transactionDate ?__tx_dt ;
         gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
         gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ] ;
         gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ] ;
         gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ] ;
         gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
+        a gist:Event ;
     .
     ?__security_acct gist:isAffectedBy ?evt ; gist:hasPositionIn ?__security .
     ?__security gist:isIdentifiedBy [ gist:isCategorizedBy mgx:_MarketableSecurityIdentifierType_qtBondId ; gist:uniqueText ?__equity_symbol_str ] .
 }
 
 GRAPH mg3:__trades__ {
-    ?__trade_temp a gist:Event ;
+    ?__trade_temp 
         mg:transactionDate ?__trade_tx_dt ;
         gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
         gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ] ;
@@ -47,17 +72,31 @@ GRAPH mg3:__trades__ {
         gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
         gist:hasMagnitude ?__ytm_magn ;
         mg:longDescription ?__longdesc ;
+        a gist:Event ;
     .
-    ?__ytm_magn gist:hasAspect mgx:_Aspect_yieldToMaturity ; ?p_ytm ?o_ytm .
+    ?__ytm_magn gist:isCategorizedBy mgx:_Aspect_yieldToMaturity .
+
     [] gist:isAffectedBy ?__trade_temp ; gist:hasPositionIn ?__trade_security .
-    ?__trade_security mg:isTradedOn ?__exchange ; gist:conformsTo ?__spec_repayment_temp, ?__coupon_payment_schedule_temp .
-    ?__spec_repayment_temp a mg:BondRepaymentTerms .
+        
+    ?__trade_security mg:isTradedOn ?__exchange ; 
+        gist:conformsTo ?__spec_repayment_temp, ?__coupon_payment_terms_temp ;
+        mg:isIssuedBy ?__issuer ;
+    .
+
     ?__spec_repayment_temp mg:callable ?__callable .
+
+    ?__coupon_payment_terms_temp gist:specifies ?__coupon_payment_schedule_temp, ?__coupon_magn_temp ;
+        mg:couponPaymentMonthNumber ?__coupon_mo ;
+        mg:couponPaymentMonthDayNumber ?__mo_day_nbr ;
+    .
 
     ?__coupon_payment_schedule_temp a mg:CouponPaymentSchedule .
     OPTIONAL { ?__coupon_payment_schedule_temp gist:hasMember ?__next_coupon_evt }
 
+    ?__coupon_magn_temp gist:numericValue ?__coupon_rate .
+
 }
+
 FILTER(
     ?__tx_dt = ?__trade_tx_dt &&
     ?__qty_amount = ?__trade_qty_amount &&
@@ -78,7 +117,13 @@ BIND(IF(
 
 # Repayment Conditions
     BIND(IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)) AS ?__bond_repayment_conditions)
+# Coupon Payment Terms
+    BIND(IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)) AS ?__coupon_payment_terms)
 # Coupon Payment Schedule
     BIND(IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)) AS ?__coupon_payment_schedule)
+# Coupon
+    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(STR(?__coupon_rate * 100), "\\W+","-"))) AS ?__coupon_magn)
 
-} #ORDER BY ?__tx_dt
+}
+#  GROUP BY ?__security ?__trade_security ?__exchange ?__callable ?__mo_day_nbr ?__next_coupon_evt ?__coupon_rate
+#ORDER BY ?__tx_dt

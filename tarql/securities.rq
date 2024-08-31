@@ -17,6 +17,12 @@ CONSTRUCT
     ?__portfolio_account gist:hasMember ?__security_account .
     ?__portfolio_account gist:hasMember ?__cash_cad_account .
     ?__portfolio_account gist:hasMember ?__cash_usd_account .
+    ?__portfolio_account gist:isIdentifiedBy ?__portfolio_id .
+
+    ?__portfolio_id a gist:ID ;
+        gist:uniqueText ?Account_Number ;
+        gist:isAllocatedBy mg3:_Organization_Questrade_Inc ;
+    .
 
 # Security Account - for one Security
     ?__security_account a gist:InvestmentAccount ;
@@ -77,7 +83,7 @@ CONSTRUCT
     ?__coupon_payment_terms a mg:CouponPaymentTerms .
     ?__coupon_payment_terms skos:prefLabel ?__coupon_terms_label .
     ?__coupon_payment_terms gist:specifies ?__coupon_payment_schedule .
-    ?__coupon_payment_terms gist:specifies ?__coupon .
+    ?__coupon_payment_terms gist:specifies ?__coupon_magn .
     
     ?__coupon_payment_schedule a mg:CouponPaymentSchedule .
 
@@ -108,7 +114,7 @@ CONSTRUCT
     .
 
 # Coupon is < gist:ReferenceValue < gist:Magnitude
-    ?__coupon a mg:BondCoupon ;
+    ?__coupon_magn a mg:BondCoupon ;
         gist:hasUnitOfMeasure mg:_RatioUnit_annualInterestRate ;
         gist:numericValue ?__coupon_rate ;
         gist:isCategorizedBy mgx:_Aspect_annualInterestRate ;
@@ -199,10 +205,13 @@ WHERE
     BIND(REPLACE(UCASE(STR(?__symbol_str_norm)), "\\W+", "-") AS ?__eq_symbol)
 
 # Account number
-    BIND(ENCODE_FOR_URI(LCASE(STR(?Account_Number))) AS ?__acct_key)
+    BIND(REPLACE(LCASE(STR(?Account_Number)),"\\W+","-") AS ?__acct_key)
 
 # Portfolio Account
     BIND(IRI(CONCAT(STR(mg3:),'_PortfolioAccount_',?__acct_key)) AS ?__portfolio_account)
+
+# Portfolio ID
+    BIND(IRI(CONCAT(STR(mg3:),'_ID_PortfolioAccount_',?__acct_key)) AS ?__portfolio_id)
 
 # Quantity
     BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean_str)
@@ -249,11 +258,13 @@ WHERE
     BIND(xsd:positiveInteger(?Year) AS ?__year)
 
 # Coupon - may need to strip off '%' character and divide by 100
-    BIND(IF(REGEX(UCASE(?Equity_Description),"\\bINT\\b"), 
-        REPLACE(?Equity_Description, "^.*INT\\s*([0-9.]+).*$","$1"),
+    # BIND(IF(REGEX(UCASE(?Equity_Description),"\\bINT\\b") || REGEX(?Equity_Description, "[0-9.]+%"), 
+    BIND(IF(REGEX(?Equity_Description, "[0-9.]+%"), 
+        REPLACE(?Equity_Description, "^.*\\s+([\\d.]+)%.*$","$1"),
         ?unbound) AS ?__coupon_str)
-    BIND(xsd:decimal(?__coupon_str) as ?__coupon_rate)
-    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon)
+
+    BIND(xsd:decimal(?__coupon_str)/100 as ?__coupon_rate)
+    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon_magn)
 
 # Repayment Conditions
     BIND(IF(?Asset_Class='DI', IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_conditions)

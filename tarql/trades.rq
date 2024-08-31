@@ -59,13 +59,24 @@ CONSTRUCT
     ?__trade_event_iri a gist:Event .
     ?__trade_event_iri mg:longDescription ?Description .
     ?__trade_event_iri gist:hasMagnitude ?__ytm_magn .
+    ?__trade_event_iri gist:hasMagnitude ?__int_days_magn .
 
+# Yield to Maturity (%)
     ?__ytm_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure mg:_RatioUnit_annualYield ;
+# Stored here as a fraction, not a percentage, e.g. 0.04 NOT 4.0
         gist:numericValue ?__ytm_num ;
-        gist:hasAspect mgx:_Aspect_yieldToMaturity ;
+        gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ;
     .
 
+# Interest Days Paid 
+    ?__int_days_magn a gist:Magnitude ;
+        gist:hasUnitOfMeasure gist:_day ;
+        gist:numericValue ?__int_days ;
+        gist:isCategorizedBy mgx:_Aspect_daysOfInterestPaid ;
+    .
+    
+    ?__trade_event_iri mg:transactionDate ?__transaction_date .
     ?__trade_event_iri mg:transactionDate ?__transaction_date .
     ?__trade_event_iri mg:settlementDate ?__settlement_date .
     ?__trade_event_iri gist:isCharacterizedAs ?__event_type .
@@ -77,16 +88,48 @@ CONSTRUCT
         gist:isAffectedBy ?__next_coupon_evt ;
     .
 
-    ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_schedule .
+# Security conforms to bond repayment conditions an 
+    ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_terms ;
+        skos:note ?__debt_details_str ;
+        mg:isIssuedBy ?__issuer_iri ;
+    .
+
+# Issuer
+    ?__issuer_iri a gist:Organization ;
+        skos:prefLabel ?__issuer_str ;
+    .
 
 # A security is traded on an exchange
     ?__security mg:isTradedOn ?__exchange .
-    
+
+# Bond Repayment Conditions indicate whether the bond is callable
     ?__bond_repayment_conditions a mg:BondRepaymentTerms ;
         mg:callable ?__is_callable ;
     .
+
+# Coupon Payment Terms dictate the coupon rate (%) and schedule of interest payments
+    ?__coupon_payment_terms gist:specifies ?__coupon_payment_schedule ;
+        gist:specifies ?__coupon_magn ;
+        mg:couponPaymentMonthNumber ?__coupon_mo_earlier ;
+        mg:couponPaymentMonthNumber ?__coupon_mo_later ;
+        mg:couponPaymentMonthDayNumber ?__mo_day_nbr ;
+    .
+
+# Coupon Rate (%)
+    ?__coupon_magn a gist:BondCoupon ;
+        gist:hasUnitOfMeasure mg:_RatioUnit_annualInterestRate ;
+# Stored here as a fraction, not a percentage, e.g. 0.04 NOT 4.0
+        gist:numericValue ?__coupon_rate ;
+        gist:isCategorizedBy mgx:_Aspect_annualInterestRate ;
+    .
+
+
 # First coupon after the bond is purchased
-    ?__coupon_payment_schedule a mg:CouponPaymentSchedule ; gist:hasMember ?__next_coupon_evt .
+    ?__coupon_payment_schedule a mg:CouponPaymentSchedule ; 
+        gist:hasMember ?__next_coupon_evt ;
+    .
+
+# Each coupon payment is a scheduled event 
     ?__next_coupon_evt a gist:ScheduledEvent ;
         skos:prefLabel ?__next_cpn_label ;
         mg:plannedOccursDate ?__next_cpn_dt ;
@@ -356,20 +399,73 @@ WHERE
         '_',
         ?__discriminator_str)) AS ?__trade_event_iri)
 
-
 # Repayment Conditions
     BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_conditions)
+
+# Coupon Payment Terms
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__coupon_payment_terms)
+
 # Coupon Payment Schedule
     BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)), ?unbound) AS ?__coupon_payment_schedule)
 
-# Parse Description to get goodies on bonds
+### Parse Description to get goodies on bonds
+#
 # LAURENTIAN BANK OF CANADA, FXD 2027 FLTG RT 2032 SUBORD, NOTES (NVCC), DUE 06/15/2032 05.095% JD 15, YTM: 6.1880%, INT DAYS 175,NEXT CPN 24/06/15, QUESTRADE REMUNERATION WAS ADDED TO THE PRICE OF THE SECURITY(IN THE CASE OF A PURCHASE) OR DEDUCTED FROM THE PRICE OF THE SECURITY(IN THE CASE OF A SALE). THIS AMOUNT WAS IN ADDITION TO ANY COMMISSION THIS TRADE CONFIRMATION SHOWS AS CHARGED TO YOU.
 # FEDEX CORP, DUE 01/15/2034 04.900% JJ 15, YTM: 4.8995%, INT DAYS 152,NEXT CPN 24/07/15, CALLABLE, QUESTRADE REMUNERATION WAS ADDED TO THE PRICE OF THE SECURITY(IN THE CASE OF A PURCHASE) OR DEDUCTED FROM THE PRICE OF THE SECURITY(IN THE CASE OF A SALE). THIS AMOUNT WAS IN ADDITION TO ANY COMMISSION THIS TRADE CONFIRMATION SHOWS AS CHARGED TO YOU.
 
+# Issuer   
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "^[\\w\\s]+,"), REPLACE(?Description, "^([\\w\\s]+),.*$", "$1"), ?unbound) AS ?__issuer_str)
+    BIND(IRI(CONCAT(STR(mg3:),"_Organization_",LCASE(REPLACE(?__issuer_str,"\\W+","-")))) AS ?__issuer_iri)
+
+# Debt Details
+    BIND("^[\\w\\s]+,[\\w\\s,]+ DUE" AS ?__desc_regex)
+    BIND("^([\\w\\s]+),.*$" AS ?__desc_repl_regex)
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), ?__desc_regex), REPLACE(?Description, ?__desc_repl_regex, "$1"), ?unbound) AS ?__debt_details_str)
+
+# Maturity
+# This reliably pulled from the Investment Summary as a standalone field. FUTURE.
+
+# Coupon Rate
+#    "DUE [0-9/]+ ([\\d.]+)% ([A-Z]{2}) (\\d{2})", ""
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "DUE [\\d/]+ [\\d.]+%"), REPLACE(?Description, "^.*DUE [\\d/]+ ([\\d.]+)%.*$", "$1"), ?unbound) AS ?__coupon_str)
+    BIND(xsd:decimal(?__coupon_str)/100 as ?__coupon_rate)
+    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon_magn)
+
+# Month Pair
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "\\b[A-Z]{2}\\b\\s[0-9]{2}"), REPLACE(?Description, "^.*\\b([A-Z]{2})\\b\\s[0-9]{2}.*$", "$1"), ?unbound) AS ?__mo_pair_str)
+
+# Coupon Payment Months
+    OPTIONAL {
+        VALUES (?monthduo ?earlier_mo ?later_mo) { 
+            ("JJ" 01 07) 
+            ("FA" 02 08) 
+            ("MS" 03 09) 
+            ("AO" 04 10) 
+            ("MN" 05 11) 
+            ("JD" 06 12)
+        }
+        FILTER(STR(?__mo_pair_str) = ?monthduo)
+        BIND(?earlier_mo AS ?__coupon_mo_earlier)
+        BIND(?later_mo AS ?__coupon_mo_later)
+    }
+  
+# Month-Day Number of Payment, 01 - 31
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "[A-Z]{2} [0-9]{2},"), REPLACE(?Description, "^.*\\b[A-Z]{2}\\b ([0-9]{2}).*$", "$1"), ?unbound) AS ?__mo_day_nb_str)
+    BIND(xsd:integer(?__mo_day_nb_str) AS ?__mo_day_nbr)
+
 # Yield To Maturity
     BIND(IF(CONTAINS(?Description, "YTM"), REPLACE(?Description, "^.*YTM:?\\s*([0-9.-]+).*$", "$1"), ?unbound) AS ?__ytm_str)
-    BIND(STRDT(?__ytm_str, xsd:decimal) AS ?__ytm_num)
-    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_yieldToMaturity_',?__tx_key,'_',ENCODE_FOR_URI(?__ytm_str))) AS ?__ytm_magn)
+    BIND(STRDT(?__ytm_str, xsd:decimal)/100 AS ?__ytm_num)
+    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_yieldToMaturity_',?__tx_key,'_',REPLACE(?__ytm_str,"\\W+","-"))) AS ?__ytm_magn)
+
+# Interest Days (paid to previous owner)
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "INT DAYS [0-9]{1,3}\\s*,"), 
+        REPLACE(?Description, "^.*INT DAYS ([0-9]{1,3}).*$", "$1"), 
+        ?unbound) 
+    AS ?__int_days_str)
+    BIND(xsd:integer(?__int_days_str) AS ?__int_days)
+
+    BIND(IRI(CONCAT(STR(mg3:),"_Magnitude_interestDaysPaid",?__tx_key,'_',STR(?__int_days))) AS ?__int_days_magn)
 
 # Callable?
     BIND(IF(?__is_bond, xsd:boolean(CONTAINS(UCASE(?Description), 'CALLABLE')), ?unbound) AS ?__is_callable)
@@ -386,11 +482,10 @@ WHERE
         ?__acct_key,'_',
         ?__eq_symbol,'_',
         'int','_',
-        ?__next_cpn_dt_str,'_',
-        ?__discriminator_str)), ?unbound) AS ?__next_coupon_evt)
-
+        REPLACE(?__next_cpn_dt_str,"\\W+","-"))), ?unbound) AS ?__next_coupon_evt)
 # Label
     BIND(CONCAT("First coupon after purchase: ", STRBEFORE(?__next_cpn_dt_str,"T")) AS ?__next_cpn_label)
+
 
 #### Buy
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt

@@ -47,14 +47,14 @@ CONSTRUCT
    ?__ytm_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure mg:_RatioUnit_annualYield ;
         gist:numericValue ?__ytm_num ;
-        gist:hasAspect mgx:_Aspect_yieldToMaturity ;
+        gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ;
     .
 
 # Daily market price
     ?__daily_share_price_magn_iri a gist:Monetary ;
         gist:numericValue ?__share_current_price ;
         gist:hasUnitOfMeasure ?__share_price_uom_iri ;
-        gist:hasAspect mgx:_Aspect_securityShareUnitPriceAmount ;
+        gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
     .
 
 

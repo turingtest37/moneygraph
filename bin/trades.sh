@@ -27,12 +27,19 @@ fi
 java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}"
 
 # Clear the named graph
-if test "x$2" == "x"
+if test "$2" == "clear"
 then 
-# Clear graph mg3:__trades__ 
-# curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH}>" "${SERVER}"
-# Upload to a named graph
-echo "Uploading to named graph ${NAMED_GRAPH}..."
-curl -i -H "Content-Type: application/n-triples" --data-binary @"${UPLOAD}" --url-query "context=<${NAMED_GRAPH}>" "${SERVER}"
-echo "Done uploading"
+    echo "Clearing graph ${NAMED_GRAPH}..."
+    curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${NAMED_GRAPH}>" "${SERVER}"
+    echo "Uploading to named graph ${NAMED_GRAPH}..."
+    curl -i -H "Content-Type: application/n-triples" --data-binary @"${UPLOAD}" --url-query "context=<${NAMED_GRAPH}>" "${SERVER}"
+    echo "Done uploading"
+fi
+
+if test "x$2" == "x"
+then
+    # Upload to a named graph
+    echo "Uploading to named graph ${NAMED_GRAPH}..."
+    curl -i -H "Content-Type: application/n-triples" --data-binary @"${UPLOAD}" --url-query "context=<${NAMED_GRAPH}>" "${SERVER}"
+    echo "Done uploading"
 fi

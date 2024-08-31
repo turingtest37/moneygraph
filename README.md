@@ -11,7 +11,7 @@ The first title of Moneygraph was Questrade, named for https://www.questrade.com
 ## gist Accounting
 At about the same time that I was thinking of RDFifying Questrade, Dave McComb, my boss, had started developing gist Accounting, a gist-based model of accounting concepts that introduces many novel ideas.
 
-## e tu FIBO?
+## e tu, FIBO?
 For those in the know, FIBO is the Financial Industry Business Ontology. It is a well maintained, widely used, OWL-based model of many parts of the financial services industry. I have found FIBO analogs for many of the Moneygraph classes, which were largely modeled from gist.
 FIBO is huge and a pretty big commitment, semantically speaking, so I have opted to make it an add-on. I plan to build a crosswalk between Moneygraph and FIBO, but that must wait for now.
 

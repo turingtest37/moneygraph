@@ -5,7 +5,7 @@ echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/moneygraph
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMEBASE=bond-list
+NAMEBASE=bondlist
 NAMED_GRAPH_BASE="https://w3id.org/moneygraph/ns/data/__${NAMEBASE}__"
 QUERY=$PROJBASE/tarql/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt

@@ -154,7 +154,19 @@ mg:Bond rdf:type owl:Class ;
 
 ###  https://w3id.org/moneygraph/ns/ontology/BondCoupon
 mg:BondCoupon rdf:type owl:Class ;
-              rdfs:subClassOf gist:Percentage ;
+              rdfs:subClassOf gist:Percentage ,
+                              [ owl:intersectionOf ( gist:Percentage
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty gist:hasUnitOfMeasure ;
+                                                       owl:hasValue mg:_RatioUnit_annualInterestRate
+                                                     ]
+                                                     [ rdf:type owl:Restriction ;
+                                                       owl:onProperty gist:isCategorizedBy ;
+                                                       owl:hasValue mgx:_Aspect_annualInterestRate
+                                                     ]
+                                                   ) ;
+                                rdf:type owl:Class
+                              ] ;
               rdfs:seeAlso "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondCoupon" ,
                            "https://www.investopedia.com/terms/c/coupon.asp" ;
               <http://www.w3.org/2004/02/skos/core#definition> "The annual interest rate on a debt instrument making periodic interest payments to the instrument holder." ;
@@ -407,6 +419,13 @@ mgx:_Aspect_annualInterestRate rdf:type owl:NamedIndividual ,
                                         gist:Aspect ;
                                rdfs:isDefinedBy <https://w3id.org/moneygraph/o/ontology/> ;
                                <http://www.w3.org/2004/02/skos/core#definition> "Amount of interest as a percentage value for one year. There is no specific or particular meaning of \"year\" implied here." .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_daysOfInterestPaid
+mgx:_Aspect_daysOfInterestPaid rdf:type owl:NamedIndividual ,
+                                        gist:Aspect ;
+                               <http://www.w3.org/2004/02/skos/core#definition> "At a bond purchase, it is necessary to compensate the previous owner (seller) for the number of days of interest that have accrued since the last coupon payment, but that have not yet been paid." ;
+                               <http://www.w3.org/2004/02/skos/core#prefLabel> "days of interest paid" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_debtInterestAmount

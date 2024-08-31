@@ -1,0 +1,180 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
+
+SELECT ?__security ?__next_coupon_evt ?__coupon_rate ?__coupon_payment_amt
+
+INSERT
+{
+	GRAPH mg3:__securities__extra {
+        ?__coupon_payment_schedule gist:hasMember ?__next_coupon_evt .
+
+        ?__security_acct gist:isAffectedBy ?__next_coupon_evt .
+
+        ?__coupon_payment_terms gist:specifies ?__coupon .
+
+        ?__next_coupon_evt a gist:Event, gist:ScheduledEvent ;
+            mg:plannedOccursDate ?coupon_dt ;
+            gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ;
+            gist:hasMagnitude ?__interest_paid_magn ;
+        .
+
+        ?__interest_paid_magn a gist:Monetary ;
+            gist:numericValue ?__coupon_payment_amt ;
+            gist:hasUnitOfMeasure ?__currency ;
+        .
+
+            # BondCoupon is < gist:ReferenceValue < gist:Magnitude
+        ?__coupon a mg:BondCoupon ;
+            gist:hasUnitOfMeasure mg:_RatioUnit_annualInterestRate ;
+            gist:numericValue ?__coupon_rate ;
+            gist:isCategorizedBy mgx:_Aspect_annualInterestRate ;
+        .
+   }
+}
+#SELECT DISTINCT ?__security ?__trade_security ?__tx_dt ?__trade_tx_dt ?__qty_amount ?__trade_qty_amount ?__price_amount ?__trade_price_amount ?__gross_amount ?__trade_gross_amount ?__commission_amount ?__trade_commission_amount ?__net_amount ?__trade_net_amount
+WHERE
+{
+    GRAPH mg3:__activities__ {
+        ?evt a gist:Event ;
+            gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
+            mg:transactionDate ?__tx_dt ;
+            gist:hasMagnitude [ gist:numericValue ?__qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
+            gist:hasMagnitude [ gist:numericValue ?__price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ; gist:hasUnitOfMeasure ?__currency ] ;
+            gist:hasMagnitude [ gist:numericValue ?__gross_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ] ;
+            gist:hasMagnitude [ gist:numericValue ?__commission_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ] ;
+            gist:hasMagnitude [ gist:numericValue ?__net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
+        .
+        ?__security_acct gist:isAffectedBy ?evt ; gist:hasPositionIn ?__security .
+        ?__security gist:isIdentifiedBy [ gist:isCategorizedBy mgx:_MarketableSecurityIdentifierType_qtBondId ; gist:uniqueText ?__equity_symbol_str ] ;
+            gist:conformsTo ?__bond_repayment_conditions ;
+        .
+
+        ?__bond_repayment_conditions gist:specifies [ a gist:ScheduledEvent ;
+            gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debt_principal_repayment ;
+            mg:plannedOccursDate ?maturity ;
+        ] ;
+        .
+    }
+
+    GRAPH mg3:__securities__ {
+        ?portfolio_acct gist:hasMember ?__security_acct ;
+            gist:isIdentifiedBy [ gist:uniqueText ?__acct_key ] ;
+        .
+    }
+
+    GRAPH mg3:__trades__ {
+        ?__trade_temp a gist:Event ;
+            mg:transactionDate ?__trade_tx_dt ;
+            gist:hasMagnitude [ gist:numericValue ?__trade_qty_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
+            gist:hasMagnitude [ gist:numericValue ?__trade_price_amount ; gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ] ;
+            gist:hasMagnitude [ gist:numericValue ?__trade_gross_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ] ;
+            gist:hasMagnitude [ gist:numericValue ?__trade_commission_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ] ;
+            gist:hasMagnitude [ gist:numericValue ?__trade_net_amount ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
+        .
+# Tie the trade confirmation event to the security it affects
+        [] gist:isAffectedBy ?__trade_temp ; gist:hasPositionIn ?__trade_security .
+
+# Get the coupon payment schedule for the security; it contains the first coupon date
+# following the purchase. We will use this as the starting date to calculate 
+# the subsequent payment dates.
+        ?__trade_security gist:conformsTo ?__coupon_payment_schedule_temp .
+        ?__coupon_payment_schedule_temp a mg:CouponPaymentSchedule .
+        OPTIONAL { ?__coupon_payment_schedule_temp gist:hasMember [ mg:plannedOccursDate ?__first_coupon_dt ] }
+    }
+
+    FILTER(
+        ?__tx_dt = ?__trade_tx_dt &&
+        ?__qty_amount = ?__trade_qty_amount &&
+        ?__price_amount = ?__trade_price_amount &&
+        ?__gross_amount = ?__trade_gross_amount &&
+        ?__commission_amount = ?__trade_commission_amount &&
+        ?__net_amount = ?__trade_net_amount
+    )
+
+# Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
+    BIND(STR(round(?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000/1000) AS ?__discriminator_str)
+
+# At purchase the share quantity amount is the bond principal
+    BIND(?__qty_amount AS ?__principal)
+
+    # Assume a maximum of 15 years of coupon payments
+    VALUES ?coupon_payment_period {
+        "P0Y0M0DT0H0M0S"^^xsd:duration "P0Y6M0DT0H0M0S"^^xsd:duration 
+        "P1Y0M0DT0H0M0S"^^xsd:duration "P1Y6M0DT0H0M0S"^^xsd:duration 
+        "P2Y0M0DT0H0M0S"^^xsd:duration "P2Y6M0DT0H0M0S"^^xsd:duration 
+        "P3Y0M0DT0H0M0S"^^xsd:duration "P3Y6M0DT0H0M0S"^^xsd:duration 
+        "P4Y0M0DT0H0M0S"^^xsd:duration "P4Y6M0DT0H0M0S"^^xsd:duration 
+        "P5Y0M0DT0H0M0S"^^xsd:duration "P5Y6M0DT0H0M0S"^^xsd:duration 
+        "P6Y0M0DT0H0M0S"^^xsd:duration "P6Y6M0DT0H0M0S"^^xsd:duration 
+        "P7Y0M0DT0H0M0S"^^xsd:duration "P7Y6M0DT0H0M0S"^^xsd:duration 
+        "P8Y0M0DT0H0M0S"^^xsd:duration "P8Y6M0DT0H0M0S"^^xsd:duration 
+        "P9Y0M0DT0H0M0S"^^xsd:duration "P9Y6M0DT0H0M0S"^^xsd:duration 
+        "P10Y0M0DT0H0M0S"^^xsd:duration "P10Y6M0DT0H0M0S"^^xsd:duration 
+        "P11Y0M0DT0H0M0S"^^xsd:duration "P11Y6M0DT0H0M0S"^^xsd:duration 
+        "P12Y0M0DT0H0M0S"^^xsd:duration "P12Y6M0DT0H0M0S"^^xsd:duration 
+        "P13Y0M0DT0H0M0S"^^xsd:duration "P13Y6M0DT0H0M0S"^^xsd:duration 
+        "P14Y0M0DT0H0M0S"^^xsd:duration "P14Y6M0DT0H0M0S"^^xsd:duration 
+        "P15Y0M0DT0H0M0S"^^xsd:duration "P15Y6M0DT0H0M0S"^^xsd:duration 
+    } #/values
+
+# Use the first coupon date as a starting point
+    BIND(?__first_coupon_dt + ?coupon_payment_period AS ?coupon_dt)
+    BIND(REPLACE(STR(?coupon_dt),"\\W+","-") AS ?__next_cpn_dt_str)
+
+# Only calculate out to the maturity date    
+    FILTER(?maturity >= ?coupon_dt && NOW() < ?coupon_dt)
+    
+# Equity Symbol
+    BIND(IF(
+        STRSTARTS(?__equity_symbol_str,"."), 
+        STRAFTER(?__equity_symbol_str,"."),
+        IF(CONTAINS(?__equity_symbol_str,"."),
+            STRBEFORE(?__equity_symbol_str,"."),
+            ?__equity_symbol_str)) AS ?__symbol_str_norm)
+    BIND(REPLACE(UCASE(STR(?__symbol_str_norm)), "\\W+", "-") AS ?__eq_symbol)
+
+# Transaction key = convenience binding for making new IRIs
+    BIND(CONCAT(
+        ?__acct_key,'_',
+        ?__eq_symbol,'_',
+        'int_',
+        ?__next_cpn_dt_str,'_',
+        ?__currency
+        ) AS ?__tx_key)
+
+# Next coupon event 
+    BIND(IF(BOUND(?__next_cpn_dt), IRI(CONCAT(
+        STR(mg3:),
+        '_Event_',
+        ?__acct_key,'_',
+        ?__eq_symbol,'_',
+        'int','_',
+        ?__next_cpn_dt_str,'_',
+        ?__discriminator_str)), ?unbound) AS ?__next_coupon_evt)
+
+# Coupon Payment Schedule - a Collection of coupon payment events
+    BIND(IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)) AS ?__coupon_payment_schedule)
+
+# Coupon Payment Terms - a Specification for coupon rate (%) and the schedule of payments
+    BIND(IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)) AS ?__coupon_payment_terms)
+
+# Coupon - may need to strip off '%' character and divide by 100
+    # BIND(IF(REGEX(UCASE(?Equity_Description),"\\bINT\\b") || REGEX(?Equity_Description, "[0-9.]+%"), 
+    BIND(IF(REGEX(?Equity_Description, "[0-9.]+%"), 
+        REPLACE(?Equity_Description, "^.*\\s+([\\d.]+)%.*$","$1"),
+        ?unbound) AS ?__coupon_str)
+
+    BIND(xsd:decimal(?__coupon_str)/100 as ?__coupon_rate)
+    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon)
+
+# Coupon payment amount (calculated here)
+    BIND(?__principal * ?__coupon_rate AS ?__coupon_payment_amt)
+
+# Interest ayment amount magnitude
+    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__tx_key,'_',STR(?__coupon_payment_amt))) AS ?__interest_paid_magn)
+
+} #ORDER BY ?__tx_dt
