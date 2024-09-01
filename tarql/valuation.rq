@@ -153,7 +153,7 @@ WHERE
 
 # Cost Basis - looks like HMV and BK are most common values: HMV? Highest Market Value? Book?
 # TODO Define this in Protege
-    BIND(IRI(CONCAT(STR(mg3:), '_CostBasis_',ENCODE_FOR_URI(LCASE(?Cost_Basis)))) AS ?__cost_basis_iri)
+    BIND(IRI(CONCAT(STR(mgx:), '_CostBasis_',ENCODE_FOR_URI(LCASE(?Cost_Basis)))) AS ?__cost_basis_iri)
 
 # Quantity
     BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean_str)

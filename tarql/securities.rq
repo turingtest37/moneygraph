@@ -63,7 +63,7 @@ CONSTRUCT
 # USD Cash Magnitude
     ?__usd_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure gist:_USDollar ;
-        gist:isCategorizedBy mgx:_Aspect_USD_cash_balance ;
+        gist:isCategorizedBy mgx:_Aspect_cashBalance ;
 .
 
 # CAD
@@ -74,7 +74,7 @@ CONSTRUCT
 # CAD Cash Magnitude
     ?__cad_cash_magn a gist:Magnitude ;
         gist:hasUnitOfMeasure mgx:_CADollar ;
-        gist:isCategorizedBy mgx:_Aspect_CAD_cash_balance ;
+        gist:isCategorizedBy mgx:_Aspect_cashBalance ;
     .
 
 ########  BONDS ###########

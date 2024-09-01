@@ -214,6 +214,13 @@ mg:CommonStock rdf:type owl:Class ;
                <http://www.w3.org/2004/02/skos/core#prefLabel> "Common Stock" .
 
 
+###  https://w3id.org/moneygraph/ns/ontology/CostBasis
+mg:CostBasis rdf:type owl:Class ;
+             rdfs:subClassOf gist:Behavior ;
+             <http://www.w3.org/2004/02/skos/core#definition> "The manner by which the cost of an asset is determined." ;
+             <http://www.w3.org/2004/02/skos/core#prefLabel> "Cost Basis" .
+
+
 ###  https://w3id.org/moneygraph/ns/ontology/CouponPaymentEvent
 mg:CouponPaymentEvent rdf:type owl:Class ;
                       owl:equivalentClass [ owl:intersectionOf ( gist:Event
@@ -448,6 +455,18 @@ mgx:_Aspect_annualInterestRate rdf:type owl:NamedIndividual ,
                                <http://www.w3.org/2004/02/skos/core#definition> "Amount of interest as a percentage value for one year. There is no specific or particular meaning of \"year\" implied here." .
 
 
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_assetTransferAmount
+mgx:_Aspect_assetTransferAmount rdf:type owl:NamedIndividual ,
+                                         gist:Aspect ;
+                                <http://www.w3.org/2004/02/skos/core#definition> "An amount of money involved in an asset transfer." ;
+                                <http://www.w3.org/2004/02/skos/core#prefLabel> "asset transfer amount" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_cashBalance
+mgx:_Aspect_cashBalance rdf:type owl:NamedIndividual ,
+                                 gist:Aspect .
+
+
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_daysOfInterestPaid
 mgx:_Aspect_daysOfInterestPaid rdf:type owl:NamedIndividual ,
                                         gist:Aspect ;
@@ -482,6 +501,41 @@ mgx:_Aspect_depositAmount rdf:type owl:NamedIndividual ,
                                    gist:Aspect ;
                           rdfs:isDefinedBy <https://w3id.org/moneygraph/o/ontology/> ;
                           <http://www.w3.org/2004/02/skos/core#definition> "An amount of money deposited to an account." .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_feeAmount
+mgx:_Aspect_feeAmount rdf:type owl:NamedIndividual ,
+                               gist:Aspect ;
+                      <http://www.w3.org/2004/02/skos/core#definition> "Some kind of fee to be paid." ;
+                      <http://www.w3.org/2004/02/skos/core#prefLabel> "fee amount" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_foreignCurrencyExchangeAmount
+mgx:_Aspect_foreignCurrencyExchangeAmount rdf:type owl:NamedIndividual ,
+                                                   gist:Aspect ;
+                                          <http://www.w3.org/2004/02/skos/core#definition> "An amount of one currency that is exchanged to/from another currency." ;
+                                          <http://www.w3.org/2004/02/skos/core#prefLabel> "foreign currency exchange amount" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_npv_simulated_bond_coupons
+mgx:_Aspect_npv_simulated_bond_coupons rdf:type owl:NamedIndividual ,
+                                                gist:Aspect ;
+                                       <http://www.w3.org/2004/02/skos/core#definition> "The NPV of bond coupon amounts invested at a \"realized\" yield (not coupon rate) up to maturity, then discounted at bond YTM (at current price)." ;
+                                       <http://www.w3.org/2004/02/skos/core#prefLabel> "npv simulated bond coupons" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_npv_simulated_bond_principal
+mgx:_Aspect_npv_simulated_bond_principal rdf:type owl:NamedIndividual ,
+                                                  gist:Aspect ;
+                                         <http://www.w3.org/2004/02/skos/core#definition> "The NPV of a bond principal amount discounted at bond YTM (at current price)." ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "npv simulated bond principal" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_npv_simulated_bond_value
+mgx:_Aspect_npv_simulated_bond_value rdf:type owl:NamedIndividual ,
+                                              gist:Aspect ;
+                                     <http://www.w3.org/2004/02/skos/core#definition> "The total of bond coupons (reinvested to maturity) and the principal, both discounted at the bond yield to maturity (at current prices)." ;
+                                     <http://www.w3.org/2004/02/skos/core#prefLabel> "npv simulated bond value" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_securityPositionCostAmount
@@ -522,11 +576,11 @@ mgx:_Aspect_securityPositionValueAmount rdf:type owl:NamedIndividual ,
                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "security position value amount" .
 
 
-###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_securityShareAmount
-mgx:_Aspect_securityShareAmount rdf:type owl:NamedIndividual ,
-                                         gist:Aspect ;
-                                rdfs:isDefinedBy <https://w3id.org/moneygraph/o/ontology/> ;
-                                <http://www.w3.org/2004/02/skos/core#definition> "The number (may be fractional) of shares in a security, owned, sold, referred to, etc." .
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_securityShareCount
+mgx:_Aspect_securityShareCount rdf:type owl:NamedIndividual ,
+                                        gist:Aspect ;
+                               rdfs:isDefinedBy <https://w3id.org/moneygraph/o/ontology/> ;
+                               <http://www.w3.org/2004/02/skos/core#definition> "The number (may be fractional) of shares in a security, owned, sold, referred to, etc." .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_securityShareDividendAmount
@@ -572,6 +626,27 @@ mgx:_Aspect_securityTradeTransactionCommission rdf:type owl:NamedIndividual ,
                                                <http://www.w3.org/2004/02/skos/core#definition> "Fee assessed for security transactions such as buying, selling, or transferring." .
 
 
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_simulated_bond_position_cost
+mgx:_Aspect_simulated_bond_position_cost rdf:type owl:NamedIndividual ,
+                                                  gist:Aspect ;
+                                         <http://www.w3.org/2004/02/skos/core#definition> "Cost of a simulated bond purchase." ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "simulated bond position cost" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_simulated_bond_price_realized_yield
+mgx:_Aspect_simulated_bond_price_realized_yield rdf:type owl:NamedIndividual ,
+                                                         gist:Aspect ;
+                                                <http://www.w3.org/2004/02/skos/core#definition> "The NPV of bond value after a simulated purchase and reinvestment of coupons at a real-world realized yield (not coupon rate)." ;
+                                                <http://www.w3.org/2004/02/skos/core#prefLabel> "simulated bond price, realized yield" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_transferAmount
+mgx:_Aspect_transferAmount rdf:type owl:NamedIndividual ,
+                                    gist:Aspect ;
+                           <http://www.w3.org/2004/02/skos/core#definition> "Some currency amount involved in a transfer of funds." ;
+                           <http://www.w3.org/2004/02/skos/core#prefLabel> "transfer amount" .
+
+
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_yieldToMaturity
 mgx:_Aspect_yieldToMaturity rdf:type owl:NamedIndividual ,
                                      gist:Aspect .
@@ -583,6 +658,36 @@ mgx:_CADollar rdf:type owl:NamedIndividual ,
               <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
               <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
               gist:unitSymbol "CAD" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_CostBasis_bk
+mgx:_CostBasis_bk rdf:type owl:NamedIndividual ,
+                           mg:CostBasis ;
+                  <http://www.w3.org/2004/02/skos/core#altLabel> "BK" ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Book cost (BK): The cost of a security adjusted by any corporate actions, reinvested dividends, and return of capital." ;
+                  <http://www.w3.org/2004/02/skos/core#prefLabel> "book cost" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_CostBasis_hmv
+mgx:_CostBasis_hmv rdf:type owl:NamedIndividual ;
+                   <http://www.w3.org/2004/02/skos/core#altLabel> "HMV" ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "Historical Market Value (HMV): The historical market value of the security is used to estimate some or all of its book cost." ;
+                   <http://www.w3.org/2004/02/skos/core#prefLabel> "historical market value" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_CostBasis_hmvd
+mgx:_CostBasis_hmvd rdf:type owl:NamedIndividual ;
+                    <http://www.w3.org/2004/02/skos/core#altLabel> "HMVD" ;
+                    <http://www.w3.org/2004/02/skos/core#definition> "Historical Market Value Date (HMVD): The market value of the security on October 30, 2015 was used to estimate some or all of its book cost." ;
+                    <http://www.w3.org/2004/02/skos/core#prefLabel> "historical market value date" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_CostBasis_nd
+mgx:_CostBasis_nd rdf:type owl:NamedIndividual ,
+                           mg:CostBasis ;
+                  <http://www.w3.org/2004/02/skos/core#altLabel> "ND" ;
+                  <http://www.w3.org/2004/02/skos/core#definition> "Non-determinable (ND): The security is not included in your % portfolio calculation because the cost basis cannot be determined." ;
+                  <http://www.w3.org/2004/02/skos/core#prefLabel> "non-determinable" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_FinancialBusinessEventType_assetMerger
@@ -657,17 +762,26 @@ mgx:_MarketableSecurityIdentifierType_tickerSymbol rdf:type owl:NamedIndividual 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_MarketableSecurityType_bond
 mgx:_MarketableSecurityType_bond rdf:type owl:NamedIndividual ,
-                                          mg:MarketableSecurityType .
+                                          mg:MarketableSecurityType ;
+                                 <http://www.w3.org/2004/02/skos/core#prefLabel> "bond" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_MarketableSecurityType_common_stock
 mgx:_MarketableSecurityType_common_stock rdf:type owl:NamedIndividual ,
-                                                  mg:MarketableSecurityType .
+                                                  mg:MarketableSecurityType ;
+                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "common stock" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_MarketableSecurityType_exchange_traded_fund
 mgx:_MarketableSecurityType_exchange_traded_fund rdf:type owl:NamedIndividual ,
-                                                          mg:MarketableSecurityType .
+                                                          mg:MarketableSecurityType ;
+                                                 <http://www.w3.org/2004/02/skos/core#prefLabel> "exchange-trade fund" .
+
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_MarketableSecurityType_warrant
+mgx:_MarketableSecurityType_warrant rdf:type owl:NamedIndividual ,
+                                             mg:MarketableSecurityType ;
+                                    <http://www.w3.org/2004/02/skos/core#prefLabel> "warrant" .
 
 
 ###  https://w3id.org/semanticarts/ns/ontology/gist/_one_day
