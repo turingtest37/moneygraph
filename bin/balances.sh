@@ -5,7 +5,7 @@ echo "Processing ${FILE}..."
 
 PROJBASE=/Users/doug/dev/moneygraph
 SERVER=http://127.0.0.1:7200/repositories/Investments/statements
-NAMEBASE=securities
+NAMEBASE=balances
 NAMED_GRAPH_BASE="https://w3id.org/moneygraph/ns/data/__${NAMEBASE}__"
 QUERY=$PROJBASE/tarql/$NAMEBASE.rq
 OUT=$PROJBASE/out/$NAMEBASE.nt
@@ -29,7 +29,7 @@ then
     OUTOPT=""
 fi
 
-java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}" -v dt="${FILEDATE}"
+java -jar ~/dev/sparql-anything-0.8.2.jar -q "${QUERY}" -f ${FORMAT} ${OUTOPT} -v loc="${FILE}" -v dt="${FILEDATE}"
 
 if test "x$2" == "x"
 then 

@@ -27,8 +27,8 @@ CONSTRUCT
         gist:hasPositionIn ?__security ;
     .
 
-# If an Activity affects an InvestmentAccount balance it will bind the ?__inc_dec_asset predicate
-# Could be mg:isIncrementedBy or mg:isDecrementedBy
+# If an Activity affects an InvestmentAccount balance the ?__inc_dec_asset variable will be bound as 
+# mg:isIncrementedBy or mg:isDecrementedBy.
     ?__security_account ?__inc_dec_asset ?__activity .
 
 # If an Activity affects the Cash balance it will bind the ?__inc_dec_cash predicate
@@ -41,6 +41,8 @@ CONSTRUCT
     ?__security gist:isIdentifiedBy ?__security_id .
     ?__security rdfs:label ?Equity_Symbol .
     ?__security skos:prefLabel ?__symbol_str_norm .
+    ?__security gist:conformsTo ?__coupon_payment_terms, ?__bond_repayment_terms .
+
 
 # Security ID
     ?__security_id a gist:ID ;
@@ -48,21 +50,59 @@ CONSTRUCT
         gist:uniqueText ?__symbol_str_norm ;
     .
 
+# Coupon payment terms
+    ?__coupon_payment_terms
+        mg:couponPaymentMonthNumber ?__coupon_mo_earlier ;
+        mg:couponPaymentMonthNumber ?__coupon_mo_later ;
+        mg:couponPaymentMonthDayNumber ?__mo_day_nbr ;
+        gist:specifies ?__coupon_magn ;
+        a mg:CouponPaymentTerms ;
+    .
+
+# Coupon is < gist:ReferenceValue < gist:Magnitude
+    ?__coupon_magn a mg:BondCoupon ;
+        skos:prefLabel ?__coupon_magn_label ;
+        gist:hasUnitOfMeasure mg:_RatioUnit_annualInterestRate ;
+        gist:numericValue ?__coupon_rate ;
+        gist:isCategorizedBy mgx:_Aspect_annualInterestRate ;
+    .
+
+# Repayment Terms
+    ?__bond_repayment_terms a mg:BondRepaymentTerms ;
+        gist:specifies ?__repayment_event ;
+        gist:specifies ?__bond_repayment_magn ;
+    .
+
+# Bond repayment at due date
+    ?__repayment_event a gist:Event, gist:ScheduledEvent ;
+        gist:affects ?__security_account ;
+        gist:hasMagnitude ?__bond_repayment_magn ;
+        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debtPrincipalRepayment ;
+        mg:plannedOccursDate ?__maturity_datetime ;
+    .
+
+# Bond repayment magnitude
+    ?__bond_repayment_magn a gist:Monetary ;
+        gist:numericValue ?__qty_amount ;
+        gist:hasUnitOfMeasure ?__currency ;
+        gist:isCategorizedBy mgx:_Aspect_debtPrincipalAmount ;
+    .
+
 ######### Activity Events have Magnitudes that affect account balances
 
 # Dividend Case
     ?__activity gist:hasMagnitude ?__dividend_magn .
-    ?__dividend_magn  a gist:Magnitude ;
+    ?__dividend_magn  a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityShareDividendAmount ;
     .
 
 # Interest paid Case
     ?__activity gist:hasMagnitude ?__interest_paid_magn .
-    ?__interest_paid_magn a gist:Magnitude ;
+    ?__interest_paid_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_feeAmount ;
     .
 
@@ -75,31 +115,40 @@ CONSTRUCT
     .
 
     ?__activity gist:hasMagnitude ?__purchase_price_magn .
-    ?__purchase_price_magn a gist:Magnitude;
+    ?__purchase_price_magn a gist:Monetary;
         gist:numericValue ?__price_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_gross_amt_magn .
-    ?__purchase_gross_amt_magn a gist:Magnitude ;
+    ?__purchase_gross_amt_magn a gist:Monetary ;
         gist:numericValue ?__gross_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__purchase_commission_magn .
-    ?__purchase_commission_magn a gist:Magnitude ;
+    ?__purchase_commission_magn a gist:Monetary ;
         gist:numericValue ?__commission_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__purchase_net_amt_magn .
-    ?__purchase_net_amt_magn a gist:Magnitude ;
+    ?__purchase_net_amt_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ;
+    .
+    
+    # Yield to Maturity (%)
+    ?__activity gist:hasMagnitude ?__ytm_magn .
+    ?__ytm_magn a gist:Magnitude ;
+        gist:hasUnitOfMeasure mg:_RatioUnit_annualYield ;
+# Stored here as a fraction, not a percentage, e.g. 0.04 NOT 4.0
+        gist:numericValue ?__ytm_num ;
+        gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ;
     .
 
 # Sale Case
@@ -111,63 +160,63 @@ CONSTRUCT
     .
 
     ?__activity gist:hasMagnitude ?__sale_price_magn .
-    ?__sale_price_magn a gist:Magnitude;
+    ?__sale_price_magn a gist:Monetary;
         gist:numericValue ?__price_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_gross_amt_magn .
-    ?__sale_gross_amt_magn a gist:Magnitude ;
+    ?__sale_gross_amt_magn a gist:Monetary ;
         gist:numericValue ?__gross_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeGrossAmount ;
     .
 
     ?__activity gist:hasMagnitude ?__sale_commission_magn .
-    ?__sale_commission_magn a gist:Magnitude ;
+    ?__sale_commission_magn a gist:Monetary ;
         gist:numericValue ?__commission_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeTransactionCommission ;
     .
     
     ?__activity gist:hasMagnitude ?__sale_net_amt_magn .
-    ?__sale_net_amt_magn a gist:Magnitude ;
+    ?__sale_net_amt_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ;
     .
 
 
-# Interest Case
+# Interest received (e.g. bond coupon payments)
     ?__activity gist:hasMagnitude ?__interest_magn.
-    ?__interest_magn  a gist:Magnitude ;
+    ?__interest_magn  a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_debtInterestAmount ;
     .
 
 # Deposit Case
     ?__activity gist:hasMagnitude ?__deposit_magn .
-    ?__deposit_magn a gist:Magnitude ;
+    ?__deposit_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_depositAmount ;
     .
 
 # Contribution case
     ?__activity gist:hasMagnitude ?__contrib_magn .
-    ?__contrib_magn a gist:Magnitude ;
+    ?__contrib_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_depositAmount ;
     .
 
 # Financial Transfer
     ?__activity gist:hasMagnitude ?__fin_transfer_magn .
-    ?__fin_transfer_magn a gist:Magnitude ;
+    ?__fin_transfer_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_transferAmount ;
     .
 
@@ -198,26 +247,26 @@ CONSTRUCT
 
 
     ?__activity gist:hasMagnitude ?__asset_liqd_net_amt_magn .
-    ?__asset_liqd_net_amt_magn a gist:Magnitude ;
+    ?__asset_liqd_net_amt_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ;
     .
 
 # Foreign currency exchanged
     ?__activity gist:hasMagnitude ?__fxt_magn .
-    ?__fxt_magn a gist:Magnitude ;
+    ?__fxt_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
+        gist:hasUnitOfMeasure ?__currency ;
         gist:isCategorizedBy mgx:_Aspect_foreignCurrencyExchangeAmount ;
     .
 
 # Debt (bond) Repayment
     ?__activity gist:hasMagnitude ?__debt_repayment_magn .
-    ?__debt_repayment_magn a gist:Magnitude ;
+    ?__debt_repayment_magn a gist:Monetary ;
         gist:numericValue ?__net_amount ;
-        gist:hasUnitOfMeasure ?__event_currency ;
-        gist:isCategorizedBy mgx:_Aspect_debtPrincipalRepaymentAmount ;
+        gist:hasUnitOfMeasure ?__currency ;
+        gist:isCategorizedBy mgx:_Aspect_debtPrincipalAmount ;
     .
 
 # Reverse Stock Split
@@ -299,6 +348,9 @@ WHERE
             STRBEFORE(?__equity_symbol_str, "."),
             ?__equity_symbol_str)) AS ?__symbol_str_norm)
  
+# HERE TEST IF SYMBOL STARTS WITH 0-9 : if yes, is a bond
+    BIND(REGEX(?__symbol_str_norm, "^[0-9]") AS ?__is_bond)
+
 ### Clean up the numbers
 
 # Quantity
@@ -328,13 +380,16 @@ WHERE
 
 # Discriminator - for use where no symbol exists in the data
 # Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
-    BIND(STR(xsd:decimal(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000)) AS ?__discriminator_str)
+    BIND(STR(round((?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000)/1000) AS ?__discriminator_str)
 
 #  Local part of Security IRI = the equity symbol = where no ticker symbol exists
-    BIND(MD5(CONCAT(
-                STR(?__transaction_date),
-                ?__discriminator_str
-    )) AS ?__no_symbol)
+    BIND(CONCAT(
+        COALESCE(?ActivityType, 'unknown'),'_',
+        COALESCE(STR(?Action), 'unknown'),'_',
+        COALESCE(STR(?ActivityType), 'unknown'),'_',
+        STR(?__transaction_date),'_',
+        ?__discriminator_str
+    ) AS ?__no_symbol)
 
 # Equity Symbol
     BIND(COALESCE(UCASE(?__symbol_str_norm), ?__no_symbol) AS ?__eq_symbol)
@@ -351,10 +406,9 @@ WHERE
 # Security Account
     BIND(IRI(CONCAT(STR(mg3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
 
-# HERE TEST IF SYMBOL STARTS WITH 0-9 : if yes, is a bond
-    BIND(IF(REGEX(?__symbol_str_norm, "^[0-9]"),
-        mgx:_MarketableSecurityIdentifierType_qtBondId,
-        mgx:_MarketableSecurityIdentifierType_tickerSymbol) AS ?__security_id_type)
+# Currency - CAD or USD
+    BIND(IF(?Currency="CAD", mgx:_CADollar, IF(?Currency="USD", gist:_USDollar, ?unbound)) AS ?__currency)
+    BIND(LCASE(REPLACE(?Currency, "\\W+", "-")) AS ?__currency_key)
 
 # Settlement Date
     BIND(REPLACE(?SettlementDate,"^([0-9-]+).*$","$1T00:00:00") AS ?__settle_dt_str)
@@ -387,21 +441,21 @@ WHERE
     OPTIONAL {
         VALUES (?__action ?__evt_type) {
             ('BUY' gist:_FinancialBusinessEventType_purchase)
-            ('SELL' gist:_FinancialBusinessEventType_sale)
-            ('INT' mgx:_FinancialBusinessEventType_interestRemittance)
-            ('DEP' mgx:_FinancialBusinessEventType_deposit)
             ('CON' mgx:_FinancialBusinessEventType_contribution)
-            ('MGR' mgx:_FinancialBusinessEventType_deposit)
+            ('DEP' mgx:_FinancialBusinessEventType_deposit)
+            ('DIV' mgx:_FinancialBusinessEventType_dividendRemittance)
             ('EFT' gist:_FinancialBusinessEventType_financialTransfer)
             ('FXT' mgx:_FinancialBusinessEventType_exchangeOfCurrency)
-            ('LQD' mgx:_FinancialBusinessEventType_assetTransferForLiquidation)
+            ('INT' mgx:_FinancialBusinessEventType_interestRemittance)
             ('LIQ' mgx:_FinancialBusinessEventType_assetLiquidation)
+            ('LQD' mgx:_FinancialBusinessEventType_assetTransferForLiquidation)
+            ('MER' mgx:_FinancialBusinessEventType_assetMerger)
+            ('MGR' mgx:_FinancialBusinessEventType_deposit)
             ('RED' mgx:_FinancialBusinessEventType_debtPrincipalRepayment)
             ('REV' mgx:_FinancialBusinessEventType_reverseStockSplit)
-            ('TFI' gist:_FinancialBusinessEventType_financialTransfer)
-            ('TFI' mgx:_FinancialBusinessEventType_assetTransfer)
+            ('SELL' gist:_FinancialBusinessEventType_sale)
             ('TF6' gist:_FinancialBusinessEventType_financialTransfer) 
-            ('DIV' mgx:_FinancialBusinessEventType_dividendRemittance)
+            ('TFI' mgx:_FinancialBusinessEventType_assetTransfer)
         }
 
 # The strategy here is as follows:
@@ -447,176 +501,207 @@ WHERE
 # Activity Label
     BIND(CONCAT(?Activity_Type, " ", ?__eq_symbol, " ", STR(?__transaction_date)) AS ?__activity_label)
 
+
+#### Mine the Description for bond terms
+
+# Coupon Rate (%)
+    BIND(IF(REGEX(?Description, "\\bINT\\b\\s+[0-9.]+%"), 
+        REPLACE(?Description, "^.*\\bINT\\b\\s+([\\d.]+)%.*$","$1"),
+        ?unbound) AS ?__coupon_str)
+    BIND(xsd:decimal(?__coupon_str)/100 as ?__coupon_rate)
+
+# Coupon Magnitude
+    BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon_magn)
+
+# Coupon Magnitude Label
+    BIND(CONCAT(?__coupon_str,'%') AS ?__coupon_magn_label)
+
+# Coupon Payment Terms
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__coupon_payment_terms)
+
+# Month Pair
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "\\b[A-Z]{2} [0-9]{2}"), REPLACE(?Description, "^.*\\b([A-Z]{2}) [0-9]{2}.*$", "$1"), ?unbound) AS ?__mo_pair_str)
+
+# Coupon Payment Months
+    OPTIONAL {
+        VALUES (?monthduo ?earlier_mo ?later_mo) { 
+            ("JJ" 01 07) 
+            ("FA" 02 08) 
+            ("MS" 03 09) 
+            ("AO" 04 10) 
+            ("MN" 05 11) 
+            ("JD" 06 12)
+        }
+        FILTER(STR(?__mo_pair_str) = ?monthduo)
+        BIND(?earlier_mo AS ?__coupon_mo_earlier)
+        BIND(?later_mo AS ?__coupon_mo_later)
+    }
+  
+# Month-Day Number of Payment, 01 - 31
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), " \\b[JFMASOND][JFMASOND] [0-9]{2}\\b"), REPLACE(?Description, "^.*\\b[JFMASOND][JFMASOND] ([0-9]{2})\\b.*$", "$1"), ?unbound) AS ?__mo_day_nb_str)
+    BIND(xsd:integer(?__mo_day_nb_str) AS ?__mo_day_nbr)
+
+# Yield To Maturity
+    BIND(IF(?__is_bond && CONTAINS(?Description, " YTM "), REPLACE(?Description, "^.*\\bYTM:?\\s*([0-9.-]+).*$", "$1"), ?unbound) AS ?__ytm_str)
+    BIND(STRDT(?__ytm_str, xsd:decimal)/100 AS ?__ytm_num)
+    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_yieldToMaturity_', REPLACE(?__ytm_str,"\\W+","-"))) AS ?__ytm_magn)
+
+# Due (Maturity)
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description),"\\bDUE\\b"), 
+        REPLACE(?Description, "^.*\\bDUE ([0-9/]+)\\b.*$","$1"),
+        ?unbound) AS ?__due_dt_str)
+    BIND(STRDT(REPLACE(?__due_dt_str,"(\\d{2})/(\\d{2})/(\\d{4})","$3-$1-$2T00:00:00"),xsd:dateTime) AS ?__maturity_datetime)
+
+# Repayment Event
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_Event_debtPrincipalRepayment_',?__acct_key,'_',?__eq_symbol,'_',?__qty_clean)), ?unbound) AS ?__repayment_event)
+
+
+##### ACTIONS ##########
+
 #### Dividends
-# Only net amount counts
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_dividendRemittance, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_dividend_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__dividend_magn)
-# Dividends only increment the cash account
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_dividendRemittance, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_div)
+    OPTIONAL {
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_dividendRemittance)
+        # Only net amount counts
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_dividend_',?__currency_key,'_',?__netamt_clean)) AS ?__dividend_magn)
+        # Dividends increment the cash account
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_div)
+    }
 
-#### Interest paid
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestPaid, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__tx_key,'_',?__netamt_clean)), 
-    ?unbound) AS ?__interest_paid_magn)
-
-# Interest paid decrements the cash account
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestPaid, 
-        mg:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_intpaid)
-
-# Add a CouponPaymentEvent type to the event if that's what this is
-# Really, this should be handled by the inference engine but most
-# triple stores do not fully interpret owl:EquivalentClass
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestPaid, 
-        mg:CouponPaymentEvent, ?unbound) AS ?__coupon_payment_event)
+#### Interest paid (as a fee)
+    OPTIONAL {
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__currency_key,'_',?__netamt_clean)), 
+        ?unbound) AS ?__interest_paid_magn)
+        # Interest paid decrements the cash account
+        BIND(mg:isDecrementedBy AS ?__inc_dec_cash_intpaid)
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_interestPaid)
+    }
 
 #### Purchase / Buy
-# Need all of Quantity,Price,Gross Amt,Commission,Net Amt
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)),
-        ?unbound) AS ?__purchase_qty_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean)),
-        ?unbound) AS ?__purchase_price_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean)),
-        ?unbound) AS ?__purchase_gross_amt_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
-        ?unbound) AS ?__purchase_commission_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)),
-        ?unbound) AS ?__purchase_net_amt_magn)
-# Purchases increment the security account balance
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_purchase)
-# Purchases decrement the cash balance
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
-        mg:isDecrementedBy, ?unbound) AS ?__inc_dec_cash_purchase)
+    # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
+    OPTIONAL {   
+        FILTER(?__event_type = gist:_FinancialBusinessEventType_purchase)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__currency_key,'_',?__qty_clean)) AS ?__purchase_qty_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__currency_key,'_',?__price_clean)) AS ?__purchase_price_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__currency_key,'_',?__grossamt_clean)) AS ?__purchase_gross_amt_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__currency_key,'_',?__commamt_clean)) AS ?__purchase_commission_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__currency_key,'_',?__netamt_clean)) AS ?__purchase_net_amt_magn)
+    # Purchases increment the security account balance
+        BIND(mg:isIncrementedBy AS ?__inc_dec_asset_purchase)
+    # Purchases decrement the cash balance
+        BIND(mg:isDecrementedBy AS ?__inc_dec_cash_purchase)
+    }
 
 ### Sell
-# Need all of Quantity,Price,Gross Amt,Commission,Net Amt
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)),
-        ?unbound) AS ?__sale_qty_magn)
+    OPTIONAL {
+        FILTER(?__event_type = gist:_FinancialBusinessEventType_sale)
+    # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__currency_key,'_',?__qty_clean)) AS ?__sale_qty_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__currency_key,'_',?__price_clean)) AS ?__sale_price_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__currency_key,'_',?__grossamt_clean)) AS ?__sale_gross_amt_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__currency_key,'_',?__commamt_clean)) ?__sale_commission_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__currency_key,'_',?__netamt_clean)) AS ?__sale_net_amt_magn)
+    # Sales increment the cash balance ...
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_sale)
+    # ... and decrement the share quantity balance
+        BIND(mg:isDecrementedBy AS ?__inc_dec_asset_sale)
+    }
 
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean)),
-        ?unbound) AS ?__sale_price_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean)),
-        ?unbound) AS ?__sale_gross_amt_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean)),
-        ?unbound) AS ?__sale_commission_magn)
-
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-        IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)),
-        ?unbound) AS ?__sale_net_amt_magn)
-# Sales increment the cash balance ...
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_sale)
-# ... and increment the share quantity balance
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_sale)
-
-### Interest received from a bond
-# Only net amount counts
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestRemittance, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_interestReceived_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__interest_magn)
-# Interest received increments the cash balance
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_interestRemittance, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_int_recvd)
+### Interest received from a bond coupon payment
+    OPTIONAL {
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_interestRemittance)
+        # Only net amount counts
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_interestReceived_',?__currency_key,'_',?__netamt_clean)) AS ?__interest_magn)
+    # Interest received increments the cash balance, leaves share balance unchanged
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_int_recvd)
+    # Add a CouponPaymentEvent type to the event if that's what this is
+    # Really, this should be handled by the inference engine but most
+    # triple stores do not fully interpret owl:EquivalentClass
+        BIND(mg:CouponPaymentEvent AS ?__coupon_payment_event)
+    }
 
 ### Deposits
-# Only net amount counts
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_deposit, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_deposit_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__deposit_magn)
-# Deposits increment the cash balance
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_deposit, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_dep)
+    OPTIONAL {
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_deposit)
+    # Only net amount counts
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_deposit_',?__currency_key,'_',?__netamt_clean)) AS ?__deposit_magn)
+    # Deposits increment the cash balance
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_dep)
+    }
 
 ### Contributions
 # treat as deposits for now
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_contribution, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_contribution_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__contrib_magn)
-# Contributions increment the cash balance
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_contribution, 
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_cont)
+    OPTIONAL{
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_contribution)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_contribution_',?__currency_key,'_',?__netamt_clean)) AS ?__contrib_magn)
+# Contributions increment the cash balance, but do not change asset balances
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_cont)
+    }
 
 ### Financial Transfer (money, not assets)
 ## Outgoing EFTs are cash withdrawals; incoming are transfers from other institutions
 ## Questrade muddies the waters here by treating incoming transfers from "known" bank account
 ## as "contributions" or "deposits", while unknown accounts are treated as EFTs.
-    BIND(IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_financialTransfer_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__fin_transfer_magn)
-# Use sign of net amount to determine impact on cash balance. A zero means unbound, so no account movement
-    BIND(
-        IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer && xsd:decimal(?NetAmount) > 0, mg:isIncrementedBy,
-        IF(?__event_type = gist:_FinancialBusinessEventType_financialTransfer && xsd:decimal(?NetAmount) < 0, mg:isDecrementedBy,
-        ?unbound)) AS ?__inc_dec_cash_eft)
+    OPTIONAL {
+        FILTER(?__event_type = gist:_FinancialBusinessEventType_financialTransfer)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_financialTransfer_',?__currency_key,'_',?__netamt_clean)) AS ?__fin_transfer_magn)
+    # Use sign of net amount to determine impact on cash balance. A zero means unbound, so no account movement
+        BIND(
+            IF(xsd:decimal(?NetAmount) > 0, mg:isIncrementedBy,
+            IF(xsd:decimal(?NetAmount) < 0, mg:isDecrementedBy,
+            ?unbound)) AS ?__inc_dec_cash_eft)
+    }
 
 ### Asset Transfer - in or out of accounts I own
-# Only quantity counts
-    BIND(
-        IF(?__event_type = mgx:_FinancialBusinessEventType_assetTransfer,
-            IRI(CONCAT(STR(mg3:),'_Magnitude_assetTransfer_',?__tx_key,'_',?__qty_clean)), 
-        ?unbound) AS ?__asset_transfer_magn)
-# Use sign of quantity to determine impact on investment account balance
-    BIND(
-        IF(?__event_type = mgx:_FinancialBusinessEventType_assetTransfer && xsd:decimal(?Quantity) > 0, mg:isIncrementedBy,
-        IF(?__event_type = mgx:_FinancialBusinessEventType_assetTransfer && xsd:decimal(?NetAmount) < 0, mg:isDecrementedBy,
-        ?unbound)) AS ?__inc_dec_asset_transfer)
+    OPTIONAL {# Only Quantity counts - this is securities, not $$ changing hands
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_assetTransfer)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_assetTransfer_',?__tx_key,'_',?__qty_clean)) AS ?__asset_transfer_magn)
+    # Use sign of quantity to determine impact on investment account balance
+        BIND(
+            IF(xsd:decimal(?Quantity) > 0, mg:isIncrementedBy,
+            IF(xsd:decimal(?Quantity) < 0, mg:isDecrementedBy,
+            ?unbound)) AS ?__inc_dec_asset_transfer)
+    }
 
 ### Special case of Asset Transfer in view of Liquidation
 # Seems to imply an involuntary transfer of shares - conducted by the broker - into an escrow account
-# Only Quantity counts
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetTransferForLiquidation, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_assetTransferForLiquidation_',?__tx_key,'_',?__qty_clean)), 
-        ?unbound) AS ?__asset_transferForLiqd_magn)
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetTransferForLiquidation,
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_asset_transfer_liqd)
+    OPTIONAL {
+    # Only Quantity counts
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_assetTransferForLiquidation)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_assetTransferForLiquidation_',?__tx_key,'_',?__qty_clean)) AS ?__asset_transferForLiqd_magn)
+        BIND(mg:isIncrementedBy AS ?__inc_dec_asset_transfer_liqd)
+    }
 
 ### Asset Liquidation - this is the forced sale of an asset that has been 
 # previously transferred for liquidation
 # Account Share balance is decremented; Cash balance is incremented.
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetLiquidation, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)), 
-        ?unbound) AS ?__asset_liqd_qty_magn)
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetLiquidation, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__asset_liqd_net_amt_magn)
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetLiquidation,
-        mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_assetliqd)
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_assetLiquidation,
-        mg:isDecrementedBy, ?unbound) AS ?__inc_dec_assetliqd)
+    OPTIONAL {
+        FILTER(?__event_type = mgx:_FinancialBusinessEventType_assetLiquidation)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)) AS ?__asset_liqd_qty_magn)
+        BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__currency_key,'_',?__netamt_clean)) AS ?__asset_liqd_net_amt_magn)
+        BIND(mg:isIncrementedBy AS ?__inc_dec_cash_assetliqd)
+        BIND(mg:isDecrementedBy AS ?__inc_dec_assetliqd)
+    }
 
 ### Debt Principal Repayment (i.e. 'redemption')
 # Share balance is decremented; cash balance is incremented
-    BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_debtPrincipalRepayment_',?__tx_key,'_',?__netamt_clean)), 
-        ?unbound) AS ?__debt_repayment_magn)
+
+    FILTER(?__event_type = mgx:_FinancialBusinessEventType_debtPrincipalRepayment)
+# Repayment Conditions
+    BIND(IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__acct_key,'_', ?__eq_symbol)) AS ?__bond_repayment_terms)
+# Debt Principal Magnitude
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_debtPrincipalAmount_',?__currency_key,'_',?__eq_symbol,'_',STR(?Quantity))) AS ?__bond_repayment_magn)
+
     # Redemptions increment the cash balance
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 
         mg:isIncrementedBy, ?unbound) AS ?__inc_dec_cash_red)
+
     # Redemptions decrement the share balance
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_debtPrincipalRepayment, 
         mg:isDecrementedBy, ?unbound) AS ?__inc_dec_asset_red)
 
 ### Currency exchanged - from Magnitude
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_exchangeOfCurrency, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_exchangedCurrency_',?__tx_key,'_',?__netamt_clean)), 
+        IRI(CONCAT(STR(mg3:),'_Magnitude_exchangedCurrency_',?__currency_key,'_',?__netamt_clean)), 
         ?unbound) AS ?__fxt_magn)
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_exchangeOfCurrency && xsd:decimal(?NetAmount) < 0,
         mg:isDecrementedBy,
@@ -626,20 +711,17 @@ WHERE
 ### Reverse Stock Split
 # Only Qty is affected
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_reverseStockSplit, 
-        IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean)), 
+        IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__currency_key,'_',?__qty_clean)), 
         ?unbound) AS ?__reverse_stk_split_qty_magn)
     BIND(IF(?__event_type = mgx:_FinancialBusinessEventType_reverseStockSplit && xsd:decimal(?Quantity) < 0, 
         mg:isDecrementedBy,
         IF(?__event_type = mgx:_FinancialBusinessEventType_reverseStockSplit && xsd:decimal(?Quantity) > 0,
         mg:isIncrementedBy, ?unbound)) AS ?__inc_dec_asset_split)
 
-# Currency - CAD or USD
-    BIND(IF(?Currency="CAD", mgx:_CADollar, IF(?Currency="USD", gist:_USDollar, ?unbound)) AS ?__event_currency)
-
 # Affected Cash account
     BIND(
-        IF(?__event_currency=mgx:_CADollar, IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_CAD')),
-        IF(?__event_currency=gist:_USDollar, IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_USD')),
+        IF(?__currency=mgx:_CADollar, IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_CAD')),
+        IF(?__currency=gist:_USDollar, IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_USD')),
         ?unbound)) AS ?__affected_cash_account)
 
     # Coalesce inc/dec asset predicates

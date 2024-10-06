@@ -14,7 +14,7 @@ where {
     [] a gist:ScheduledEvent ;
         mg:plannedOccursDate ?repaydatetime ;
         gist:hasMagnitude [ gist:numericValue ?amt ] ;
-        gist:isCharacterizedAs  mgx:_FinancialBusinessEventType_debt_principal_repayment .
+        gist:isCharacterizedAs  mgx:_FinancialBusinessEventType_debtPrincipalRepayment .
     BIND(YEAR(?repaydatetime) AS ?maturityyear)
 
 } GROUP BY ?maturityyear 

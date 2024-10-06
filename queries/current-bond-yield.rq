@@ -8,14 +8,14 @@ PREFIX ofn: <http://www.ontotext.com/sparql/functions/>
 
 SELECT DISTINCT ?bond_iri 
 ?bond 
-(SUM(?net_cost) AS ?cost)
-(SUM(?npv_coupon_val) AS ?npv_coupons)
-(SUM(?npv_principal) AS ?npv_principal_tot)
-(?npv_coupons+?npv_principal_tot AS ?current_bond_value)
-(SUM(?npv_cost) AS ?npv_cost_total)
-(?ytm AS ?yield_at_purchase)
-((?current_bond_value-?npv_cost_total)*100/?npv_cost_total AS ?current_yield)
 ?desc
+#(SUM(?net_cost) AS ?cost)
+(SUM(DISTINCT ?npv_coupon_val) AS ?npv_coupons)
+(SUM(DISTINCT ?npv_principal) AS ?npv_principal_tot)
+(?npv_coupons+?npv_principal_tot AS ?current_bond_value)
+(SUM(DISTINCT ?npv_cost) AS ?npv_cost_total)
+(AVG(?ytm) AS ?yield_at_purchase)
+((?current_bond_value-?npv_cost_total)*100/?npv_cost_total AS ?current_yield)
 
 #SELECT DISTINCT ?bond_iri 
 #?bond_iri
@@ -30,6 +30,10 @@ SELECT DISTINCT ?bond_iri
 #((?current_bond_value-?npv_cost)*100/?npv_cost AS ?current_yield)
 #?desc
 #
+
+#SELECT ?__secacct ?bond_iri ?bond ?desc ?net_cost ?principal ?ytm ?coupon ?coupon_amt ?maturity ?last_coupon_dt
+
+
 FROM mg3:__securities__
 FROM mg3:__securities__extra
 FROM mg3:__activities__
@@ -38,104 +42,95 @@ FROM mg3:__trades__
 
 {
 
-    # Inner SELECT to fetch the bond and its latest coupon payment date 
+    # Inner SELECT to fetch the bond, purchase date, principal, net cost, ytm, bond coupon, maturity, and first coupon date (if any)
     {
-        SELECT DISTINCT ?bond_iri ?bond ?desc (AVG(?_ytm) AS ?ytm) (MAX(?future_coupon_one) AS ?future_coupon_amt) ?maturity (MAX(?past_coupon_dt) AS ?last_coupon_dt) {
+        SELECT DISTINCT ?__secacct ?bond_iri ?bond ?desc ?purchase_dt ?net_cost ?principal ?ytm ?coupon ?maturity ?__first_coupon_after_purchase_dt
+        {
             ?bond_iri gist:isCategorizedBy mgx:_MarketableSecurityType_bond ; skos:prefLabel ?bond ; gist:description ?desc ;
 		        gist:conformsTo [ a mg:BondRepaymentTerms ; gist:specifies [ a gist:ScheduledEvent ; mg:plannedOccursDate ?maturity ] ] ;
-		        gist:conformsTo [ a mg:CouponPaymentTerms ; gist:specifies [ a mg:BondCoupon ; gist:numericValue ?coupon ] ] ;
-			.            
-
-            [] gist:hasPositionIn ?bond_iri ;
-                gist:hasCurrentBalance [ gist:numericValue ?_principal ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
-                gist:isAffectedBy [
-                    gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ;
-                    mg:transactionDate ?past_coupon_dt ;
-                ] ;
-				gist:isAffectedBy [
-        			gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
-                    gist:hasMagnitude [
-           				gist:numericValue ?_ytm ;
-           				gist:isCategorizedBy mgx:_Aspect_yieldToMaturity;
-        			] ;
-            	] ;
-             .  
-            BIND((?coupon*?_principal)/(2*100) AS ?future_coupon_one)
-        } GROUP BY ?bond_iri ?bond ?desc ?maturity
-        ORDER BY ASC(?maturity) ?bond_iri
+            	a mg:Bond ;
+		    .
+            OPTIONAL { 
+                ?bond_iri gist:conformsTo [ 
+                    a mg:CouponPaymentTerms ; 
+                    gist:specifies [ a mg:BondCoupon ; gist:numericValue ?coupon ] ;
+                    gist:specifies [ gist:hasMember/mg:plannedOccursDate ?__first_coupon_after_purchase_dt ] ;
+                ] .
+            }            
+            ?__secacct gist:hasPositionIn ?bond_iri ;
+				gist:isAffectedBy ?__purchase_evt ;
+            	a gist:InvestmentAccount ;
+             .
+            ?__purchase_evt gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
+            	mg:transactionDate ?purchase_dt ;
+                gist:hasMagnitude [ gist:numericValue ?principal ; gist:isCategorizedBy mgx:_Aspect_securityShareCount ] ;
+# net cost
+                gist:hasMagnitude [ gist:numericValue ?net_cost ; gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ] ;
+# bond yield to maturity at time of purchase
+                gist:hasMagnitude [ gist:numericValue ?ytm ; gist:isCategorizedBy mgx:_Aspect_yieldToMaturity ] ;
+            .
+        }
     }
                 
-                
 
-    # Every bond was purchased
-    ?secacct gist:hasPositionIn ?bond_iri ;
-	{ 
-    ?secacct gist:isAffectedBy [
-        gist:isCharacterizedAs gist:_FinancialBusinessEventType_purchase ;
-        mg:transactionDate ?purchase_dt ;
-        gist:hasMagnitude [
-            gist:numericValue ?principal ; 
-            gist:isCategorizedBy mgx:_Aspect_securityShareCount ;
-        ] ;
-        gist:hasMagnitude [
-            gist:numericValue ?net_cost ;
-            gist:isCategorizedBy mgx:_Aspect_securityTradeNetAmount ;
-        ] ;
-    ] ;
-	.
-	}	
-UNION
-    # Not every bond has already has a coupon. Concatenate past coupons and future coupons
+    # Inner Select to get all past coupon payments
     {
-    ?secacct gist:isAffectedBy [
-        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ;
-        mg:transactionDate ?remitdate ;
-        gist:hasMagnitude [
-            gist:numericValue ?remitamt ;
-            gist:isCategorizedBy mgx:_Aspect_debtInterestAmount ;
-        ] ;
-    ] ;
-    .       
-    }
-UNION
+        SELECT 
+        ?__past_coupon_dt
+        ?__past_coupon_payment_amt
+        (MAX(?__past_coupon_payment_amt) AS ?__future_coupon_amt)
+        (MAX(?__past_coupon_dt) AS ?__last_coupon_dt)
+        {
+            # Get all the past coupon payment dates and return the latest (MAX)
+            ?__secacct gist:isAffectedBy [ 
+                gist:isCharacterizedAs mgx:_FinancialBusinessEventType_interestRemittance ; 
+                mg:transactionDate ?__past_coupon_dt ;
+                gist:hasMagnitude [ gist:numericValue ?__past_coupon_payment_amt ; gist:isCategorizedBy mgx:_Aspect_debtInterestAmount ] ;
+            ] .
+        }
+        GROUP BY ?__secacct ?__past_coupon_dt ?__past_coupon_payment_amt
+        ORDER BY ?__past_coupon_dt
+    } 
+    UNION 
     {
-    VALUES ?coupon_payment_period {
-        "P0Y6M0DT0H0M0S"^^xsd:duration 
-        "P1Y0M0DT0H0M0S"^^xsd:duration 
-        "P1Y6M0DT0H0M0S"^^xsd:duration 
-        "P2Y0M0DT0H0M0S"^^xsd:duration 
-        "P2Y6M0DT0H0M0S"^^xsd:duration 
-        "P3Y0M0DT0H0M0S"^^xsd:duration 
-        "P3Y6M0DT0H0M0S"^^xsd:duration 
-        "P4Y0M0DT0H0M0S"^^xsd:duration 
-        "P4Y6M0DT0H0M0S"^^xsd:duration 
-        "P5Y0M0DT0H0M0S"^^xsd:duration 
-        "P5Y6M0DT0H0M0S"^^xsd:duration 
-        "P6Y0M0DT0H0M0S"^^xsd:duration 
-        "P6Y6M0DT0H0M0S"^^xsd:duration 
-        "P7Y0M0DT0H0M0S"^^xsd:duration 
-        "P7Y6M0DT0H0M0S"^^xsd:duration 
-        "P8Y0M0DT0H0M0S"^^xsd:duration 
-        "P8Y6M0DT0H0M0S"^^xsd:duration 
-        "P9Y0M0DT0H0M0S"^^xsd:duration 
-        "P9Y6M0DT0H0M0S"^^xsd:duration 
-        "P10Y0M0DT0H0M0S"^^xsd:duration 
-        "P10Y6M0DT0H0M0S"^^xsd:duration 
-        "P11Y0M0DT0H0M0S"^^xsd:duration 
-        "P11Y6M0DT0H0M0S"^^xsd:duration 
-        "P12Y0M0DT0H0M0S"^^xsd:duration 
-    }
-    BIND(?last_coupon_dt + ?coupon_payment_period AS ?future_payment_dt)
-    BIND(?future_coupon_amt AS ?future_amt)
-    FILTER(?maturity > ?future_payment_dt && NOW() < ?future_payment_dt)
-    }
-# /UNION
+        BIND(COALESCE(?__last_coupon_dt + "P0Y6M0DT0H0M0S"^^xsd:duration, ?__first_coupon_after_purchase_dt) AS ?__future_coupon_start_dt)
 
-    BIND(COALESCE(?remitdate, ?future_payment_dt) AS ?coupon_dt)
-    BIND(COALESCE(?remitamt, ?future_amt) AS ?coupon_amt)
-    
+        VALUES ?coupon_payment_period {
+            "P0Y6M0DT0H0M0S"^^xsd:duration 
+            "P1Y0M0DT0H0M0S"^^xsd:duration 
+            "P1Y6M0DT0H0M0S"^^xsd:duration 
+            "P2Y0M0DT0H0M0S"^^xsd:duration 
+            "P2Y6M0DT0H0M0S"^^xsd:duration 
+            "P3Y0M0DT0H0M0S"^^xsd:duration 
+            "P3Y6M0DT0H0M0S"^^xsd:duration 
+            "P4Y0M0DT0H0M0S"^^xsd:duration 
+            "P4Y6M0DT0H0M0S"^^xsd:duration 
+            "P5Y0M0DT0H0M0S"^^xsd:duration 
+            "P5Y6M0DT0H0M0S"^^xsd:duration 
+            "P6Y0M0DT0H0M0S"^^xsd:duration 
+            "P6Y6M0DT0H0M0S"^^xsd:duration 
+            "P7Y0M0DT0H0M0S"^^xsd:duration 
+            "P7Y6M0DT0H0M0S"^^xsd:duration 
+            "P8Y0M0DT0H0M0S"^^xsd:duration 
+            "P8Y6M0DT0H0M0S"^^xsd:duration 
+            "P9Y0M0DT0H0M0S"^^xsd:duration 
+            "P9Y6M0DT0H0M0S"^^xsd:duration 
+            "P10Y0M0DT0H0M0S"^^xsd:duration 
+            "P10Y6M0DT0H0M0S"^^xsd:duration 
+            "P11Y0M0DT0H0M0S"^^xsd:duration 
+            "P11Y6M0DT0H0M0S"^^xsd:duration 
+            "P12Y0M0DT0H0M0S"^^xsd:duration 
+        }
+        BIND(?__future_coupon_start_dt + ?coupon_payment_period AS ?__future_coupon_dt)
+        BIND(?coupon_amt AS ?__future_coupon_payment_amt)
+        FILTER(?maturity > ?__future_coupon_dt && NOW() < ?__future_coupon_dt)
+    }
+
+    BIND(COALESCE(?__past_coupon_dt, ?__future_coupon_dt) AS ?coupon_dt)
+    BIND(COALESCE(?__past_coupon_payment_amt, ?__future_coupon_payment_amt) AS ?coupon_amt)
+
     BIND(NOW()-?purchase_dt AS ?owned_duration)
-    BIND(ofn:years-from-duration(?owned_duration) * 365 + ofn:months-from-duration(?owned_duration) * 30 + ofn:days-from-duration(?owned_duration) AS ?owned_days)   
+    BIND(ofn:years-from-duration(?owned_duration) + ofn:months-from-duration(?owned_duration)/12 + ofn:days-from-duration(?owned_duration)/365 AS ?owned_yrs)   
     BIND(?maturity-NOW() AS ?now_to_mat_duration)
     BIND(ofn:years-from-duration(?now_to_mat_duration) * 365 + ofn:months-from-duration(?now_to_mat_duration) * 30 + ofn:days-from-duration(?now_to_mat_duration) AS ?now_to_mat_days)
     
@@ -144,19 +139,18 @@ UNION
 
     VALUES (?inflation_rate ?return_rate) { (0.025 0.09) }
     
-    BIND(?ytm/100 AS ?yield_to_maturity)
-    BIND(?yield_to_maturity AS ?discount_rate)
+    BIND(?ytm AS ?discount_rate)
     BIND(?return_rate/365 AS ?daily_return)
     BIND(?discount_rate/365 AS ?daily_discount)
-    BIND(?inflation_rate/365 AS ?daily_inflation)
+    BIND(?inflation_rate AS ?annual_inflation)
     BIND(ofn:pow(1+?daily_return, ?coupon_to_mat_daysremaining) AS ?coupon_multiplier) # yield of reinvested past coupons
     BIND(ofn:pow(1+?daily_discount, ?now_to_mat_days) AS ?demultiplier)
-    BIND(ofn:pow(1+?daily_inflation, ?owned_days) AS ?owned_since_multiplier)
+    BIND(ofn:pow(1+?annual_inflation, ?owned_yrs) AS ?owned_since_multiplier)
     
     BIND(?net_cost * ?owned_since_multiplier AS ?npv_cost)
-    BIND(?coupon_amt * ?coupon_multiplier AS ?coupon_future_val)
-    BIND(?coupon_future_val / ?demultiplier AS ?npv_coupon_val)
+    BIND(?coupon_amt * ?coupon_multiplier AS ?__coupon_future_val)
+    BIND(?__coupon_future_val / ?demultiplier AS ?npv_coupon_val)
     BIND(?principal / ?demultiplier AS ?npv_principal)
-}
-GROUP BY ?bond_iri ?bond ?desc ?ytm
+} GROUP BY ?bond_iri ?bond ?desc
+#}
 ORDER BY ?bond_iri ?purchase_dt ?coupon_dt

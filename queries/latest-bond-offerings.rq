@@ -23,10 +23,10 @@ FROM mg3:__bondlist__extras
     .
     ?interestterms gist:specifies ?coupon_iri .
     ?coupon_iri a mg:BondCoupon ; gist:numericValue ?coupon .
-    ?repay gist:specifies [ gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debt_principal_repayment ; mg:plannedOccursDate ?maturity ] ;
+    ?repay gist:specifies [ gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debtPrincipalRepayment ; mg:plannedOccursDate ?maturity ] ;
             mg:callable ?callable ;
     	.
-    OPTIONAL { ?repay gist:specifies [ mg:plannedOccursDate ?effective_maturity ; gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debt_principal_repayment] }
+    OPTIONAL { ?repay gist:specifies [ mg:plannedOccursDate ?effective_maturity ; gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debtPrincipalRepayment] }
 
     # Daily changing things (price, YTM)
     ?_evt a gist:RevaluationEvent ;

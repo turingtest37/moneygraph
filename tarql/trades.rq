@@ -11,50 +11,6 @@ PREFIX fx: <http://sparql.xyz/facade-x/ns/>
 CONSTRUCT
 {
 
-# Transaction Date,Settlement Date,Action,Symbol,Description,Quantity,Price,Gross Amount,Commission,Net Amount,Currency,Account #,Activity Type,Account Type
-# 2014-03-03 12:00:00 AM,2014-03-03 12:00:00 AM,FXT,,CONVERSION - CAD/USD,0.00000,0.00000000,0.00,0.00,885.00,USD,51590610,FX conversion,Individual RRSP
-# 2014-03-03 12:00:00 AM,2014-03-06 12:00:00 AM,Buy,OPXA,OPEXA THERAPEUTICS INC COM WE ACTED AS AGENT,500.00000,1.76000000,-880.00,-5.00,-885.00,USD,51590610,Trades,Individual RRSP
-# 2015-03-16 12:00:00 AM,2015-03-16 12:00:00 AM,DIS,P040749,RTS OPEXA THERAPEUTICS INC EXP PENDING CONTRA CUSIP RTS DIST ON 500 SHS REC 03/13/15 PAY 03/13/15,500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Dividends,Individual RRSP
-# 2015-04-24 12:00:00 AM,2015-04-24 12:00:00 AM,RTS,P040749,RTS OPEXA THERAPEUTICS INC CONTRA CUSIP EXP 04/08/2015 RIGHTS EXPIRED BOOK VALUE $ .00,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
-# 2015-09-29 12:00:00 AM,2015-09-29 12:00:00 AM,REV,P032174,OPEXA THERAPEUTICS INC COM REVERSE SPLIT 1:8 INTO 68372T301,-500.00000,0.00000000,0.00,0.00,0.00,USD,51590610,Corporate actions,Individual RRSP
-
-#    [] <urn:next_cpn_str> ?__next_cpn_dt_str ;
-#    <urn:next_cpn_dt> ?__next_cpn_dt .
-#    <urn:eventtype> ?__event_type ;
-#     <urn:tradedtraw> ?TransactionDate ;
-# []  <urn:transaction_date> ?__transaction_date ;  
-#      <urn:acctkey> ?__acct_key ;
-#      <urn:eqsymbol> ?__eq_symbol ;
-#     <urn:date_key> ?__date_key ;
-#     <urn:action> ?Action ;
-#     <urn:date_key> ?__date_key ;
-#     <urn:currency> ?__event_currency ;
-#     <urn:tx_key> ?__tx_key ;
-#  <urn:ytm> ?__ytm_str ;
-#     <urn:ytm_num> ?__ytm_num ;
-#     <urn:ytm_magn> ?__ytm_magn ;
-# .
-
-#     <urn:settledt> ?__settlement_date ;
-    #  <urn:eventqty> ?__event_qty ;
-#     <urn:eventprice> ?__event_price ;
-    #  <urn:quantityraw> ?Quantity ;
-    #  <urn:quantityclean> ?__qty_clean_str
-
-#     <urn:grossamtraw> ?GrossAmount ;
-#     <urn:grossamtdecimal> ?__gross_amount ;
-#     <urn:commissionamt> ?__commission_amount ;
-#     <urn:netamt?> ?__net_amount ;
-    # .
-#  [] <urn:discriminator> ?__discriminator_str ;
-#     <urn:Quantity> ?Quantity ;
-#     <urn:Price> ?Price ;
-#     <urn:GrossAmount> ?GrossAmount ;
-#     <urn:Comm> ?Commission ;
-#     <urn:NetAmount> ?NetAmount ;
-
-#     <urn:grossamt_clean> ?__grossamt_clean_str ;
-# .
 
     ?__trade_event_iri a gist:Event .
     ?__trade_event_iri mg:longDescription ?Description .
@@ -77,7 +33,6 @@ CONSTRUCT
     .
     
     ?__trade_event_iri mg:transactionDate ?__transaction_date .
-    ?__trade_event_iri mg:transactionDate ?__transaction_date .
     ?__trade_event_iri mg:settlementDate ?__settlement_date .
     ?__trade_event_iri gist:isCharacterizedAs ?__event_type .
 
@@ -86,10 +41,11 @@ CONSTRUCT
     ?__security_account gist:hasPositionIn ?__security ;
         gist:isAffectedBy ?__trade_event_iri ;
         gist:isAffectedBy ?__next_coupon_evt ;
+        gist:isAffectedBy ?__repayment_event ;
     .
 
 # Security conforms to bond repayment conditions an 
-    ?__security gist:conformsTo ?__bond_repayment_conditions, ?__coupon_payment_terms ;
+    ?__security gist:conformsTo ?__bond_repayment_terms, ?__coupon_payment_terms ;
         skos:note ?__debt_details_str ;
         mg:isIssuedBy ?__issuer_iri ;
     .
@@ -103,8 +59,16 @@ CONSTRUCT
     ?__security mg:isTradedOn ?__exchange .
 
 # Bond Repayment Conditions indicate whether the bond is callable
-    ?__bond_repayment_conditions a mg:BondRepaymentTerms ;
+    ?__bond_repayment_terms a mg:BondRepaymentTerms ;
         mg:callable ?__is_callable ;
+        gist:specifies ?__repayment_event ;
+    .
+
+    ?__repayment_event a gist:ScheduledEvent, gist:Event ;
+        gist:affects ?__security_account ;
+        mg:plannedOccursDate ?__maturity ;
+        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debtPrincipalRepayment ;
+        gist:hasMagnitude ?__purchase_qty_magn ;
     .
 
 # Coupon Payment Terms dictate the coupon rate (%) and schedule of interest payments
@@ -139,14 +103,14 @@ CONSTRUCT
 # Purchase Case
     ?__trade_event_iri gist:hasMagnitude ?__purchase_qty_magn .
     ?__purchase_qty_magn a gist:Magnitude ;
-        gist:numericValue ?__event_qty ;
+        gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:isCategorizedBy mgx:_Aspect_securityShareCount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__purchase_price_magn .
     ?__purchase_price_magn a gist:Magnitude;
-        gist:numericValue ?__event_price ;
+        gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
     .
@@ -183,14 +147,14 @@ CONSTRUCT
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_qty_magn .
     ?__sale_qty_magn a gist:Magnitude ;
-        gist:numericValue ?__event_qty ;
+        gist:numericValue ?__qty_amount ;
         gist:hasUnitOfMeasure gist:_each ;
         gist:isCategorizedBy mgx:_Aspect_securityShareCount ;
     .
 
     ?__trade_event_iri gist:hasMagnitude ?__sale_price_magn .
     ?__sale_price_magn a gist:Magnitude;
-        gist:numericValue ?__event_price ;
+        gist:numericValue ?__price_amount ;
         gist:hasUnitOfMeasure ?__event_currency ;
         gist:isCategorizedBy mgx:_Aspect_securityShareUnitPriceAmount ;
     .
@@ -307,18 +271,18 @@ WHERE
 # Trade Date - looks like 18-04-23 in the data
     BIND(REPLACE(?TransactionDate,"^(\\d{2})-(\\d{2})-(\\d{2})","20$3-$2-$1T00:00:00") AS ?__tx_dt_str)
     BIND(STRDT(?__tx_dt_str, xsd:dateTime) AS ?__transaction_date)
-    BIND(STR(xsd:date(?__transaction_date)) AS ?__date_key)
+    BIND(REPLACE(STR(xsd:date(?__transaction_date)),"\\W+","-") AS ?__date_key)
 
 
 ### Clean up the numbers
 
 # Quantity
     BIND(REPLACE(REPLACE(STR(?Quantity),"[^0-9.]", ""), "(\\.\\d{2})\\d*$", "$1") AS ?__qty_clean_str)
-    BIND(ABS(xsd:integer(?__qty_clean_str)) AS ?__event_qty)
+    BIND(ABS(xsd:integer(?__qty_clean_str)) AS ?__qty_amount)
 # Price
     # BIND(REPLACE(REPLACE(STR(?Price),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__price_clean_str)
     BIND(REPLACE(STR(?Price),"[^0-9.]","") AS ?__price_clean_str)
-    BIND(ABS(xsd:decimal(?__price_clean_str)) AS ?__event_price)
+    BIND(ABS(xsd:decimal(?__price_clean_str)) AS ?__price_amount)
 # Gross Amount
     # BIND(REPLACE(REPLACE(STR(?GrossAmount),"[^0-9.]",""), "(\\.\\d{2})\\d*$", "$1") AS ?__grossamt_clean_str)
     BIND(REPLACE(STR(?GrossAmount),"[^0-9.]","") AS ?__grossamt_clean_str)
@@ -341,13 +305,13 @@ WHERE
     BIND(ABS(xsd:decimal(?__netmamt_clean)) AS ?__net_amount)
 
 # Sum of qty,price,gross,commission,net as a discrimator to create a unique Event IRI
-    BIND(STR(round(?__event_qty + ?__event_price + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000/1000) AS ?__discriminator_str)
+    BIND(STR(round(?__qty_amount + ?__price_amount + ?__gross_amount + ?__commission_amount + ?__net_amount)*1000/1000) AS ?__discriminator_str)
 
 # Local part of Security IRI = the equity symbol = where no ticker symbol exists
     BIND(IF(!BOUND(?__symbol_str_norm), MD5(CONCAT(
-                STR(?__transaction_date),
+                ?__date_key,
                 ?__discriminator_str
-    )),?unbound) AS ?__no_symbol)
+    )), ?unbound) AS ?__no_symbol)
     
 # Equity Symbol
     BIND(COALESCE(UCASE(?__symbol_str_norm), ?__no_symbol) AS ?__eq_symbol)
@@ -382,6 +346,7 @@ WHERE
 # Currency - CAD or USD
     BIND(REPLACE(?CurrencyCode_Group_Account,"^(\\w+).*$","$1") AS ?__curr_str)
     BIND(IF(STRSTARTS(UCASE(?__curr_str), "U"), gist:_USDollar, IF(STRSTARTS(UCASE(?__curr_str), "CAN"), mgx:_CADollar, ?unbound)) AS ?__event_currency)
+    BIND(LCASE(REPLACE(?__curr_str, "\\W+","-")) AS ?__currency_key)
 
 # Transaction key = convenience binding for making new IRIs
    BIND(CONCAT(
@@ -400,7 +365,7 @@ WHERE
         ?__discriminator_str)) AS ?__trade_event_iri)
 
 # Repayment Conditions
-    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_conditions)
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_terms)
 
 # Coupon Payment Terms
     BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__coupon_payment_terms)
@@ -423,7 +388,8 @@ WHERE
     BIND(IF(?__is_bond && REGEX(UCASE(?Description), ?__desc_regex), REPLACE(?Description, ?__desc_repl_regex, "$1"), ?unbound) AS ?__debt_details_str)
 
 # Maturity
-# This reliably pulled from the Investment Summary as a standalone field. FUTURE.
+    BIND(IF(?__is_bond && REGEX(UCASE(?Description), "DUE"), REPLACE(?Description, "^.*DUE ([0-9]{2})/([0-9]{2})/([0-9]{4}).*$", "$3-$1-$2T00:00:00"), ?unbound) AS ?__maturity_str)
+    BIND(STRDT(?__maturity_str, xsd:dateTime) AS ?__maturity)
 
 # Coupon Rate
 #    "DUE [0-9/]+ ([\\d.]+)% ([A-Z]{2}) (\\d{2})", ""
@@ -456,7 +422,7 @@ WHERE
 # Yield To Maturity
     BIND(IF(CONTAINS(?Description, "YTM"), REPLACE(?Description, "^.*YTM:?\\s*([0-9.-]+).*$", "$1"), ?unbound) AS ?__ytm_str)
     BIND(STRDT(?__ytm_str, xsd:decimal)/100 AS ?__ytm_num)
-    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_yieldToMaturity_',?__tx_key,'_',REPLACE(?__ytm_str,"\\W+","-"))) AS ?__ytm_magn)
+    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_yieldToMaturity_',?__currency_key,'_',REPLACE(?__ytm_str,"\\W+","-"))) AS ?__ytm_magn)
 
 # Interest Days (paid to previous owner)
     BIND(IF(?__is_bond && REGEX(UCASE(?Description), "INT DAYS [0-9]{1,3}\\s*,"), 
@@ -465,7 +431,7 @@ WHERE
     AS ?__int_days_str)
     BIND(xsd:integer(?__int_days_str) AS ?__int_days)
 
-    BIND(IRI(CONCAT(STR(mg3:),"_Magnitude_interestDaysPaid",?__tx_key,'_',STR(?__int_days))) AS ?__int_days_magn)
+    BIND(IRI(CONCAT(STR(mg3:),"_Magnitude_interestDaysPaid_",?__currency_key,'_',STR(?__int_days))) AS ?__int_days_magn)
 
 # Callable?
     BIND(IF(?__is_bond, xsd:boolean(CONTAINS(UCASE(?Description), 'CALLABLE')), ?unbound) AS ?__is_callable)
@@ -486,72 +452,75 @@ WHERE
 # Label
     BIND(CONCAT("First coupon after purchase: ", STRBEFORE(?__next_cpn_dt_str,"T")) AS ?__next_cpn_label)
 
+# Repayment Event
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_Event_debtPrincipalRepayment_',?__acct_key,'_',?__eq_symbol)), ?unbound) AS ?__repayment_event)
+
 
 #### Buy
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__currency_key,'_',?__qty_clean_str)),
     ?unbound) AS ?__purchase_qty_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__currency_key,'_',?__price_clean_str)),
     ?unbound) AS ?__purchase_price_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__currency_key,'_',?__grossamt_clean_str)),
     ?unbound) AS ?__purchase_gross_amt_magn)
 
 # Commission Fees magnitude
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__currency_key,'_',?__commamt_clean_str)),
     ?unbound) AS ?__purchase_commission_magn)
 
 # SEC Fees magnitude
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_SECFees_paid_',?__tx_key,'_',?__secfeesamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_SECFees_paid_',?__currency_key,'_',?__secfeesamt_clean_str)),
     ?unbound) AS ?__purchase_sec_fees_magn)
 
 # Interest
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__tx_key,'_',?__intamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__currency_key,'_',?__intamt_clean_str)),
     ?unbound) AS ?__purchase_interest_magn)
 
 # Net Amount
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_purchase,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netmamt_clean)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__currency_key,'_',?__netmamt_clean)),
     ?unbound) AS ?__purchase_net_amt_magn)
 
 ### Sell
 # Need all of Quantity,Price,Gross Amt,Commission,Net Amt
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__tx_key,'_',?__qty_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_shareQuantity_',?__currency_key,'_',?__qty_clean_str)),
     ?unbound) AS ?__sale_qty_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__tx_key,'_',?__price_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_unitPrice_',?__currency_key,'_',?__price_clean_str)),
     ?unbound) AS ?__sale_price_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__tx_key,'_',?__grossamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_grossAmount_',?__currency_key,'_',?__grossamt_clean_str)),
     ?unbound) AS ?__sale_gross_amt_magn)
 
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__tx_key,'_',?__commamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_commissionPaid_',?__currency_key,'_',?__commamt_clean_str)),
     ?unbound) AS ?__sale_commission_magn)
 
 # SEC Fees magnitude
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_SECFees_paid_',?__tx_key,'_',?__secfeesamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_SECFees_paid_',?__currency_key,'_',?__secfeesamt_clean_str)),
     ?unbound) AS ?__sale_sec_fees_magn)
 
 # Interest paid
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__tx_key,'_',?__intamt_clean_str)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_interestPaid_',?__currency_key,'_',?__intamt_clean_str)),
     ?unbound) AS ?__sale_interest_magn)
 
 # Net Amount
 BIND(IF(?__event_type = gist:_FinancialBusinessEventType_sale,
-    IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__tx_key,'_',?__netmamt_clean)),
+    IRI(CONCAT(STR(mg3:),'_Magnitude_netAmount_',?__currency_key,'_',?__netmamt_clean)),
     ?unbound) AS ?__sale_net_amt_magn)
 
 # Exchange

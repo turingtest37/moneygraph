@@ -14,17 +14,17 @@ echo "Getting moneygraph ready for export..."
 onto_tool export -f turtle -o "${MG_ONTOLOGY_EXPORT}" -b strict "${MG_ONTOLOGY}"
 
 echo "Clearing gist ontology NG..."
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${GIST_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${GIST_GRAPH}>" "$SERVER"
 
 echo "Uploading gist ontology files..."
 for UPLOAD in ${PROJBASE}/ontologies/gist*.ttl; do
 echo "Uploading ${UPLOAD}..."
-    curl -i -v -H "Content-Type: text/turtle" --data-binary @"$UPLOAD" --url-query "context=<${GIST_GRAPH}>" "$SERVER"
+    curl -fsSL -H "Content-Type: text/turtle" --data-binary @"$UPLOAD" --url-query "context=<${GIST_GRAPH}>" "$SERVER"
 done
 
 echo "Clearing Moneygraph ontology NG..."
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${MG_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${MG_GRAPH}>" "$SERVER"
 
 echo "Uploading Moneygraph ontology ${MG_ONTOLOGY}..."
-curl -i -v -H "Content-Type: text/turtle" --data-binary @"${MG_ONTOLOGY_EXPORT}" --url-query "context=<$MG_GRAPH>" "$SERVER"
+curl -fsSL -H "Content-Type: text/turtle" --data-binary @"${MG_ONTOLOGY_EXPORT}" --url-query "context=<$MG_GRAPH>" "$SERVER"
 

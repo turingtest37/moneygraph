@@ -31,13 +31,13 @@ if test "x$2" == "x"
 then 
 # echo $NAMED_GRAPH
 echo "Uploading to ${ARCHIVE_GRAPH}..."
-curl -i -v -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${ARCHIVE_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${ARCHIVE_GRAPH}>" "$SERVER"
 
 echo "Clearing ${CURRENT_GRAPH}..."
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
 
 echo "Uploading to ${CURRENT_GRAPH}..."
-curl -i -v -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
+curl -fsSL -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
 fi
 
 echo "Done."

@@ -1,0 +1,224 @@
+PREFIX gist: <https://w3id.org/semanticarts/ns/ontology/gist/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>
+PREFIX mgx: <https://w3id.org/moneygraph/ns/taxonomy/>
+PREFIX mg3: <https://w3id.org/moneygraph/ns/data/>
+PREFIX xyz: <http://sparql.xyz/facade-x/data/>
+PREFIX fx: <http://sparql.xyz/facade-x/ns/>
+
+
+
+# OPTIONAL { ?__csvline xyz:FX%20Rate ?FX_Rate }
+#         OPTIONAL { ?__csvline xyz:Cash%20in%20USD ?Cash_in_USD }
+#         OPTIONAL { ?__csvline xyz:Cash%20in%20CAD%20Combined ?Cash_in_CAD_Combined }
+#         OPTIONAL { ?__csvline xyz:Market%20Value%20in%20CAD ?Market_Value_in_CAD }
+#         OPTIONAL { ?__csvline xyz:Market%20Value%20in%20USD ?Market_Value_in_USD }
+#         OPTIONAL { ?__csvline xyz:Market%20Valuein%20CAD%20Combined ?Market_Valuein_CAD_Combined }
+#         OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20CAD ?Total_Equity_in_CAD }
+#         OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20USD ?Total_Equity_in_USD }
+#         OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20CAD%20Combined ?Total_Equity_in_CAD_Combined 
+
+
+CONSTRUCT
+
+{
+    ?__valuation_iri a gist:Event, gist:RevaluationEvent ;
+        gist:isCategorizedBy gist:_FinancialBusinessEventType_revaluation ;
+        gist:atDateTime ?__report_datetime ;
+# FX Rate
+        gist:hasMagnitude ?__fx_rate_magn ;
+# CAD Cash
+        gist:hasMagnitude ?__cad_cash_magn ;
+# USD Cash
+        gist:hasMagnitude ?__usd_cash_magn ;
+# CAD Combined CAsh
+        gist:hasMagnitude ?__cad_cash_comb_magn ;
+# Market Value CAD
+        gist:hasMagnitude ?__market_value_cad_magn ;
+# Market Value USD
+        gist:hasMagnitude ?__market_value_usd_magn ;
+# Market Value CAD Combined
+        gist:hasMagnitude ?__market_value_cad_comb_magn ;
+# Total Equity CAD
+        gist:hasMagnitude ?__total_equity_cad_magn ;
+# Total Equity USD
+        gist:hasMagnitude ?__total_equity_usd_magn ;
+# Total Equity CAD Combined
+        gist:hasMagnitude ?__total_equity_cad_comb_magn ;
+# Date stamp
+        gist:isRecordedAt ?__report_datetime ;
+    .
+
+# The account for each security is affected by the revaluation
+    ?__portfolio_account gist:isAffectedBy ?__valuation_iri .
+
+# Current balance of security account = the number of shares held, NOT their value
+    ?__fx_rate_magn a gist:Magnitude ;
+        gist:numericValue ?__fx_rate ;
+        gist:hasUnitOfMeasure mg:CADPerUSD ;
+        gist:isCategorizedBy mgx:_Aspect_USDtoCADExchangeRate ;
+    .
+
+    ?__cad_cash_magn a gist:Monetary ;
+        gist:numericValue ?__cad_cash_amt ;
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_cashBalance ;
+    .
+
+    ?__usd_cash_magn a gist:Monetary ;
+        gist:numericValue ?__usd_cash_amt ;
+        gist:hasUnitOfMeasure gist:_USDollar ;
+        gist:isCategorizedBy mgx:_Aspect_cashBalance ;
+    .
+
+    ?__cad_cash_comb_magn a gist:Monetary ;
+        gist:numericValue ?__cad_cash_comb_amt ; 
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_cashBalanceCombined ;
+    .
+
+    ?__market_value_cad_magn a gist:Monetary ;
+        gist:numericValue ?__market_value_cad_amt ;
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_marketValue ;
+    .
+
+    ?__market_value_usd_magn a gist:Monetary ;
+        gist:numericValue ?__market_value_usd_amt ;
+        gist:hasUnitOfMeasure gist:_USDollar ;
+        gist:isCategorizedBy mgx:_Aspect_marketValue ;
+    .
+
+    ?__market_value_cad_comb_magn a gist:Monetary ;
+        gist:numericValue ?__market_value_cad_comb_amt ;
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_marketValueCombined ;
+    .
+
+    ?__total_equity_cad_magn a gist:Monetary ;
+        gist:numericValue ?__total_equity_cad_amt ;
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_totalEquity ;
+    .
+
+    ?__total_equity_usd_magn a gist:Monetary ;
+        gist:numericValue ?__total_equity_usd_amt ;
+        gist:hasUnitOfMeasure gist:_USDollar ;
+        gist:isCategorizedBy mgx:_Aspect_totalEquity ;
+    .
+    ?__total_equity_cad_comb_magn a gist:Monetary ;
+        gist:numericValue ?__total_equity_cad_comb_amt ;
+        gist:hasUnitOfMeasure mg:_CADollar ;
+        gist:isCategorizedBy mgx:_Aspect_totalEquityCombined ;
+    .
+}
+WHERE 
+# Account Number,Account Type,FX Rate,Cash in CAD,Cash in USD,Cash in CAD Combined,Market Value in CAD
+# 26694923,Individual margin,1.34855,3232.22,386.5,3753.43,2181.1,5737.5,9918.4,5413.32,6124,13671.83
+{
+    SERVICE <x-sparql-anything:> {
+        BIND(IRI(CONCAT("file://",?_loc)) AS ?__location)
+        # BIND(REPLACE(?_loc,".*(-\\d{4}[\\d-]+)\\.csv","$1") AS ?__dt_only)
+        BIND(STRDT(CONCAT(STR(?_dt),"T00:00:00"), xsd:dateTime) AS ?__report_datetime)
+
+        fx:properties
+            fx:location ?__location ;    
+            fx:csv.headers true ;
+            fx:blank-nodes false ;
+            fx:csv.null-string "" ;
+            fx:root ?__location ;
+        .
+# Account Number,Account Type,FX Rate,Cash in CAD,Cash in USD,Cash in CAD Combined,Market Value in CAD,Market Value in USD,Market Valuein CAD Combined,Total Equity in CAD,Total Equity in USD,Total Equity in CAD Combined
+        OPTIONAL { ?__csvline xyz:Account%20Number ?Account_Number }
+        OPTIONAL { ?__csvline xyz:Account%20Type ?Account_Type }
+        OPTIONAL { ?__csvline xyz:FX%20Rate ?FX_Rate }
+        OPTIONAL { ?__csvline xyz:Cash%20in%20CAD ?Cash_in_CAD }
+        OPTIONAL { ?__csvline xyz:Cash%20in%20USD ?Cash_in_USD }
+        OPTIONAL { ?__csvline xyz:Cash%20in%20CAD%20Combined ?Cash_in_CAD_Combined }
+        OPTIONAL { ?__csvline xyz:Market%20Value%20in%20CAD ?Market_Value_in_CAD }
+        OPTIONAL { ?__csvline xyz:Market%20Value%20in%20USD ?Market_Value_in_USD }
+        OPTIONAL { ?__csvline xyz:Market%20Valuein%20CAD%20Combined ?Market_Valuein_CAD_Combined }
+        OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20CAD ?Total_Equity_in_CAD }
+        OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20USD ?Total_Equity_in_USD }
+        OPTIONAL { ?__csvline xyz:Total%20Equity%20in%20CAD%20Combined ?Total_Equity_in_CAD_Combined }
+    }
+
+    BIND(REPLACE(STR(?_dt), "\\W+", "-") AS ?__date_key)
+
+# Account
+    BIND(ENCODE_FOR_URI(LCASE(STR(?Account_Number))) AS ?__acct_key)
+
+# Portfolio Account
+    BIND(IRI(CONCAT(STR(mg3:),'_PortfolioAccount_',?__acct_key)) AS ?__portfolio_account)
+
+# Spot Valuation per Account
+    BIND(IRI(CONCAT(STR(mg3:),'_Event_daily_market_closing_',?__acct_key,'_',?__date_key)) AS ?__valuation_iri)
+
+# Cash account CAD
+    BIND(IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_CAD')) AS ?__cash_cad_account)
+# Cash account USD
+    BIND(IRI(CONCAT(STR(mg3:),?__acct_key,'_CashAccount_USD')) AS ?__cash_usd_account)
+
+# FX Rate Magnitude
+    BIND(REPLACE(STR(?FX_Rate),"[^0-9.]","") AS ?__fx_amt_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Magnitude_fx_rate_',?__fx_amt_clean)) AS ?__fx_rate_magn)
+# FX Rate
+    BIND(STRDT(?__fx_amt_clean, xsd:decimal) AS ?__fx_rate)
+
+# CAD Cash Magnitude
+    BIND(REPLACE(STR(?Cash_in_CAD),"[^0-9.]","") AS ?__cad_cash_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_cashBalance_CAD_',?__cad_cash_clean)) AS ?__cad_cash_magn)
+# CAD amount    
+    BIND(STRDT(?__cad_cash_clean, xsd:decimal) AS ?__cad_cash_amt)
+
+# USD Cash Magnitude
+    BIND(REPLACE(STR(?Cash_in_USD),"[^0-9.]","") AS ?__usd_cash_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_cashBalance_USD_',?__usd_cash_clean)) AS ?__usd_cash_magn)
+# USD amount    
+    BIND(STRDT(?__usd_cash_clean, xsd:decimal) AS ?__usd_cash_amt)
+
+# CAD Cash Combined
+    BIND(REPLACE(STR(?Cash_in_CAD_Combined),"[^0-9.]","") AS ?__cad_cash_comb_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_cashBalance_CAD_combined_',?__cad_cash_comb_clean)) AS ?__cad_cash_comb_magn)
+# CAD Cash Amount
+    BIND(xsd:decimal(?__cad_cash_comb_clean) AS ?__cad_cash_comb_amt)
+
+# Market Value CAD Magnitude
+    BIND(REPLACE(STR(?Market_Value_in_CAD),"[^0-9.]","") AS ?__cad_mkt_value_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_marketValue_CAD_',?__cad_mkt_value_clean)) AS ?__market_value_cad_magn)
+# Market Value CAD Amount
+    BIND(xsd:decimal(?__cad_mkt_value_clean) AS ?__market_value_cad_amt)
+
+# Market Value USD Magnitude
+    BIND(REPLACE(STR(?Market_Value_in_USD),"[^0-9.]","") AS ?__usd_mkt_value_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_marketValue_USD_',?__usd_mkt_value_clean)) AS ?__market_value_usd_magn)
+# Market Value USD Amount
+    BIND(xsd:decimal(?__usd_mkt_value_clean) AS ?__market_value_usd_amt)
+
+# Market Value CAD Combined Magnitude
+    BIND(REPLACE(STR(?Market_Valuein_CAD_Combined),"[^0-9.]","") AS ?__cad_comb_mkt_value_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_marketValue_CAD_combined_',?__cad_comb_mkt_value_clean)) AS ?__market_value_cad_comb_magn)
+# Market Value CAD Combined Amount
+    BIND(xsd:decimal(?__cad_comb_mkt_value_clean) AS ?__market_value_cad_comb_amt)
+
+######
+
+# Total Equity Value CAD Magnitude
+    BIND(REPLACE(STR(?Total_Equity_in_CAD),"[^0-9.]","") AS ?__cad_total_equity_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_totalEquityValue_CAD_',?__cad_total_equity_clean)) AS ?__total_equity_cad_magn)
+# Total Equity Value CAD Amount
+    BIND(xsd:decimal(?__cad_total_equity_clean) AS ?__total_equity_cad_amt)
+
+# Total Equity Value USD Magnitude
+    BIND(REPLACE(STR(?Total_Equity_in_USD),"[^0-9.]","") AS ?__usd_total_equity_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_totalEquityValue_USD_',?__usd_total_equity_clean)) AS ?__total_equity_usd_magn)
+# Total Equity Value USD Amount
+    BIND(xsd:decimal(?__usd_total_equity_clean) AS ?__total_equity_usd_amt)
+
+# Total Equity Value CAD Combined Magnitude
+    BIND(REPLACE(STR(?Total_Equity_in_CAD_Combined),"[^0-9.]","") AS ?__cad_comb_equity_clean)
+    BIND(IRI(CONCAT(STR(mg3:),'_Monetary_totalEquityValue_CAD_combined_',?__cad_comb_equity_clean)) AS ?__total_equity_cad_comb_magn)
+# Total Equity Value CAD Combined Amount
+    BIND(xsd:decimal(?__cad_comb_equity_clean) AS ?__total_equity_cad_comb_amt)
+}

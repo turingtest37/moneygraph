@@ -34,13 +34,13 @@ java -jar ~/dev/sparql-anything-0.8.2.jar -v -q "${QUERY}" -f ${FORMAT} ${OUTOPT
 if test "x$2" == "x"
 then 
 echo "Uploading to ${ARCHIVE_GRAPH}..."
-curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${ARCHIVE_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<${ARCHIVE_GRAPH}>" "$SERVER"
 
 echo "Clearing ${CURRENT_GRAPH}..."
-curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
 
 echo "Uploading to ${CURRENT_GRAPH}..."
-curl -i -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
+curl -fsSL -H "Content-Type: application/n-triples" --data-binary @"$UPLOAD" --url-query "context=<$CURRENT_GRAPH>" "$SERVER"
 fi
 
 echo "Done."

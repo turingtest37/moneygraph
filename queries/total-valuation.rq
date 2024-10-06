@@ -10,19 +10,19 @@ QT_GRAPH="${NAMED_GRAPH_BASE}__qt"
 QT_ONTOLOGY="${PROJBASE}/ontologies/questrade.ttl"
 
 echo "Clearing gist ontology NG..."
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${GIST_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${GIST_GRAPH}>" "$SERVER"
 
 echo "Uploading gist ontology files..."
 for UPLOAD in ${PROJBASE}/ontologies/gist*; do
 echo "Uploading ${UPLOAD}..."
-    curl -i -v -H "Content-Type: text/turtle" --data-binary @"$UPLOAD" --url-query "context=<${GIST_GRAPH}>" "$SERVER"
+    curl -fsSL -H "Content-Type: text/turtle" --data-binary @"$UPLOAD" --url-query "context=<${GIST_GRAPH}>" "$SERVER"
 done
 
 echo "Clearing Questrade ontology NG..."
-curl -i -v -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${QT_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${QT_GRAPH}>" "$SERVER"
 
 echo "Uploading Questrade ontology ${QT_ONTOLOGY}..."
-curl -i -v -H "Content-Type: text/turtle" --data-binary @"${QT_ONTOLOGY}" --url-query "context=<$QT_GRAPH>" "$SERVER"
+curl -fsSL -H "Content-Type: text/turtle" --data-binary @"${QT_ONTOLOGY}" --url-query "context=<$QT_GRAPH>" "$SERVER"
 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX mg: <https://w3id.org/moneygraph/ns/ontology/>

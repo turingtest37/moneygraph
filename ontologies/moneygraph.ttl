@@ -77,6 +77,15 @@ mg:hasRepaymentTerms rdf:type owl:ObjectProperty ;
                      <http://www.w3.org/2004/02/skos/core#prefLabel> "has repayment terms" .
 
 
+###  https://w3id.org/moneygraph/ns/ontology/isIncrementedBy
+mg:isIncrementedBy rdf:type owl:ObjectProperty ;
+                   rdfs:subPropertyOf gist:isAffectedBy ;
+                   rdfs:domain gist:Account ;
+                   rdfs:range gist:Event ;
+                   <http://www.w3.org/2004/02/skos/core#definition> "The subject Account's balance is increased by an event." ;
+                   <http://www.w3.org/2004/02/skos/core#prefLabel> "is incremented by" .
+
+
 ###  https://w3id.org/moneygraph/ns/ontology/isIssuedBy
 mg:isIssuedBy rdf:type owl:ObjectProperty ;
               rdfs:subPropertyOf gist:isControlledBy ;
@@ -112,11 +121,25 @@ mg:callable rdf:type owl:DatatypeProperty ;
             <http://www.w3.org/2004/02/skos/core#prefLabel> "callable" .
 
 
+###  https://w3id.org/moneygraph/ns/ontology/couponRate
+mg:couponRate rdf:type owl:DatatypeProperty ;
+              rdfs:subPropertyOf gist:numericValue ;
+              <http://www.w3.org/2004/02/skos/core#definition> "The annual interest rate paid on a bond, expressed in fractional form, not percentage, e.g. 0.043, not 4.3%" ;
+              <http://www.w3.org/2004/02/skos/core#prefLabel> "coupon rate" .
+
+
 ###  https://w3id.org/moneygraph/ns/ontology/longDescription
 mg:longDescription rdf:type owl:DatatypeProperty ;
                    rdfs:subPropertyOf gist:description ;
                    <http://www.w3.org/2004/02/skos/core#definition> "When there is more to say..." ;
                    <http://www.w3.org/2004/02/skos/core#prefLabel> "longDescription" .
+
+
+###  https://w3id.org/moneygraph/ns/ontology/maturityDate
+mg:maturityDate rdf:type owl:DatatypeProperty ;
+                rdfs:subPropertyOf gist:plannedEndDate ;
+                <http://www.w3.org/2004/02/skos/core#prefLabel> "The date a bond principal is repaid in full." ,
+                                                                "maturity date" .
 
 
 ###  https://w3id.org/moneygraph/ns/ontology/plannedOccursDate
@@ -137,6 +160,10 @@ gist:atDate rdf:type owl:DatatypeProperty .
 ###  https://w3id.org/moneygraph/ns/ontology/Bond
 mg:Bond rdf:type owl:Class ;
         owl:equivalentClass [ owl:intersectionOf ( gist:FinancialInstrument
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty mg:isIssuedBy ;
+                                                     owl:someValuesFrom gist:Organization
+                                                   ]
                                                    [ rdf:type owl:Restriction ;
                                                      owl:onProperty gist:conformsTo ;
                                                      owl:someValuesFrom mg:BondRepaymentTerms
@@ -189,6 +216,25 @@ mg:BondRepaymentTerms rdf:type owl:Class ;
                       rdfs:subClassOf gist:ContractTerm ;
                       <http://www.w3.org/2004/02/skos/core#definition> "A specification of the bond maturity and principal repayment event. Typically includes bond principal amount and maturity date." ;
                       <http://www.w3.org/2004/02/skos/core#prefLabel> "Bond Repayment Terms" .
+
+
+###  https://w3id.org/moneygraph/ns/ontology/CADPerUSD
+mg:CADPerUSD rdf:type owl:Class ;
+             owl:equivalentClass [ owl:intersectionOf ( gist:UnitOfMeasure
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty gist:hasDenominator ;
+                                                          owl:hasValue gist:_USDollar
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty gist:hasNumerator ;
+                                                          owl:hasValue mg:_CADollar
+                                                        ]
+                                                      ) ;
+                                   rdf:type owl:Class
+                                 ] ;
+             rdfs:subClassOf gist:RatioUnit ;
+             <http://www.w3.org/2004/02/skos/core#definition> "Value in CAD of one USD" ;
+             <http://www.w3.org/2004/02/skos/core#prefLabel> "CAD per USD" .
 
 
 ###  https://w3id.org/moneygraph/ns/ontology/CashAccount
@@ -361,6 +407,33 @@ mg:MarketableSecurityType rdf:type owl:Class ;
                           <http://www.w3.org/2004/02/skos/core#prefLabel> "Financial Instrument Type" .
 
 
+###  https://w3id.org/moneygraph/ns/ontology/TermSheet
+mg:TermSheet rdf:type owl:Class ;
+             owl:equivalentClass [ owl:intersectionOf ( gist:Content
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty mg:isIssuedBy ;
+                                                          owl:someValuesFrom gist:Organization
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty mg:callable ;
+                                                          owl:someValuesFrom xsd:boolean
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty mg:couponRate ;
+                                                          owl:someValuesFrom xsd:decimal
+                                                        ]
+                                                        [ rdf:type owl:Restriction ;
+                                                          owl:onProperty mg:maturityDate ;
+                                                          owl:someValuesFrom xsd:dateTime
+                                                        ]
+                                                      ) ;
+                                   rdf:type owl:Class
+                                 ] ;
+             rdfs:subClassOf gist:Content ;
+             <http://www.w3.org/2004/02/skos/core#definition> "A summary of the characteristics of a security offering, e.g. a bond issuance" ;
+             <http://www.w3.org/2004/02/skos/core#prefLabel> "Term Sheet" .
+
+
 ###  https://w3id.org/semanticarts/ns/ontology/gist/CurrencyPerDurationUnit
 gist:CurrencyPerDurationUnit rdf:type owl:Class .
 
@@ -396,11 +469,19 @@ mg:_365_day_year rdf:type owl:NamedIndividual ,
                  gist:unitSymbol "yr" .
 
 
+###  https://w3id.org/moneygraph/ns/ontology/_CADollar
+mg:_CADollar rdf:type owl:NamedIndividual ,
+                      gist:CurrencyUnit ;
+             <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
+             <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
+             gist:unitSymbol "CAD" .
+
+
 ###  https://w3id.org/moneygraph/ns/ontology/_CurrencyPerDurationUnit_CADPerDay
 mg:_CurrencyPerDurationUnit_CADPerDay rdf:type owl:NamedIndividual ,
                                                gist:CurrencyPerDurationUnit ;
                                       gist:hasDenominator gist:_one_day ;
-                                      gist:hasNumerator mgx:_CADollar ;
+                                      gist:hasNumerator mg:_CADollar ;
                                       <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
 
 
@@ -408,7 +489,7 @@ mg:_CurrencyPerDurationUnit_CADPerDay rdf:type owl:NamedIndividual ,
 mg:_CurrencyPerDurationUnit_CADPerYear rdf:type owl:NamedIndividual ,
                                                 gist:CurrencyPerDurationUnit ;
                                        gist:hasDenominator mg:_365_day_year ;
-                                       gist:hasNumerator mgx:_CADollar ;
+                                       gist:hasNumerator mg:_CADollar ;
                                        <http://www.w3.org/2004/02/skos/core#definition> "e.g. number of dollars per day, as in the principal amount of a loan divided by the number of days in its term, from loan issuance to due date." .
 
 
@@ -446,6 +527,20 @@ mg:_RatioUnit_totalInvestmentReturnRate rdf:type owl:NamedIndividual ,
                                                  gist:RatioUnit ;
                                         <http://www.w3.org/2004/02/skos/core#definition> "Percentage return on an investment from purchase to today." ;
                                         <http://www.w3.org/2004/02/skos/core#prefLabel> "total investment return rate" .
+
+
+###  https://w3id.org/moneygraph/ns/ontology/_USDollar
+mg:_USDollar rdf:type owl:NamedIndividual ;
+             owl:sameAs gist:_USDollar .
+
+
+###  https://w3id.org/semanticarts/ns/ontology/gist/_USDollar
+
+###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_USDtoCADExchangeRate
+mgx:_Aspect_USDtoCADExchangeRate rdf:type owl:NamedIndividual ,
+                                          gist:Aspect ;
+                                 <http://www.w3.org/2004/02/skos/core#definition> "Value in CAD of 1 USD" ;
+                                 <http://www.w3.org/2004/02/skos/core#prefLabel> "USD to CAD exchange rate" .
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_annualInterestRate
@@ -489,8 +584,7 @@ mgx:_Aspect_debtPrincipalAmount rdf:type owl:NamedIndividual ,
 
 
 ###  https://w3id.org/moneygraph/ns/taxonomy/_Aspect_debtPrincipalRepaymentAmount
-mgx:_Aspect_debtPrincipalRepaymentAmount rdf:type owl:NamedIndividual ,
-                                                  gist:Aspect ;
+mgx:_Aspect_debtPrincipalRepaymentAmount rdf:type owl:NamedIndividual ;
                                          rdfs:isDefinedBy <https://w3id.org/moneygraph/o/ontology/> ;
                                          <http://www.w3.org/2004/02/skos/core#definition> "Amount repaid on the principal of a debt." ;
                                          <http://www.w3.org/2004/02/skos/core#prefLabel> "debt principal repayment amount" .
@@ -652,14 +746,6 @@ mgx:_Aspect_yieldToMaturity rdf:type owl:NamedIndividual ,
                                      gist:Aspect .
 
 
-###  https://w3id.org/moneygraph/ns/taxonomy/_CADollar
-mgx:_CADollar rdf:type owl:NamedIndividual ,
-                       gist:CurrencyUnit ;
-              <http://www.w3.org/2004/02/skos/core#definition> "Loonies and twonies and more." ;
-              <http://www.w3.org/2004/02/skos/core#prefLabel> "Canadian Dollar" ;
-              gist:unitSymbol "CAD" .
-
-
 ###  https://w3id.org/moneygraph/ns/taxonomy/_CostBasis_bk
 mgx:_CostBasis_bk rdf:type owl:NamedIndividual ,
                            mg:CostBasis ;
@@ -801,7 +887,7 @@ gist:_one_minute rdf:type owl:NamedIndividual .
 #################################################################
 
 [ rdf:type owl:AllDifferent ;
-  owl:distinctMembers ( mgx:_CADollar
+  owl:distinctMembers ( mg:_CADollar
                         gist:_USDollar
                         gist:_kelvin
                         gist:_kilogram

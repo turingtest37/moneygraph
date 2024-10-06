@@ -86,7 +86,7 @@ CONSTRUCT
 # Bond repayment at due date
     ?__repayment_event a gist:Event, gist:ScheduledEvent ;
         gist:affects ?__security ;
-        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debt_principal_repayment ;
+        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debtPrincipalRepayment ;
         mg:plannedOccursDate ?__maturity_datetime ;
     .
 

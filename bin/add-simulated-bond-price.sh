@@ -18,9 +18,9 @@ echo "Clearing old graph and inserting new info..."
 
 
 echo "Clearing ${CURRENT_GRAPH}..."
-curl -i -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary "CLEAR GRAPH <${CURRENT_GRAPH}>" "$SERVER"
 
-curl -i -H "Content-Type: application/sparql-update" --data-binary @"${QUERY}" "$SERVER"
+curl -fsSL -H "Content-Type: application/sparql-update" --data-binary @"${QUERY}" "$SERVER"
 fi
 
 echo "Done."

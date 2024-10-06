@@ -42,7 +42,7 @@ INSERT
 
         ?__callable_repayment_event a gist:ScheduledEvent ;
             gist:affects ?bond_iri ;
-            gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debt_principal_repayment ;
+            gist:isCharacterizedAs mgx:_FinancialBusinessEventType_callable_debtPrincipalRepayment ;
             mg:plannedOccursDate ?effective_maturity ;
 		.
 # Net Present Value of all coupon payments, discounted to today's value, for one bond        

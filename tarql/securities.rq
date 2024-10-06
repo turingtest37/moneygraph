@@ -38,8 +38,20 @@ CONSTRUCT
     ?__security gist:description ?Equity_Description .
     ?__security gist:isCategorizedBy ?__security_type_iri .
     ?__security gist:conformsTo ?__coupon_payment_terms .
-    ?__security gist:conformsTo ?__bond_repayment_conditions .
+    ?__security gist:conformsTo ?__bond_repayment_terms .
 
+# The Term Sheet provides easy access to key characteristics of the security.
+    ?__term_sheet a mg:TermSheet ;
+        gist:isAbout ?__security ;
+        # mg:issueDate ;
+        # mg:issuer # GET THIS FROM TRADES
+        mg:maturityDate ?__maturity_datetime ;
+        mg:couponRate ?__coupon_rate ;
+        mg:callable ?__callable ;
+        # mg:rating # GET THIS FROM BONDLIST ???
+    .
+
+# Security ID
     ?__security_id a gist:ID ;
         gist:isCategorizedBy ?__security_id_type ;
         gist:uniqueText ?__symbol_str_norm ;
@@ -87,7 +99,8 @@ CONSTRUCT
     
     ?__coupon_payment_schedule a mg:CouponPaymentSchedule .
 
-    ?__bond_repayment_conditions a mg:BondRepaymentTerms ;
+# Repayment Terms
+    ?__bond_repayment_terms a mg:BondRepaymentTerms ;
         gist:specifies ?__repayment_event ;
     .
 
@@ -95,7 +108,7 @@ CONSTRUCT
     ?__repayment_event a gist:Event, gist:ScheduledEvent ;
         gist:affects ?__security_account ;
         gist:hasMagnitude ?__bond_repayment_magn ;
-        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debt_principal_repayment ;
+        gist:isCharacterizedAs mgx:_FinancialBusinessEventType_debtPrincipalRepayment ;
         mg:plannedOccursDate ?__maturity_datetime ;
     .
 
@@ -235,15 +248,18 @@ WHERE
 
 # Security ID
     BIND(IRI(CONCAT(STR(mg3:),'_ID_marketableSecurity_', ?__eq_symbol)) AS ?__security_id)
-    BIND(IF(?Asset_Class='DI',
-        mgx:_MarketableSecurityIdentifierType_qtBondId,
+    
+    BIND(xsd:boolean(?Asset_Class='DI') AS ?__is_bond)
+
+# Security ID Type
+    BIND(IF(?__is_bond, mgx:_MarketableSecurityIdentifierType_qtBondId,
         mgx:_MarketableSecurityIdentifierType_tickerSymbol) AS ?__security_id_type)
 
 # Security Account
     BIND(IRI(CONCAT(STR(mg3:),'_InvestmentAccount_',?__acct_key,'_',?__eq_symbol)) AS ?__security_account)
 
 # Debt Principal Magnitude
-    BIND(IF(?Asset_Class='DI',IRI(CONCAT(STR(mg3:),'_Monetary_debtPrincipalAmount_',?__acct_key,'_',?__eq_symbol,'_',STR(?Quantity))),?unbound) AS ?__bond_repayment_magn)
+    BIND(IF(?__is_bond,IRI(CONCAT(STR(mg3:),'_Monetary_debtPrincipalAmount_',?__currency_key,'_',?__eq_symbol,'_',STR(?Quantity))),?unbound) AS ?__bond_repayment_magn)
 
 # Due
     BIND(IF(REGEX(UCASE(?Equity_Description),"\\bDUE\\b"), 
@@ -252,30 +268,30 @@ WHERE
     BIND(STRDT(REPLACE(?__due_dt_str,"(\\d{2})/(\\d{2})/(\\d{4})","$3-$1-$2T00:00:00"),xsd:dateTime) AS ?__maturity_datetime)
 
 # Repayment Event
-    BIND(IF(?Asset_Class='DI', IRI(CONCAT(STR(mg3:),'_Event_debtPrincipalRepayment_',STR(?Account_Number),'_',?__eq_symbol)), ?unbound) AS ?__repayment_event)
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_Event_debtPrincipalRepayment_',STR(?Account_Number),'_',?__eq_symbol)), ?unbound) AS ?__repayment_event)
 
 # Year (should be same value as year component of Due date)
     BIND(xsd:positiveInteger(?Year) AS ?__year)
 
 # Coupon - may need to strip off '%' character and divide by 100
     # BIND(IF(REGEX(UCASE(?Equity_Description),"\\bINT\\b") || REGEX(?Equity_Description, "[0-9.]+%"), 
-    BIND(IF(REGEX(?Equity_Description, "[0-9.]+%"), 
-        REPLACE(?Equity_Description, "^.*\\s+([\\d.]+)%.*$","$1"),
+    BIND(IF(REGEX(?Equity_Description, "\\bINT\\b\\s+[0-9.]+%"), 
+        REPLACE(?Equity_Description, "^.*INT\\s+([\\d.]+)%.*$","$1"),
         ?unbound) AS ?__coupon_str)
 
     BIND(xsd:decimal(?__coupon_str)/100 as ?__coupon_rate)
     BIND(IRI(CONCAT(STR(mg3:),'_Coupon_', ?__eq_symbol, '_', REPLACE(?__coupon_str, "\\W+","-"))) AS ?__coupon_magn)
 
 # Repayment Conditions
-    BIND(IF(?Asset_Class='DI', IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_conditions)
+    BIND(IF(?__is_bond, IRI(CONCAT(STR(mg3:),'_BondRepaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__bond_repayment_terms)
 
 # Coupon Payment Terms
-    BIND(IF(?Asset_Class='DI', IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__coupon_payment_terms)
+    BIND(IF(?__is_bond && BOUND(?__coupon_magn), IRI(CONCAT(STR(mg3:),'_CouponPaymentTerms_', ?__eq_symbol)), ?unbound) AS ?__coupon_payment_terms)
 
 # Coupon Payment label
-    BIND(CONCAT(STR(?Equity_Symbol)," ", STR(?__coupon_rate),"%") AS ?__coupon_terms_label)
+    BIND(CONCAT(STR(?Equity_Symbol)," ", STR(?__coupon_rate * 100),"%") AS ?__coupon_terms_label)
     
 # Coupon Payment Schedule
-    BIND(IF(?Asset_Class='DI', IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)), ?unbound) AS ?__coupon_payment_schedule)
+    BIND(IF(?__is_bond && BOUND(?__coupon_magn), IRI(CONCAT(STR(mg3:),'_CouponPaymentSchedule_',?__eq_symbol)), ?unbound) AS ?__coupon_payment_schedule)
 
 }

@@ -1,0 +1,30 @@
+
+
+VALUES (?mo ?day) { (04 08) (10 08) }
+VALUES ?startyr { 2018 }
+
+BIND(STRDT(CONCAT(STR(?startyr),'-',STR(?mo),'-',STR(?day),'T00:00:00') xsd:dateTime) AS ?pay_date_year_1)
+
+VALUES ?coupon_payment_year {
+                "P1Y0M0DT0H0M0S"^^xsd:duration
+                "P2Y0M0DT0H0M0S"^^xsd:duration
+                "P3Y0M0DT0H0M0S"^^xsd:duration
+                "P4Y0M0DT0H0M0S"^^xsd:duration
+                "P5Y0M0DT0H0M0S"^^xsd:duration
+                "P6Y0M0DT0H0M0S"^^xsd:duration
+                "P7Y0M0DT0H0M0S"^^xsd:duration
+                "P8Y0M0DT0H0M0S"^^xsd:duration
+                "P9Y0M0DT0H0M0S"^^xsd:duration
+                "P10Y0M0DT0H0M0S"^^xsd:duration
+                "P11Y0M0DT0H0M0S"^^xsd:duration
+                "P12Y0M0DT0H0M0S"^^xsd:duration
+                "P13Y0M0DT0H0M0S"^^xsd:duration
+                "P14Y0M0DT0H0M0S"^^xsd:duration
+                "P15Y0M0DT0H0M0S"^^xsd:duration
+            } #/values
+
+
+BIND(?pay_date_year_1 + ?coupon_payment_year AS ?pay_date)
+
+
+
